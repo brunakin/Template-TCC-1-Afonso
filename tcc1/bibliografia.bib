@@ -1,238 +1,203 @@
-% ===============================================================
-% BIBLIOGRAFIA - TEMPLATE TCC1 SENAC SANTO AMARO
-% ===============================================================
-% Este arquivo contém exemplos de referências no padrão ABNT
-% (NBR 6023:2018) para diferentes tipos de fontes.
-%
-% O pacote abntex2cite formata automaticamente as referências.
-% Basta adicionar suas entradas aqui e usar \cite ou
-% \citeonline no texto.
-%
-% TIPOS DE ENTRADA E FORMATO ABNT:
-% -----------------------------------------------------------------
-% book          -> SOBRENOME, Nome. Titulo. Edicao. Local: Editora, Ano.
-% article       -> SOBRENOME, Nome. Titulo do artigo. Periodico, v. X, n. Y, p. XX-YY, Ano.
-% inproceedings -> SOBRENOME, Nome. Titulo. In: EVENTO, Local. Anais. Editora, Ano. p. XX-YY.
-% mastersthesis -> SOBRENOME, Nome. Titulo. Ano. Dissertacao (Mestrado) - Instituicao, Local, Ano.
-% phdthesis     -> SOBRENOME, Nome. Titulo. Ano. Tese (Doutorado) - Instituicao, Local, Ano.
-% misc          -> SOBRENOME, Nome. Titulo. Ano. Disponivel em: URL. Acesso em: data.
-% manual        -> ORGANIZACAO. Titulo. Local, Ano.
-% ===============================================================
+% ================================================================
+% BIBLIOGRAFIA DO TCC
+% Classificação Automática de Chamados de TI Utilizando PLN
+% com Explicabilidade Baseada em Grafos
+% ================================================================
 
+% ----------------------------------------------------------------
+% 3 ARTIGOS DE RESOLUÇÃO DE PROBLEMA
+% ----------------------------------------------------------------
 
-% ---------------------------------------------------------------
-% EXEMPLOS DE LIVROS
-% Formato ABNT: SOBRENOME, Nome. Titulo: subtitulo. Edicao. Local: Editora, Ano.
-% ---------------------------------------------------------------
-
-% Livro com um autor
-@book{Wazlawick2020,
-  author    = {Raul Sidnei Wazlawick},
-  title     = {Metodologia de Pesquisa para Ciência da Computação},
-  publisher = {Elsevier},
-  year      = {2020},
-  edition   = {3},
-  address   = {Rio de Janeiro}
-}
-
-% Livro com dois autores
-@book{Pressman2016,
-  author    = {Roger S. Pressman and Bruce R. Maxim},
-  title     = {Engenharia de Software: uma abordagem profissional},
-  publisher = {McGraw-Hill},
-  year      = {2016},
-  edition   = {8},
-  address   = {Porto Alegre}
-}
-
-% Livro com um autor (outro exemplo)
-@book{Sommerville2019,
-  author    = {Ian Sommerville},
-  title     = {Engenharia de Software},
-  publisher = {Pearson},
-  year      = {2019},
-  edition   = {10},
-  address   = {São Paulo}
-}
-
-% Livro traduzido
-@book{Gamma2000,
-  author    = {Erich Gamma and Richard Helm and Ralph Johnson and John Vlissides},
-  title     = {Padrões de Projeto: soluções reutilizáveis de software orientado a objetos},
-  publisher = {Bookman},
-  year      = {2000},
-  address   = {Porto Alegre},
-  note      = {Tradução de Luiz A. Meirelles Salgado}
-}
-
-% Livro em inglês
-@book{Cormen2009,
-  author    = {Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest and Clifford Stein},
-  title     = {Introduction to Algorithms},
-  publisher = {MIT Press},
-  year      = {2009},
-  edition   = {3},
-  address   = {Cambridge}
-}
-
-
-% ---------------------------------------------------------------
-% EXEMPLOS DE ARTIGOS DE PERIODICOS
-% Formato ABNT: SOBRENOME, Nome. Titulo do artigo. Periodico, Local, v. X, n. Y, p. XX-YY, ano.
-% ---------------------------------------------------------------
-
-% Artigo em periódico nacional
-@article{Silva2022,
-  author  = {João Carlos Silva and Maria Aparecida Santos},
-  title   = {Aplicação de técnicas formais na validação de sistemas distribuídos},
-  journal = {Revista Brasileira de Computação Aplicada},
-  year    = {2022},
-  volume  = {14},
-  number  = {2},
-  pages   = {45--58},
-  doi     = {10.5335/rbca.v14i2.12345}
-}
-
-% Artigo em periódico internacional
-@article{LeCun2015,
-  author  = {Yann LeCun and Yoshua Bengio and Geoffrey Hinton},
-  title   = {Deep Learning},
-  journal = {Nature},
-  year    = {2015},
-  volume  = {521},
-  number  = {7553},
-  pages   = {436--444},
-  doi     = {10.1038/nature14539}
-}
-
-% Artigo com DOI
-@article{Kitchenham2004,
-  author  = {Barbara Kitchenham},
-  title   = {Procedures for Performing Systematic Reviews},
-  journal = {Keele University Technical Report},
-  year    = {2004},
-  volume  = {33},
-  pages   = {1--26}
-}
-
-
-% ---------------------------------------------------------------
-% EXEMPLOS DE ARTIGOS EM ANAIS DE EVENTOS
-% Formato ABNT: SOBRENOME, Nome. Titulo. In: EVENTO, Local. Anais. Editora, Ano.
-% ---------------------------------------------------------------
-
-% Artigo em congresso nacional
-@inproceedings{Oliveira2023,
-  author    = {Ana Paula Oliveira and Carlos Eduardo Ferreira},
-  title     = {Uma abordagem baseada em microsserviços para sistemas de e-commerce},
-  booktitle = {Anais do Simpósio Brasileiro de Engenharia de Software},
-  year      = {2023},
-  address   = {Campo Grande},
-  pages     = {112--121},
-  publisher = {SBC},
-  doi       = {10.5753/sbes.2023.00015}
-}
-
-% Artigo em congresso internacional
-@inproceedings{Chen2016,
-  author    = {Tianqi Chen and Carlos Guestrin},
-  title     = {{XGBoost}: A Scalable Tree Boosting System},
-  booktitle = {Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
-  year      = {2016},
-  address   = {San Francisco},
-  pages     = {785--794},
-  publisher = {ACM},
-  doi       = {10.1145/2939672.2939785}
-}
-
-
-% ---------------------------------------------------------------
-% EXEMPLOS DE DISSERTACOES E TESES
-% Formato ABNT: SOBRENOME, Nome. Titulo. Ano. Dissertacao/Tese - Instituicao, Local, Ano.
-% ---------------------------------------------------------------
-
-% Dissertação de mestrado
-@mastersthesis{Santos2021,
-  author  = {Pedro Henrique Santos},
-  title   = {Análise de desempenho de algoritmos de aprendizado de máquina aplicados à detecção de fraudes em transações financeiras},
-  school  = {Universidade de São Paulo},
+@mastersthesis{zemp2021,
+  author  = {Zemp, Michael},
+  title   = {Text Classification of Service Desk Tickets},
+  school  = {Zurich University of Applied Sciences (ZHAW)},
   year    = {2021},
-  address = {São Paulo},
-  type    = {Dissertação (Mestrado em Ciência da Computação)}
+  type    = {Master Thesis -- MAS Data Science},
+  url     = {https://www.zhaw.ch/storage/shared/upload/MAS21_Ticket_Classification_Zemp.pdf}
 }
 
-% Tese de doutorado
-@phdthesis{Ferreira2019,
-  author  = {Juliana Cristina Ferreira},
-  title   = {Modelos de deep learning para processamento de linguagem natural em português brasileiro},
-  school  = {Universidade Estadual de Campinas},
-  year    = {2019},
-  address = {Campinas},
-  type    = {Tese (Doutorado em Ciência da Computação)}
+@phdthesis{wahba2023,
+  author  = {Wahba, Yasmen M.},
+  title   = {A Hybrid Continual Machine Learning Model for Efficient Hierarchical Classification of {IT} Support Tickets in the Presence of Class Overlap},
+  school  = {University of Western Ontario},
+  year    = {2023},
+  type    = {Tese de Doutorado em Ciência da Computação},
+  url     = {https://ir.lib.uwo.ca/etd/9192}
 }
 
-
-% ---------------------------------------------------------------
-% EXEMPLOS DE SITES E RECURSOS ONLINE
-% Formato ABNT: AUTOR ou ORGANIZACAO. Titulo. Ano. Disponivel em: URL. Acesso em: data.
-% ---------------------------------------------------------------
-
-% Site institucional
-@misc{IBGE2024,
-  author = {{IBGE}},
-  title  = {Pesquisa Nacional por Amostra de Domicílios Contínua -- {PNAD} Contínua},
-  year   = {2024},
-  url    = {https://www.ibge.gov.br/estatisticas/sociais/trabalho/9171-pesquisa-nacional-por-amostra-de-domicilios-continua-mensal.html},
-  note   = {Acesso em: 15 jan. 2025}
+@mastersthesis{yokota2025,
+  author  = {Yokota, Beatriz},
+  title   = {Aprendizado de máquina baseado em Classificação hierárquica de textos aplicado ao contexto chamados de suporte},
+  school  = {Universidade de São Paulo -- USP/ICMC},
+  year    = {2025},
+  type    = {MBA em Inteligência Artificial e Big Data},
+  url     = {https://bdta.abcd.usp.br/directbitstream/43ebe5d7-98d6-4357-915e-71486db593d5/Beatriz_Yokota.pdf}
 }
 
-% Documentação técnica online
-@misc{ReactDocs2025,
-  author = {{Meta}},
-  title  = {React -- A JavaScript library for building user interfaces},
-  year   = {2025},
-  url    = {https://react.dev},
-  note   = {Acesso em: 20 jan. 2025}
+% ----------------------------------------------------------------
+% REFERENCIAL TEÓRICO — BLOCO 1: HELP DESK E TRIAGEM
+% ----------------------------------------------------------------
+
+@inproceedings{pereira2023,
+  author    = {Pereira, Leonardo Santiago Benitez and Pizzio, Robinson and Bonho, Samir and De Souza, Leonardo Mozzer Ferraz and Arnoni Junior, Antonio Carlos},
+  title     = {Machine Learning for Classification of {IT} Support Tickets},
+  booktitle = {International Conference on Cyber Management and Engineering (CyMaEn)},
+  publisher = {IEEE},
+  year      = {2023},
+  url       = {https://www.researchgate.net/publication/368906495}
 }
 
-% Artigo em blog técnico
-@misc{Fowler2014,
-  author = {Martin Fowler},
-  title  = {Microservices: a definition of this new architectural term},
-  year   = {2014},
-  url    = {https://martinfowler.com/articles/microservices.html},
-  note   = {Acesso em: 10 fev. 2025}
+@article{harun2023,
+  author  = {Harun, Noor Aklima and Huspi, Sharin Hazlin and Iahad, Noorminshah A.},
+  title   = {Question Classification Framework for Helpdesk Ticketing Support System using Machine Learning},
+  journal = {International Journal on Informatics and Communication Technology (IJIC)},
+  volume  = {13},
+  number  = {1},
+  year    = {2023},
+  url     = {https://ijic.utm.my/index.php/ijic/article/view/388}
 }
 
-
-% ---------------------------------------------------------------
-% EXEMPLOS DE MANUAIS E DOCUMENTACAO TECNICA
-% Formato ABNT: ORGANIZACAO. Titulo. Local, Ano.
-% ---------------------------------------------------------------
-
-@manual{ABNT2018,
-  organization = {{Associação Brasileira de Normas Técnicas}},
-  title        = {{NBR} 6023: informação e documentação --- referências --- elaboração},
-  year         = {2018},
-  address      = {Rio de Janeiro}
+@misc{paramesh2022,
+  author       = {Paramesh, S. P. and Shreedhara, K. S.},
+  title        = {A Deep Learning Based {IT} Service Desk Ticket Classifier Using {CNN}},
+  year         = {2022},
+  howpublished = {ResearchGate},
+  url          = {https://www.researchgate.net/publication/366986777}
 }
 
-@manual{ISO25010,
-  organization = {{International Organization for Standardization}},
-  title        = {{ISO/IEC} 25010:2011 --- Systems and software engineering --- Systems and software Quality Requirements and Evaluation ({SQuaRE}) --- System and software quality models},
-  year         = {2011},
-  address      = {Geneva}
+@article{razma2026,
+  author    = {Razma, Audrius and Jurkus, Robertas},
+  title     = {{AI}-Based Classification of {IT} Support Requests in Enterprise Service Management Systems},
+  journal   = {Systems},
+  publisher = {MDPI},
+  volume    = {14},
+  number    = {223},
+  year      = {2026},
+  doi       = {10.3390/systems14020223},
+  url       = {https://doi.org/10.3390/systems14020223}
 }
 
+% ----------------------------------------------------------------
+% REFERENCIAL TEÓRICO — BLOCO 2: PLN E REPRESENTAÇÕES VETORIAIS
+% ----------------------------------------------------------------
 
-% ===============================================================
-% DICAS PARA O ALUNO:
-% ===============================================================
-% 1. Use chaves consistentes (ex: Sobrenome+Ano: Wazlawick2020)
-% 2. Preencha todos os campos obrigatórios para cada tipo
-% 3. Para sites, sempre inclua a data de acesso no campo "note"
-% 4. Use {} ao redor de siglas e nomes próprios para preservar
-%    a capitalização (ex: {IBGE}, {XGBoost})
-% 5. Para autores corporativos, use chaves duplas: {{Nome}}
-% 6. Compile com: pdflatex -> bibtex -> pdflatex -> pdflatex
-% ===============================================================
+@inproceedings{mikolov2013,
+  author    = {Mikolov, Tomáš and Chen, Kai and Corrado, Greg and Dean, Jeffrey},
+  title     = {Efficient Estimation of Word Representations in Vector Space},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2013},
+  url       = {https://arxiv.org/abs/1301.3781}
+}
+
+% ----------------------------------------------------------------
+% REFERENCIAL TEÓRICO — BLOCO 3: BERT E VARIANTES
+% ----------------------------------------------------------------
+
+@inproceedings{vaswani2017,
+  author    = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, Łukasz and Polosukhin, Illia},
+  title     = {Attention Is All You Need},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume    = {30},
+  year      = {2017},
+  url       = {https://arxiv.org/abs/1706.03762}
+}
+
+@inproceedings{devlin2019,
+  author    = {Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
+  title     = {{BERT}: Pre-training of Deep Bidirectional Transformers for Language Understanding},
+  booktitle = {Proceedings of the Annual Conference of the North American Chapter of the Association for Computational Linguistics (NAACL)},
+  year      = {2019},
+  url       = {https://arxiv.org/abs/1810.04805}
+}
+
+@inproceedings{souza2020,
+  author    = {Souza, Fábio and Nogueira, Rodrigo and Lotufo, Roberto},
+  title     = {{BERTimbau}: Pretrained {BERT} Models for {Brazilian Portuguese}},
+  booktitle = {Brazilian Conference on Intelligent Systems (BRACIS)},
+  publisher = {Springer},
+  year      = {2020},
+  url       = {https://www.researchgate.net/publication/345395208}
+}
+
+@mastersthesis{borges2024,
+  author  = {Borges, Beatriz Ribeiro},
+  title   = {Análise comparativa de algoritmos de classificação de texto},
+  school  = {Universidade Federal de Uberlândia},
+  year    = {2024},
+  type    = {Trabalho de Conclusão de Curso -- Sistemas de Informação},
+  url     = {https://repositorio.ufu.br/handle/123456789/43701}
+}
+
+% ----------------------------------------------------------------
+% REFERENCIAL TEÓRICO — BLOCO 4: XAI
+% ----------------------------------------------------------------
+
+@inproceedings{ribeiro2016,
+  author    = {Ribeiro, Marco Tulio and Singh, Sameer and Guestrin, Carlos},
+  title     = {"Why Should {I} Trust You?": Explaining the Predictions of Any Classifier},
+  booktitle = {22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+  publisher = {ACM},
+  year      = {2016},
+  url       = {https://arxiv.org/abs/1602.04938}
+}
+
+@inproceedings{lundberg2017,
+  author    = {Lundberg, Scott M. and Lee, Su-In},
+  title     = {A Unified Approach to Interpreting Model Predictions},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume    = {30},
+  year      = {2017},
+  url       = {https://arxiv.org/abs/1705.07874}
+}
+
+@article{salih2023,
+  author    = {Salih, Ahmed and others},
+  title     = {A Perspective on Explainable Artificial Intelligence Methods: {SHAP} and {LIME}},
+  journal   = {Advanced Intelligent Systems},
+  publisher = {Wiley},
+  year      = {2023},
+  url       = {https://arxiv.org/abs/2305.02012}
+}
+
+@article{mustafa2025,
+  author    = {Mustafa, Sumaya and {Hama Saeed}, Mariwan},
+  title     = {Empowering text classification with {NLP} and explainable {AI} for enhanced interpretability},
+  journal   = {Journal of Electrical Systems and Information Technology},
+  volume    = {12},
+  number    = {81},
+  publisher = {Springer},
+  year      = {2025},
+  url       = {https://link.springer.com/article/10.1186/s43067-025-00273-2}
+}
+
+% ----------------------------------------------------------------
+% REFERENCIAL TEÓRICO — BLOCO 5: GRAFOS DE CO-OCORRÊNCIA
+% ----------------------------------------------------------------
+
+@inproceedings{yao2019,
+  author    = {Yao, Liang and Mao, Chengsheng and Luo, Yuan},
+  title     = {Graph Convolutional Networks for Text Classification},
+  booktitle = {AAAI Conference on Artificial Intelligence},
+  year      = {2019},
+  url       = {https://arxiv.org/abs/1809.05679}
+}
+
+@article{yang2021,
+  author    = {Yang, Xingwu and Cui, Yuheng},
+  title     = {{BERT}-Enhanced Text Graph Neural Network for Classification},
+  journal   = {Entropy},
+  publisher = {MDPI},
+  volume    = {23},
+  number    = {1536},
+  year      = {2021},
+  url       = {https://www.mdpi.com/1099-4300/23/11/1536}
+}
+
+@article{talebi2025,
+  author  = {Talebi, Sajedeh and Abdolvand, Neda},
+  title   = {Building Safer Social Spaces: Body Shaming Detection Using {RoBERTa}, {LIME} and Term Co-occurrence Graph},
+  journal = {International Journal of Web Research (IJWR)},
+  year    = {2025},
+  url     = {https://doaj.org/article/3a3f1e1beed847909118aac97aacce05}
+}
