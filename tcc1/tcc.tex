@@ -608,14 +608,14 @@ O peso das arestas em um grafo de co-ocorrência pode ser determinado por difere
 No presente trabalho, os pesos das arestas serão determinados pela frequência de co-ocorrência normalizada, enquanto os pesos dos \textit{nós}, que constituem o elemento central da proposta, serão determinados pelos valores SHAP calculados para cada \textit{token} pelo modelo BERTimbau. Essa distinção entre ponderação de arestas (estrutura relacional) e ponderação de nós (relevância explicativa) é a inovação central da camada de visualização proposta.
 
 % ---------------------------------------------------------------
-\subsection{TextGCN — formalização do grafo de co-ocorrência}
+\subsection{\textit{TextGCN} — formalização do grafo de co-ocorrência}
 \label{subsec:textgcn}
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Grafo heterogêneo documento-palavra}
 \label{subsubsec:textgcn_grafo}
 
-\citeonline{yao2019} propuseram o TextGCN (\textit{Text Graph Convolutional Network}), modelo que constrói um único grafo heterogêneo para todo o corpus, conectando documentos e palavras. As arestas documento-palavra recebem pesos baseados em TF-IDF, refletindo a importância de cada palavra para cada documento. As arestas palavra-palavra recebem pesos baseados em PMI calculada sobre co-ocorrências em janela deslizante de tamanho 20 sobre todo o corpus, refletindo a força de associação semântica entre pares de palavras.
+\citeonline{yao2019} propuseram o \textit{TextGCN} (\textit{Text Graph Convolutional Network}), modelo que constrói um único grafo heterogêneo para todo o corpus, conectando documentos e palavras. As arestas documento-palavra recebem pesos baseados em TF-IDF, refletindo a importância de cada palavra para cada documento. As arestas palavra-palavra recebem pesos baseados em PMI calculada sobre co-ocorrências em janela deslizante de tamanho 20 sobre todo o corpus, refletindo a força de associação semântica entre pares de palavras.
 
 Essa estrutura permite que as redes neurais de grafos (GCN) propaguem informação simultaneamente entre documentos e palavras, capturando relações semânticas globais que modelos baseados em sequências não conseguem representar diretamente.
 
@@ -625,14 +625,14 @@ Essa estrutura permite que as redes neurais de grafos (GCN) propaguem informaç�
 
 As redes neurais de grafos (GNN, do inglês \textit{Graph Neural Networks}) operam sobre grafos propagando informação entre nós vizinhos por meio de operações de agregação e transformação. Em cada camada da rede, a representação de cada nó é atualizada com base nas representações de seus vizinhos na iteração anterior \cite{yao2019}. Após múltiplas camadas, cada nó possui uma representação que agrega informação de sua vizinhança local de múltiplos saltos.
 
-No contexto deste trabalho, a relevância do TextGCN é fundamentalmente teórica: ele formaliza matematicamente a estrutura do grafo de co-ocorrência e demonstra sua utilidade para classificação de texto. O presente trabalho não implementa GCN, o grafo de co-ocorrência é utilizado exclusivamente como estrutura de visualização para as explanações XAI, não como componente do modelo de classificação.
+No contexto deste trabalho, a relevância do \textit{TextGCN} é fundamentalmente teórica: ele formaliza matematicamente a estrutura do grafo de co-ocorrência e demonstra sua utilidade para classificação de texto. O presente trabalho não implementa GCN, o grafo de co-ocorrência é utilizado exclusivamente como estrutura de visualização para as explanações XAI, não como componente do modelo de classificação.
 
 % ---------------------------------------------------------------
 \subsection{Combinação de BERT com grafos de co-ocorrência}
 \label{subsec:bert_grafo}
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Embeddings BERT como features iniciais dos nós}
+\subsubsection{\textit{Embeddings} BERT como \textit{features} iniciais dos nós}
 \label{subsubsec:bert_grafo_embeddings}
 
 \citeonline{yang2021} propuseram o BEGNN (\textit{BERT-Enhanced Graph Neural Network}), que combina representações contextualizadas do BERT com grafos de co-ocorrência para classificação de texto. Na arquitetura BEGNN, o BERT gera \textit{embeddings} contextualizados para cada \textit{token} da entrada; esses \textit{embeddings} são utilizados como \textit{features} iniciais dos nós do grafo de co-ocorrência correspondente ao documento. Em seguida, uma GCN propaga informação entre nós vizinhos, produzindo representações enriquecidas pela estrutura do grafo. A representação final do documento é obtida por agregação das representações dos nós.
@@ -643,14 +643,14 @@ Essa combinação aborda uma limitação do BERT quando utilizado isoladamente: 
 \subsubsection{Resultados em vocabulário técnico especializado}
 \label{subsubsec:bert_grafo_resultados}
 
-\citeonline{yang2021} avaliaram o BEGNN em múltiplos \textit{datasets} de classificação de texto, demonstrando que a combinação BERT + grafo supera tanto o BERT isolado quanto o TextGCN, especialmente em \textit{datasets} com vocabulário técnico especializado. Esse resultado é relevante para o presente trabalho porque chamados de suporte de TI são exatamente o tipo de texto com vocabulário técnico especializado para o qual o BEGNN demonstrou vantagem, sugerindo que a estrutura de grafo de co-ocorrência captura informação complementar às representações do BERTimbau.
+\citeonline{yang2021} avaliaram o BEGNN em múltiplos \textit{datasets} de classificação de texto, demonstrando que a combinação BERT + grafo supera tanto o BERT isolado quanto o \textit{TextGCN}, especialmente em \textit{datasets} com vocabulário técnico especializado. Esse resultado é relevante para o presente trabalho porque chamados de suporte de TI são exatamente o tipo de texto com vocabulário técnico especializado para o qual o BEGNN demonstrou vantagem, sugerindo que a estrutura de grafo de co-ocorrência captura informação complementar às representações do BERTimbau.
 
 % ---------------------------------------------------------------
 \subsection{Grafo de co-ocorrência combinado com XAI}
 \label{subsec:grafo_xai}
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Ponderação de nós por scores de explicabilidade}
+\subsubsection{Ponderação de nós por \textit{scores} de explicabilidade}
 \label{subsubsec:grafo_xai_ponderacao}
 
 \citeonline{talebi2025} apresentam o trabalho de maior proximidade metodológica com o presente TCC: aplicam RoBERTa combinado com LIME e um grafo de co-ocorrência para detecção de \textit{body shaming} em redes sociais em inglês. No trabalho de Talebi e Abdolvand, o grafo de co-ocorrência é construído com nós representando \textit{tokens} e arestas ponderadas pelos \textit{scores} LIME de cada \textit{token}. Os \textit{tokens} com maior importância LIME produzem arestas de maior peso com seus vizinhos na janela de co-ocorrência.
