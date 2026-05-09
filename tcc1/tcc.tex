@@ -133,7 +133,7 @@ Kayke Ahrens Biscegli -- 1142709883}
 % RESUMO
 % ---------------------------------------------------------------
 \begin{resumo}
-Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (TCC1) desenvolvido no SENAC Santo Amaro. O objetivo deste trabalho é propor e avaliar um pipeline de Processamento de Linguagem Natural (PLN) utilizando o modelo BERTimbau combinado com técnicas de Inteligência Artificial Explicável (XAI) — SHAP e LIME — e visualização em grafos de co-ocorrência para classificação automática e interpretável de chamados de TI em português brasileiro. A justificativa para este estudo baseia-se na necessidade de automatizar a triagem manual de tickets em sistemas de help desk corporativos, processo atualmente lento, inconsistente e sujeito a erros humanos, ao mesmo tempo que se endereça o problema da "caixa-preta" dos modelos de aprendizado profundo, que dificulta a adoção em produção devido à falta de transparência nas decisões algorítmicas. A revisão bibliográfica abrange sistemas de help desk e triagem de chamados, processamento de linguagem natural para classificação de texto, arquitetura Transformer e o modelo BERT, inteligência artificial explicável com foco em SHAP e LIME, e grafos de co-ocorrência como estrutura de representação e visualização. Como solução proposta, pretende-se desenvolver um sistema web composto por: um módulo de classificação baseado em BERTimbau fine-tuned sobre dataset de chamados reais em PT-BR; um módulo de explicabilidade que calcula valores SHAP e scores LIME para cada predição; um módulo de visualização que constrói grafos de co-ocorrência ponderados pelos scores XAI, permitindo aos analistas de TI auditar visualmente as decisões do modelo. Este trabalho está organizado em três capítulos que apresentam a introdução ao tema, a revisão bibliográfica que fundamenta a pesquisa, o desenvolvimento com a solução proposta e o cronograma de trabalho, seguidos das referências bibliográficas.
+Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (TCC1) desenvolvido no SENAC Santo Amaro. O objetivo deste trabalho é propor e avaliar um \textit{pipeline} de Processamento de Linguagem Natural (PLN) utilizando o modelo BERTimbau combinado com técnicas de Inteligência Artificial Explicável — SHAP e LIME — e visualização em grafos de co-ocorrência para classificação automática e interpretável de chamados de TI em português brasileiro. A justificativa para este estudo baseia-se na necessidade de automatizar a triagem manual de \textit{tickets} em sistemas de \textit{help desk} corporativos, processo atualmente lento, inconsistente e sujeito a erros humanos, ao mesmo tempo que se endereça o problema da "caixa-preta" dos modelos de aprendizado profundo, que dificulta a adoção em produção devido à falta de transparência nas decisões algorítmicas. A revisão bibliográfica abrange sistemas de \textit{help desk} e triagem de chamados, processamento de linguagem natural para classificação de texto, arquitetura \textit{Transformer} e o modelo BERT, inteligência artificial explicável com foco em SHAP e LIME, e grafos de co-ocorrência como estrutura de representação e visualização. Como solução proposta, pretende-se desenvolver um sistema \textit{web} composto por: um módulo de classificação baseado em BERTimbau \textit{fine-tuned} sobre \textit{dataset} de chamados reais em PT-BR; um módulo de explicabilidade que calcula valores SHAP e \textit{scores} LIME para cada predição; um módulo de visualização que constrói grafos de co-ocorrência ponderados pelos \textit{scores} XAI, permitindo aos analistas de TI auditar visualmente as decisões do modelo. Este trabalho está organizado em três capítulos que apresentam a introdução ao tema, a revisão bibliográfica que fundamenta a pesquisa, o desenvolvimento com a solução proposta e o cronograma de trabalho, seguidos das referências bibliográficas.
 
 \vspace{\onelineskip}
 
@@ -173,16 +173,16 @@ Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (
 \chapter{Introdução}
 \label{cap:introducao}
 
-A gestão eficiente de tickets de suporte técnico em organizações de TI enfrenta desafios crescentes devido ao volume elevado de chamados e à complexidade semântica dos textos gerados por usuários não técnicos. Este trabalho propõe um pipeline híbrido de classificação automática e roteamento inteligente utilizando Processamento de Linguagem Natural (PLN) com modelos BERT, técnicas de explicabilidade (SHAP e LIME) e visualização em grafos de co-ocorrência para tornar transparente o processo decisório em tempo real.
+A gestão eficiente de \textit{tickets} de suporte técnico em organizações de TI enfrenta desafios crescentes devido ao volume elevado de chamados e à complexidade semântica dos textos gerados por usuários não técnicos. Este trabalho propõe um \textit{pipeline} híbrido de classificação automática e roteamento inteligente utilizando Processamento de Linguagem Natural (PLN) com modelos BERT, técnicas de explicabilidade (SHAP e LIME) e visualização em grafos de co-ocorrência para tornar transparente o processo decisório em tempo real.
 
 
 % ---------------------------------------------------------------
 \section{Contexto}
 \label{sec:contexto}
 
-Os helpdesks corporativos processam diariamente milhares de tickets com descrições variadas que misturam jargão técnico, erros ortográficos e expressões coloquiais, sobrecarregando analistas que realizam triagem manual sujeita a erros humanos e inconsistências. Estudos recentes demonstram que sistemas automatizados com Transformers alcançam até 92\% de acurácia em classificação multi-categoria, mas sua natureza de "caixa-preta" gera resistência entre equipes operacionais que precisam confiar nas decisões algorítmicas para roteamento.
+Os \textit{helpdesks} corporativos processam diariamente milhares de \textit{tickets} com descrições variadas que misturam jargão técnico, erros ortográficos e expressões coloquiais, sobrecarregando analistas que realizam triagem manual sujeita a erros humanos e inconsistências. Estudos recentes demonstram que sistemas automatizados com \textit{Transformers} alcançam até 92\% de acurácia em classificação multi-categoria, mas sua natureza de "caixa-preta" gera resistência entre equipes operacionais que precisam confiar nas decisões algorítmicas para roteamento.
 
-No contexto brasileiro, onde grande parte da comunicação técnica ocorre em português, datasets de tickets reais revelam limitações significativas de modelos tradicionais como Naive Bayes e até redes MLP superficiais, devido à variabilidade semântica e falta de contexto domain-specific. A ausência de ferramentas que expliquem visualmente a contribuição de cada termo na decisão agrava o problema, pois analistas experientes questionam previsões contraintuitivas sem mecanismos de auditoria.
+No contexto brasileiro, onde grande parte da comunicação técnica ocorre em português, \textit{datasets} de \textit{tickets} reais revelam limitações significativas de modelos tradicionais como \textit{Naive Bayes} e até redes MLP superficiais, devido à variabilidade semântica e falta de contexto \textit{domain-specific}. A ausência de ferramentas que expliquem visualmente a contribuição de cada termo na decisão agrava o problema, pois analistas experientes questionam previsões contraintuitivas sem mecanismos de auditoria.
 
 \vspace{0.3cm}
 % \noindent\fbox{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule}{%
@@ -222,11 +222,11 @@ No contexto brasileiro, onde grande parte da comunicação técnica ocorre em po
 \section{Justificativa}
 \label{sec:justificativa}
 
-A triagem de chamados em sistemas de Help Desk ainda é frequentemente realizada manualmente por analistas de suporte, que precisam interpretar descrições textuais de problemas e direcionar os chamados para a equipe técnica responsável. Esse processo pode ser lento, sujeito a inconsistências e dependente da experiência individual dos analistas.
+A triagem de chamados em sistemas de \textit{Help Desk} ainda é frequentemente realizada manualmente por analistas de suporte, que precisam interpretar descrições textuais de problemas e direcionar os chamados para a equipe técnica responsável. Esse processo pode ser lento, sujeito a inconsistências e dependente da experiência individual dos analistas.
 
-Técnicas de Processamento de Linguagem Natural (PLN) e aprendizado de máquina têm sido utilizadas para automatizar essa tarefa por meio da classificação automática de tickets. No entanto, muitos desses modelos funcionam como caixas-pretas, dificultando a compreensão de como as decisões são tomadas.
+Técnicas de Processamento de Linguagem Natural (PLN) e aprendizado de máquina têm sido utilizadas para automatizar essa tarefa por meio da classificação automática de \textit{tickets}. No entanto, muitos desses modelos funcionam como caixas-pretas, dificultando a compreensão de como as decisões são tomadas.
 
-A área de Explainable Artificial Intelligence (XAI) busca justamente aumentar a transparência desses sistemas, permitindo compreender quais fatores influenciam as decisões dos modelos. Nesse contexto, a utilização de modelagem em grafos pode oferecer uma forma visual e estrutural de representar relações entre termos e evidenciar como essas relações contribuem para a classificação.
+A área de \textit{Explainable Artificial Intelligence} (XAI) busca justamente aumentar a transparência desses sistemas, permitindo compreender quais fatores influenciam as decisões dos modelos. Nesse contexto, a utilização de modelagem em grafos pode oferecer uma forma visual e estrutural de representar relações entre termos e evidenciar como essas relações contribuem para a classificação.
 
 Dessa forma, investigar se mecanismos de explicabilidade baseados em grafos podem tornar o processo decisório mais compreensível representa uma contribuição relevante tanto para aplicações práticas de suporte técnico quanto para o estudo de transparência em sistemas de inteligência artificial.
 
@@ -238,12 +238,12 @@ Este trabalho estrutura-se a partir de um objetivo central, que define o escopo 
 
 \subsection{Objetivo principal}
 
-Propor e avaliar um pipeline utilizando PLN e modelagem em grafos, incorporando mecanismos de explicabilidade para compreender o processo de decisão e a relevância de cada termo na classificação de chamados de TI.
+Propor e avaliar um \textit{pipeline} utilizando PLN e modelagem em grafos, incorporando mecanismos de explicabilidade para compreender o processo de decisão e a relevância de cada termo na classificação de chamados de TI.
 
 \subsection{Objetivos secundários}
 
 \begin{enumerate}
-    \item Propor um pipeline de PLN com BERT para classificação semântica de chamados de suporte técnico.
+    \item Propor um \textit{pipeline} de PLN com BERT para classificação semântica de chamados de suporte técnico.
 
     \item Utilizar mecanismos de explicabilidade com SHAP ou LIME para atribuição de importância aos termos da entrada textual.
 
@@ -261,11 +261,11 @@ Propor e avaliar um pipeline utilizando PLN e modelagem em grafos, incorporando 
 Esta seção apresenta os fundamentos conceituais que sustentam a proposta deste trabalho. Os temas estão organizados em seis blocos temáticos que conduzem o leitor do problema ao estado da arte, culminando na lacuna que este trabalho se propõe a preencher: (1) o problema da triagem manual de chamados de TI; (2) Processamento de Linguagem Natural para classificação de texto; (3) o modelo BERT e suas variantes; (4) o problema da caixa-preta e os métodos de Inteligência Artificial Explicável; (5) grafos de co-ocorrência como estrutura de representação; e (6) a síntese das lacunas identificadas e o direcionamento para a proposta.
 
 % ===============================================================
-\section{Sistemas de Help Desk e a Triagem de Chamados de TI}
+\section{Sistemas de \textit{Help Desk} e a Triagem de Chamados de TI}
 \label{sec:helpdesk}
 
 % ---------------------------------------------------------------
-\subsection{Definição e importância dos sistemas de help desk nas organizações}
+\subsection{Definição e importância dos sistemas de \textit{help desk} nas organizações}
 \label{subsec:helpdesk_definicao}
 
 Sistemas de \textit{help desk}, também denominados sistemas de suporte técnico, centrais de serviço ou plataformas ITSM (\textit{IT Service Management}), são estruturas organizacionais e tecnológicas responsáveis por centralizar e gerenciar as solicitações de suporte submetidas pelos usuários de uma organização. Esses sistemas recebem chamados relacionados a falhas de infraestrutura, problemas em aplicações, solicitações de acesso, dúvidas operacionais e demais ocorrências que interrompem ou dificultam o trabalho dos colaboradores \cite{zemp2021}.
@@ -283,24 +283,24 @@ A inconsistência na categorização é um dos principais problemas. Analistas d
 Chamados categorizados incorretamente são encaminhados para equipes que não possuem competência para resolvê-los, o que desencadeia um ciclo de reatribuições que aumenta o tempo de resolução, consome recursos humanos desnecessariamente e deteriora a experiência do usuário \cite{harun2023}. \citeonline{pereira2023} observam que, no contexto brasileiro, esse problema é agravado pela informalidade da linguagem utilizada pelos usuários ao descrever seus problemas, o que dificulta ainda mais a categorização manual.
 
 % ---------------------------------------------------------------
-\subsection{Abordagens de aprendizado de máquina para classificação automática de tickets}
+\subsection{Abordagens de aprendizado de máquina para classificação automática de \textit{tickets}}
 \label{subsec:helpdesk_ml}
 
 A automação da triagem de chamados por meio de aprendizado de máquina tem sido investigada de forma crescente na literatura. O problema é tratado como uma tarefa de classificação supervisionada de texto: dado o histórico de chamados já categorizados, treina-se um modelo capaz de predizer a categoria de novos chamados a partir de sua descrição textual.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Modelos clássicos — Naive Bayes e SVM com TF-IDF}
+\subsubsection{Modelos clássicos — \textit{Naive Bayes} e SVM com TF-IDF}
 \label{subsubsec:helpdesk_classicos}
 
-As primeiras abordagens automatizadas para classificação de chamados utilizaram algoritmos clássicos de aprendizado de máquina combinados com representações baseadas em frequência de termos. \citeonline{harun2023} investigaram a classificação automática de perguntas em um sistema de \textit{help desk} universitário, comparando Naive Bayes e \textit{Support Vector Machine} (SVM) com vetorização TF-IDF (\textit{Term Frequency–Inverse Document Frequency}). Os resultados demonstraram que o SVM com TF-IDF supera o Naive Bayes em acurácia e F1-score, estabelecendo-se como referência para abordagens clássicas nesse domínio.
+As primeiras abordagens automatizadas para classificação de chamados utilizaram algoritmos clássicos de aprendizado de máquina combinados com representações baseadas em frequência de termos. \citeonline{harun2023} investigaram a classificação automática de perguntas em um sistema de \textit{help desk} universitário, comparando \textit{Naive Bayes} e \textit{Support Vector Machine} (SVM) com vetorização TF-IDF (\textit{Term Frequency–Inverse Document Frequency}). Os resultados demonstraram que o SVM com TF-IDF supera o \textit{Naive Bayes} em acurácia e F1-score, estabelecendo-se como referência para abordagens clássicas nesse domínio.
 
 Apesar de sua eficiência computacional e facilidade de interpretação, esses modelos apresentam limitações na captura de relações semânticas entre termos. A representação TF-IDF trata cada palavra de forma independente, sem considerar o contexto em que ela aparece, o que restringe a capacidade do modelo de distinguir categorias semanticamente próximas.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Redes neurais convolucionais aplicadas a tickets}
+\subsubsection{Redes neurais convolucionais aplicadas a \textit{tickets}}
 \label{subsubsec:helpdesk_cnn}
 
-Com o avanço das técnicas de aprendizado profundo, modelos baseados em redes neurais convolucionais (CNN) passaram a ser aplicados à classificação de chamados de suporte. \citeonline{paramesh2022} propuseram um classificador baseado em CNN com \textit{word embeddings} para categorização automática de \textit{tickets} de \textit{service desk} de infraestrutura de TI. Os autores compararam o modelo proposto com SVM, Naive Bayes, Regressão Logística e K-Nearest Neighbor, demonstrando que a CNN supera todos os modelos clássicos em acurácia e F1-score, especialmente em categorias com descrições textuais mais longas e complexas.
+Com o avanço das técnicas de aprendizado profundo, modelos baseados em redes neurais convolucionais (CNN) passaram a ser aplicados à classificação de chamados de suporte. \citeonline{paramesh2022} propuseram um classificador baseado em CNN com \textit{word embeddings} para categorização automática de \textit{tickets} de \textit{service desk} de infraestrutura de TI. Os autores compararam o modelo proposto com SVM, \textit{Naive Bayes}, Regressão Logística e \textit{K-Nearest Neighbor}, demonstrando que a CNN supera todos os modelos clássicos em acurácia e F1-score, especialmente em categorias com descrições textuais mais longas e complexas.
 
 A vantagem das CNN em relação aos modelos clássicos reside na capacidade de extrair automaticamente n-gramas relevantes da entrada textual, capturando padrões locais de co-ocorrência entre palavras sem necessidade de engenharia manual de \textit{features}. Essa progressão de modelos lineares com TF-IDF para redes profundas com \textit{embeddings}, estabelece o contexto histórico sobre o qual os modelos baseados em \textit{transformers} representam um novo salto qualitativo.
 
@@ -310,9 +310,9 @@ A vantagem das CNN em relação aos modelos clássicos reside na capacidade de e
 
 A literatura sobre classificação automática de chamados de suporte em português brasileiro ainda é escassa, e os trabalhos existentes evidenciam limitações importantes das abordagens mais simples nesse contexto específico.
 
-\citeonline{pereira2023} apresentaram um modelo de classificação automática de chamados de suporte de TI em sete categorias, atingindo 75\% de precisão média com modelos de aprendizado de máquina tradicionais. Os autores disponibilizaram publicamente o código, o modelo e os dados anonimizados, e desenvolveram um protótipo \textit{web} com \textit{backend} e \textit{frontend} para uso dos analistas de TI, tornando-o um dos poucos trabalhos nacionais com dataset público e interface funcional. No entanto, a acurácia de 75\% deixa margem considerável para melhoria, especialmente em cenários com maior número de categorias ou com classes semanticamente próximas.
+\citeonline{pereira2023} apresentaram um modelo de classificação automática de chamados de suporte de TI em sete categorias, atingindo 75\% de precisão média com modelos de aprendizado de máquina tradicionais. Os autores disponibilizaram publicamente o código, o modelo e os dados anonimizados, e desenvolveram um protótipo \textit{web} com \textit{backend} e \textit{frontend} para uso dos analistas de TI, tornando-o um dos poucos trabalhos nacionais com \textit{dataset} público e interface funcional. No entanto, a acurácia de 75\% deixa margem considerável para melhoria, especialmente em cenários com maior número de categorias ou com classes semanticamente próximas.
 
-\citeonline{yokota2025} investigou a classificação hierárquica de chamados de suporte utilizando Naive Bayes e \textit{Multilayer Perceptron} (MLP) com duas variações arquiteturais. Os resultados, avaliados por F1-macro para lidar com o desbalanceamento entre classes, foram insatisfatórios, evidenciando que modelos simples falham em capturar as nuances semânticas presentes em textos técnicos de suporte em PT-BR. A autora conclui que a abordagem proposta revelou desafios substanciais na classificação automática de textos especializados, evidenciando a necessidade de abordagens metodológicas mais sofisticadas — motivação direta para o uso do BERTimbau neste trabalho.
+\citeonline{yokota2025} investigou a classificação hierárquica de chamados de suporte utilizando \textit{Naive Bayes} e \textit{Multilayer Perceptron} (MLP) com duas variações arquiteturais. Os resultados, avaliados por F1-macro para lidar com o desbalanceamento entre classes, foram insatisfatórios, evidenciando que modelos simples falham em capturar as nuances semânticas presentes em textos técnicos de suporte em PT-BR. A autora conclui que a abordagem proposta revelou desafios substanciais na classificação automática de textos especializados, evidenciando a necessidade de abordagens metodológicas mais sofisticadas — motivação direta para o uso do BERTimbau neste trabalho.
 
 % ---------------------------------------------------------------
 \subsection{Limitações dos modelos existentes}
@@ -324,7 +324,7 @@ A literatura sobre classificação automática de chamados de suporte em portugu
 
 \citeonline{wahba2023}, em sua tese de doutorado na Universidade de Western Ontario, propõe um contraponto relevante ao uso indiscriminado de modelos baseados em \textit{transformers} para classificação de texto em domínios especializados. A partir de cinco estudos empíricos conduzidos ao longo de quatro anos com dados reais de uma empresa parceira, a autora demonstra que, em textos técnicos como \textit{tickets} de suporte de TI, o nível de polissemia é baixo e os termos técnicos tendem a ter significado único e preciso, o que reduz a vantagem dos \textit{embeddings} contextualizados do BERT em relação ao SVM com TF-IDF.
 
-Com base nessa observação, Wahba propõe o modelo HOOM (\textit{Hybrid Online Offline Model}), que combina um classificador SVM linear treinado em modo \textit{offline} com um classificador Passive Aggressive Classifier treinado em modo \textit{online} para detectar mudanças na distribuição dos dados ao longo do tempo. O modelo é descrito como mais eficiente, interpretável e reproduzível do que abordagens baseadas em \textit{transformers}.
+Com base nessa observação, Wahba propõe o modelo HOOM (\textit{Hybrid Online Offline Model}), que combina um classificador SVM linear treinado em modo \textit{offline} com um classificador \textit{Passive Aggressive Classifier} treinado em modo \textit{online} para detectar mudanças na distribuição dos dados ao longo do tempo. O modelo é descrito como mais eficiente, interpretável e reproduzível do que abordagens baseadas em \textit{transformers}.
 
 Este argumento é diretamente relevante para o presente trabalho, pois o TCC responde à questão levantada por Wahba: o custo computacional adicional do BERTimbau se justifica quando se adiciona uma camada de XAI e grafo de co-ocorrência que transforma a saída pouco interpretável do modelo em algo auditável pelos analistas. Em outras palavras, a interpretabilidade não é apenas uma funcionalidade adicional, é a justificativa central para a escolha do modelo mais complexo.
 
