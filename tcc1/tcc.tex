@@ -680,7 +680,7 @@ Essa camada de visualização transforma a saída opaca do modelo em uma represe
 O trabalho de \citeonline{zemp2021} demonstra que sistemas de classificação de chamados de TI com alta acurácia são tecnicamente viáveis e já foram implantados em produção. No entanto, a ausência de mecanismos de explicabilidade limita a adoção e a auditabilidade desses sistemas. Os agentes de suporte recebem predições sem justificativa, o que dificulta a identificação de erros sistemáticos e a construção de confiança no sistema. Nenhum dos trabalhos de classificação de chamados de TI identificados no screening incorpora uma camada de visualização interativa para explanações XAI.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Carência de soluções robustas para PT-BR em helpdesk}
+\subsubsection{Carência de soluções robustas para PT-BR em \textit{helpdesk}}
 \label{subsubsec:lacuna_ptbr}
 
 Os trabalhos de \citeonline{yokota2025} e \citeonline{pereira2023} evidenciam que o estado da arte em classificação de chamados de suporte em português brasileiro ainda é incipiente. Os melhores resultados reportados com modelos simples (75\% de precisão média com ML tradicional e F1-macro insatisfatório com NB e MLP) são inferiores a modelos baseados em \textit{transformers} já alcançaram em inglês. Não foi identificado nenhum trabalho nacional que aplique BERTimbau com XAI a chamados de suporte de TI.
@@ -715,7 +715,7 @@ Esta seção apresenta os conceitos técnicos fundamentais que sustentam a propo
 Processamento de Linguagem Natural (PLN) é o campo da inteligência artificial dedicado ao desenvolvimento de métodos computacionais para compreender, interpretar e gerar linguagem humana. No contexto deste trabalho, PLN é utilizado para representar chamados de suporte técnico como vetores numéricos que um modelo de aprendizado de máquina possa processar, e para extrair informações semânticas dos textos submetidos pelos usuários \cite{devlin2019}.
  
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsection{Modelos de Linguagem Baseados em Transformer}
+\subsection{Modelos de Linguagem Baseados em \textit{Transformer}}
  
 Modelos de linguagem baseados na arquitetura \textit{Transformer} \cite{vaswani2017} aprendem representações contextualizadas de texto por meio de mecanismos de atenção que consideram simultaneamente todas as posições de uma sequência de entrada. O BERT (\textit{Bidirectional Encoder Representations from Transformers}) \cite{devlin2019} é o modelo desta família mais amplamente adotado para tarefas de classificação de texto. O BERTimbau \cite{souza2020} é uma variante do BERT pré-treinada especificamente sobre corpora em português brasileiro, sendo o modelo adotado neste trabalho.
  
@@ -736,7 +736,7 @@ Inteligência Artificial Explicável (XAI, do inglês \textit{Explainable Artifi
 Um grafo de co-ocorrência é uma estrutura $G = (V, E)$ na qual os nós $V$ representam os termos únicos de um texto e as arestas $E$ conectam pares de termos que aparecem juntos dentro de uma janela deslizante de tamanho fixo \cite{yao2019}. Neste trabalho, essa estrutura é utilizada como camada de visualização das explicações XAI: os pesos dos nós são determinados pelos valores SHAP de cada \textit{token}, e os pesos das arestas pela frequência de co-ocorrência, produzindo uma representação visual que combina estrutura relacional do texto com relevância explicativa do modelo.
  
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsection{Sistema de Help Desk e Triagem de Chamados}
+\subsection{Sistema de \textit{Help Desk} e Triagem de Chamados}
  
 Um sistema de \textit{help desk} é uma plataforma que centraliza e gerencia solicitações de suporte técnico submetidas pelos usuários de uma organização. A triagem de chamados consiste em classificar cada solicitação em uma categoria predefinida e encaminhá-la à equipe responsável pela resolução. A automação desse processo, substituindo ou auxiliando a triagem manual, é o problema central abordado por este trabalho \cite{zemp2021}.
 
@@ -756,7 +756,7 @@ Esta seção analisa três trabalhos que enfrentaram o desafio de automatizar a 
 
 \subsection{Trabalho 3: Classificação hierárquica de textos aplicado ao contexto chamados de suporte}
 
-\citeonline{yokota2025} investigou a classificação de chamados especificamente em português brasileiro, utilizando modelos clássicos como Naive Bayes e MLP. A metodologia focou na estrutura hierárquica das categorias de TI. Os resultados apresentaram F1-macro insatisfatório para uso em produção. A lacuna principal foi a incapacidade de modelos simples lidarem com o jargão técnico do suporte em português. O presente trabalho diferencia-se pelo uso de uma arquitetura de estado da arte (BERTimbau) treinada especificamente no nosso idioma, superando as limitações semânticas dos modelos testados por Yokota.
+\citeonline{yokota2025} investigou a classificação de chamados especificamente em português brasileiro, utilizando modelos clássicos como \textit{Naive Bayes} e MLP. A metodologia focou na estrutura hierárquica das categorias de TI. Os resultados apresentaram F1-macro insatisfatório para uso em produção. A lacuna principal foi a incapacidade de modelos simples lidarem com o jargão técnico do suporte em português. O presente trabalho diferencia-se pelo uso de uma arquitetura de estado da arte (BERTimbau) treinada especificamente no nosso idioma, superando as limitações semânticas dos modelos testados por Yokota.
 
 \vspace{0.5cm}
 
@@ -773,7 +773,7 @@ Esta seção analisa três trabalhos que enfrentaram o desafio de automatizar a 
         \midrule
         Objetivo           & Classificação & Eficiência & Classificação PT-BR & Classificação + XAI \\
         \midrule
-        Tecnologia         & RoBERTa / CNN & SVM / HOOM  & Naive Bayes / MLP   & BERTimbau + Grafos \\
+        Tecnologia         & RoBERTa / CNN & SVM / HOOM  & \textit{Naive Bayes} / MLP   & BERTimbau + Grafos \\
         \midrule
         Explicabilidade    & Não           & Intrínseca  & Limitada            & SHAP / LIME / Grafos \\
         \midrule
@@ -997,12 +997,12 @@ Na tela principal da aplicação, o usuário pode inserir a descrição de um ch
 A interface também apresenta uma área dedicada às explicações da classificação, organizada em duas abas principais:
 
 \begin{itemize}
-    \item \textbf{Grafo de Co-Ocorrência}: representação visual das relações entre os tokens identificados no texto do chamado. O tamanho dos nós representa a importância dos termos calculada pelos métodos XAI, enquanto a espessura das conexões indica a frequência de associação entre os tokens;
+    \item \textbf{Grafo de Co-Ocorrência}: representação visual das relações entre os \textit{tokens} identificados no texto do chamado. O tamanho dos nós representa a importância dos termos calculada pelos métodos XAI, enquanto a espessura das conexões indica a frequência de associação entre os \textit{tokens};
     
-    \item \textbf{Estatísticas}: painel responsável por apresentar numericamente a importância individual de cada token, utilizando barras comparativas e valores associados às contribuições de cada termo na decisão do modelo.
+    \item \textbf{Estatísticas}: painel responsável por apresentar numericamente a importância individual de cada \textit{token}, utilizando barras comparativas e valores associados às contribuições de cada termo na decisão do modelo.
 \end{itemize}
 
-A escolha por disponibilizar tanto visualizações gráficas quanto estatísticas numéricas busca atender diferentes perfis de interpretação dos usuários. Enquanto alguns usuários podem preferir interpretar padrões visuais por meio do grafo, outros podem priorizar comparações quantitativas entre os valores de importância dos tokens.
+A escolha por disponibilizar tanto visualizações gráficas quanto estatísticas numéricas busca atender diferentes perfis de interpretação dos usuários. Enquanto alguns usuários podem preferir interpretar padrões visuais por meio do grafo, outros podem priorizar comparações quantitativas entre os valores de importância dos \textit{tokens}.
 
 Na lateral esquerda da interface encontra-se a seção ``Tickets recentes'', responsável por apresentar classificações realizadas anteriormente juntamente com seus respectivos níveis de confiança. Esse recurso permite consultar rapidamente chamados processados anteriormente e auxilia na análise das classificações realizadas pelo sistema.
 
@@ -1018,7 +1018,7 @@ Os protótipos desenvolvidos tiveram como principal objetivo verificar se os rec
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{imagens/estatisticas.png}
-    \caption{Protótipo de média fidelidade - visualização estatística dos tokens}
+    \caption{Protótipo de média fidelidade - visualização estatística dos \textit{tokens}}
     \label{fig:prototipo_media_estatisticas}
 \end{figure}
 
@@ -1032,7 +1032,7 @@ A arquitetura da solução será organizada em três camadas principais:
     \item Camada de dados.
 \end{itemize}
 
-A camada de apresentação será responsável pela interação com o usuário final, disponibilizando os formulários de inserção de chamados, exibição das classificações, visualização dos grafos e acesso ao histórico de tickets processados.
+A camada de apresentação será responsável pela interação com o usuário final, disponibilizando os formulários de inserção de chamados, exibição das classificações, visualização dos grafos e acesso ao histórico de \textit{tickets} processados.
 
 A camada de processamento será responsável pela execução das etapas de pré-processamento textual, inferência do modelo BERTimbau, cálculo das explicações utilizando SHAP e LIME, além da construção dos grafos de co-ocorrência.
 
@@ -1089,9 +1089,9 @@ Entre as principais funcionalidades previstas para o sistema estão:
     \item Classificação automática de chamados de TI;
     \item Exibição da categoria prevista;
     \item Apresentação do nível de confiança da classificação;
-    \item Visualização da importância dos tokens via SHAP e LIME;
+    \item Visualização da importância dos \textit{tokens} via SHAP e LIME;
     \item Construção de grafos de co-ocorrência;
-    \item Histórico simplificado de tickets classificados;
+    \item Histórico simplificado de \textit{tickets} classificados;
     \item Visualização interativa das explicações do modelo.
 \end{itemize}
 
@@ -1103,11 +1103,11 @@ Inicialmente foram realizados levantamento bibliográfico, definição dos requi
 
 Posteriormente serão realizados testes de integração entre os componentes e ajustes relacionados à usabilidade e apresentação das explicações geradas pelo sistema.
 
-\subsubsection{Dataset e fine-tuning}
+\subsubsection{\textit{Dataset} e \textit{fine-tuning}}
 
 O modelo BERTimbau será ajustado utilizando um conjunto de chamados de dados reais obtidos junto à Bayer Brasil, mediante acordo de confidencialidade e anonimização.
 
-O processo de fine-tuning seguirá uma abordagem supervisionada de classificação textual, utilizando divisão entre conjuntos de treino, validação e teste. Também serão aplicadas técnicas de balanceamento de classes e validação de desempenho para reduzir problemas relacionados a overfitting e desbalanceamento do dataset.
+O processo de \textit{fine-tuning} seguirá uma abordagem supervisionada de classificação textual, utilizando divisão entre conjuntos de treino, validação e teste. Também serão aplicadas técnicas de balanceamento de classes e validação de desempenho para reduzir problemas relacionados a \textit{overfitting} e desbalanceamento do \textit{dataset}.
 
 \subsubsection{Critérios de validação}
 
