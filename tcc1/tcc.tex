@@ -347,18 +347,18 @@ Esses dois estudos estabelecem coletivamente a motivação central deste trabalh
 \label{subsec:pln_representacoes}
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{TF-IDF e modelos baseados em frequência}
+\subsubsection{\textit{TF-IDF} e modelos baseados em frequência}
 \label{subsubsec:pln_tfidf}
 
-A representação mais simples de um documento para fins de classificação é o modelo \textit{bag-of-words}: cada documento é representado como um vetor de contagens de palavras, sem considerar a ordem em que aparecem. O TF-IDF (\textit{Term Frequency–Inverse Document Frequency}) é um refinamento desse modelo que pondera cada termo pelo produto de sua frequência no documento e pelo inverso de sua frequência no corpus, reduzindo o peso de termos muito comuns e aumentando o peso de termos mais informativos \cite{razma2026}.
+A representação mais simples de um documento para fins de classificação é o modelo \textit{bag-of-words}: cada documento é representado como um vetor de contagens de palavras, sem considerar a ordem em que aparecem. O \textit{TF-IDF} (\textit{Term Frequency–Inverse Document Frequency}) é um refinamento desse modelo que pondera cada termo pelo produto de sua frequência no documento e pelo inverso de sua frequência no corpus, reduzindo o peso de termos muito comuns e aumentando o peso de termos mais informativos \cite{razma2026}.
 
-Apesar de sua simplicidade, o TF-IDF ainda é amplamente utilizado como \textit{baseline} em tarefas de classificação de texto, especialmente quando combinado com SVM, e apresenta desempenho competitivo em domínios com vocabulário técnico específico e baixa polissemia \cite{wahba2023}. Sua principal limitação é a incapacidade de capturar relações semânticas entre termos: palavras sinônimas ou semanticamente relacionadas são tratadas como completamente distintas.
+Apesar de sua simplicidade, o \textit{TF-IDF} ainda é amplamente utilizado como \textit{baseline} em tarefas de classificação de texto, especialmente quando combinado com SVM, e apresenta desempenho competitivo em domínios com vocabulário técnico específico e baixa polissemia \cite{wahba2023}. Sua principal limitação é a incapacidade de capturar relações semânticas entre termos: palavras sinônimas ou semanticamente relacionadas são tratadas como completamente distintas.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Embeddings estáticos — Word2Vec e GloVe}
+\subsubsection{\textit{Embeddings} estáticos — \textit{Word2Vec} e \textit{GloVe}}
 \label{subsubsec:pln_embeddings}
 
-Os \textit{embeddings} de palavras representam um avanço significativo em relação às abordagens baseadas em frequência, ao mapear cada palavra para um vetor denso em um espaço de baixa dimensionalidade, de forma que palavras semanticamente relacionadas sejam representadas por vetores próximos. O Word2Vec, proposto por \citeonline{mikolov2013}, aprende \textit{embeddings} a partir de grandes corpora textuais utilizando redes neurais rasas, treinadas para predizer palavras a partir de seu contexto ou contexto a partir de palavras. O GloVe (\textit{Global Vectors for Word Representation}) utiliza estatísticas globais de co-ocorrência do corpus para produzir representações com propriedades algébricas interessantes.
+Os \textit{embeddings} de palavras representam um avanço significativo em relação às abordagens baseadas em frequência, ao mapear cada palavra para um vetor denso em um espaço de baixa dimensionalidade, de forma que palavras semanticamente relacionadas sejam representadas por vetores próximos. O \textit{Word2Vec}, proposto por \citeonline{mikolov2013}, aprende \textit{embeddings} a partir de grandes corpora textuais utilizando redes neurais rasas, treinadas para predizer palavras a partir de seu contexto ou contexto a partir de palavras. O \textit{GloVe} (\textit{Global Vectors for Word Representation}) utiliza estatísticas globais de co-ocorrência do corpus para produzir representações com propriedades algébricas interessantes.
 
 Esses \textit{embeddings} estáticos representaram um avanço expressivo na qualidade das representações textuais e foram amplamente adotados como camada de entrada em modelos de aprendizado profundo para PLN. No entanto, eles atribuem um único vetor a cada palavra, independentemente do contexto em que ela aparece, limitação conhecida como o problema da representação estática.
 
@@ -375,19 +375,19 @@ Essa limitação motivou o desenvolvimento de representações contextualizadas,
 \label{sec:bert}
 
 % ---------------------------------------------------------------
-\subsection{Arquitetura Transformer e mecanismo de atenção}
+\subsection{Arquitetura \textit{Transformer} e mecanismo de atenção}
 \label{subsec:bert_transformer}
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Self-attention e atenção bidirecional}
+\subsubsection{\textit{Self-attention} e atenção bidirecional}
 \label{subsubsec:bert_attention}
 
-A arquitetura \textit{Transformer}, proposta por \citeonline{vaswani2017}, introduziu o mecanismo de \textit{self-attention} como alternativa às redes recorrentes (RNN/LSTM) para processamento de sequências. O \textit{self-attention} permite que cada posição da sequência de entrada atenda simultaneamente a todas as outras posições, calculando um score de relevância entre cada par de tokens. Isso possibilita a captura de dependências de longo alcance na sequência sem o problema de degradação do gradiente característico das redes recorrentes.
+A arquitetura \textit{Transformer}, proposta por \citeonline{vaswani2017}, introduziu o mecanismo de \textit{self-attention} como alternativa às redes recorrentes (RNN/LSTM) para processamento de sequências. O \textit{self-attention} permite que cada posição da sequência de entrada atenda simultaneamente a todas as outras posições, calculando um \textit{score} de relevância entre cada par de \textit{tokens}. Isso possibilita a captura de dependências de longo alcance na sequência sem o problema de degradação do gradiente característico das redes recorrentes.
 
-Modelos como o GPT utilizam atenção unidirecional (cada \textit{token} só pode atender aos tokens anteriores). O BERT, por sua vez, utiliza atenção bidirecional: cada \textit{token} atende simultaneamente a todos os outros \textit{tokens} da sequência, tanto os que aparecem antes quanto os que aparecem depois. Essa bidirecionalidade é fundamental para a qualidade das representações contextualizadas geradas pelo modelo, uma vez que o significado de uma palavra frequentemente depende tanto de seu contexto anterior quanto posterior \cite{devlin2019}.
+Modelos como o GPT utilizam atenção unidirecional (cada \textit{token} só pode atender aos \textit{tokens} anteriores). O BERT, por sua vez, utiliza atenção bidirecional: cada \textit{token} atende simultaneamente a todos os outros \textit{tokens} da sequência, tanto os que aparecem antes quanto os que aparecem depois. Essa bidirecionalidade é fundamental para a qualidade das representações contextualizadas geradas pelo modelo, uma vez que o significado de uma palavra frequentemente depende tanto de seu contexto anterior quanto posterior \cite{devlin2019}.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Pré-treinamento — Masked Language Modeling e Next Sentence Prediction}
+\subsubsection{Pré-treinamento — \textit{Masked Language Modeling} e \textit{Next Sentence Prediction}}
 \label{subsubsec:bert_pretrain}
 
 O BERT é pré-treinado em dois objetivos complementares sobre grandes corpora textuais não rotulados. O primeiro, \textit{Masked Language Modeling} (MLM), mascara aleatoriamente 15\% dos \textit{tokens} de cada sequência de entrada e treina o modelo para predizer os \textit{tokens} mascarados a partir do contexto bidirecional restante. Esse objetivo força o modelo a aprender representações ricas que capturam o significado de cada palavra em seu contexto completo \cite{devlin2019}.
@@ -395,27 +395,27 @@ O BERT é pré-treinado em dois objetivos complementares sobre grandes corpora t
 O segundo objetivo, \textit{Next Sentence Prediction} (NSP), treina o modelo a determinar se duas sentenças apresentadas em sequência são consecutivas no texto original ou foram pareadas aleatoriamente. Esse objetivo permite ao modelo aprender relações semânticas entre sentenças, o que é útil para tarefas como inferência textual e resposta a perguntas.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Fine-tuning para tarefas downstream}
+\subsubsection{\textit{Fine-tuning} para tarefas \textit{downstream}}
 \label{subsubsec:bert_finetune}
 
 Após o pré-treinamento, o BERT pode ser adaptado para tarefas específicas por meio do processo de \textit{fine-tuning}: o modelo pré-treinado é inicializado com os pesos aprendidos no pré-treinamento, uma camada de saída específica para a tarefa é adicionada ao topo da arquitetura, e o modelo completo é treinado por um número reduzido de épocas sobre o conjunto de dados rotulado da tarefa-alvo \cite{devlin2019}.
 
-Essa abordagem de pré-treinamento seguido de \textit{fine-tuning} é particularmente eficaz porque o modelo já adquiriu conhecimento linguístico geral durante o pré-treinamento, e o \textit{fine-tuning} apenas adapta esse conhecimento para o domínio e a tarefa específicos. Para classificação de chamados de TI, o \textit{fine-tuning} ajusta os pesos do modelo para que as representações produzidas sejam especialmente discriminativas entre as categorias de chamados presentes no dataset.
+Essa abordagem de pré-treinamento seguido de \textit{fine-tuning} é particularmente eficaz porque o modelo já adquiriu conhecimento linguístico geral durante o pré-treinamento, e o \textit{fine-tuning} apenas adapta esse conhecimento para o domínio e a tarefa específicos. Para classificação de chamados de TI, o \textit{fine-tuning} ajusta os pesos do modelo para que as representações produzidas sejam especialmente discriminativas entre as categorias de chamados presentes no \textit{dataset}.
 
 % ---------------------------------------------------------------
 \subsection{BERT}
 \label{subsec:bert_modelo}
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Arquitetura e configurações BERT-base e BERT-large}
+\subsubsection{Arquitetura e configurações \textit{BERT-base} e \textit{BERT-large}}
 \label{subsubsec:bert_arquitetura}
 
-\citeonline{devlin2019} propuseram o BERT em duas configurações. O BERT-base possui 12 camadas de \textit{encoder} \textit{Transformer}, 12 cabeças de atenção e 110 milhões de parâmetros. O BERT-large possui 24 camadas, 16 cabeças de atenção e 340 milhões de parâmetros. Ambas as versões foram pré-treinadas sobre o corpus da Wikipedia em inglês e o BookCorpus, totalizando aproximadamente 3,3 bilhões de \textit{tokens}.
+\citeonline{devlin2019} propuseram o BERT em duas configurações. O \textit{BERT-base} possui 12 camadas de \textit{encoder} \textit{Transformer}, 12 cabeças de atenção e 110 milhões de parâmetros. O \textit{BERT-large} possui 24 camadas, 16 cabeças de atenção e 340 milhões de parâmetros. Ambas as versões foram pré-treinadas sobre o corpus da Wikipedia em inglês e o BookCorpus, totalizando aproximadamente 3,3 bilhões de \textit{tokens}.
 
 O BERT estabeleceu o estado da arte em onze tarefas de PLN no momento de sua publicação, incluindo classificação de texto, reconhecimento de entidades nomeadas, resposta a perguntas e inferência textual. Seu lançamento marcou uma mudança de paradigma na área, consolidando a abordagem de pré-treinamento em larga escala seguido de \textit{fine-tuning} como a estratégia dominante para tarefas de PLN.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Token [CLS] e classificação de sequências}
+\subsubsection{\textit{Token} [CLS] e classificação de sequências}
 \label{subsubsec:bert_cls}
 
 Para tarefas de classificação de sequências, o BERT utiliza um \textit{token} especial [CLS] inserido no início de cada sequência de entrada. Após o processamento pelas camadas de \textit{encoder}, a representação vetorial correspondente ao [CLS] agrega informação contextual de toda a sequência e é usada como entrada para a camada de classificação \cite{devlin2019}. Durante o \textit{fine-tuning}, essa camada de classificação, tipicamente uma camada \textit{linear} seguida de \textit{softmax}, aprende a mapear a representação do [CLS] para as probabilidades de cada categoria. No presente trabalho, essa representação é usada para classificar o chamado de TI em uma das categorias predefinidas, e os valores SHAP são calculados sobre os \textit{tokens} de entrada para identificar quais contribuíram mais para a predição.
@@ -441,14 +441,14 @@ A principal diferença em relação ao mBERT (\textit{multilingual} BERT) está 
 Para o presente trabalho, a escolha do BERTimbau em detrimento do mBERT é motivada por dois fatores. Primeiro, os chamados de suporte analisados estão em português brasileiro, idioma para o qual o BERTimbau possui representações mais ricas. Segundo, os chamados utilizam terminologia técnica de TI em português, que pode diferir substancialmente de sua versão em inglês. E o BERTimbau, pré-treinado em corpus nacional, tem maior probabilidade de ter encontrado esse vocabulário durante o pré-treinamento.
 
 % ---------------------------------------------------------------
-\subsection{Fine-tuning de BERT para classificação de chamados de TI}
+\subsection{\textit{Fine-tuning} de BERT para classificação de chamados de TI}
 \label{subsec:bert_tickets}
 
-A aplicação de BERT e modelos derivados à classificação de chamados de TI tem demonstrado resultados expressivos na literatura recente. \citeonline{borges2024} realizou uma comparação sistemática entre BERT e algoritmos clássicos — SVM e Naive Bayes — em tarefas de classificação de texto em português e inglês, utilizando quatro datasets públicos. Os resultados confirmaram que o BERT supera consistentemente os modelos tradicionais em acurácia e F1, especialmente em tarefas multiclasse com nuances semânticas mais complexas, embora com custo computacional consideravelmente maior.
+A aplicação de BERT e modelos derivados à classificação de chamados de TI tem demonstrado resultados expressivos na literatura recente. \citeonline{borges2024} realizou uma comparação sistemática entre BERT e algoritmos clássicos — SVM e \textit{Naive Bayes} — em tarefas de classificação de texto em português e inglês, utilizando quatro \textit{datasets} públicos. Os resultados confirmaram que o BERT supera consistentemente os modelos tradicionais em acurácia e F1, especialmente em tarefas multiclasse com nuances semânticas mais complexas, embora com custo computacional consideravelmente maior.
 
 \citeonline{zemp2021} realizou o \textit{fine-tuning} de RoBERTa — variante do BERT com treinamento aprimorado — sobre mais de um milhão de \textit{tickets} reais de um banco suíço, atingindo F1-macro de 0,75 em mais de 300 classes. O autor demonstra que \textit{transformers} superam CNN e BiLSTM nesse domínio, mas aponta a opacidade do modelo como barreira à adoção em produção.
 
-\citeonline{razma2026} compararam regressão logística com TF-IDF frente a mBERT e XLM-RoBERTa em um corpus de 87 mil \textit{tickets} multilíngues de uma empresa de manufatura. Os resultados confirmaram que \textit{transformers} superam modelos clássicos em macro-F1, especialmente para classes de baixa frequência e semanticamente complexas. A combinação de \textit{fine-tuning} com LIME e SHAP produziu explicações qualitativamente mais ricas do que o modelo linear, validando o uso conjunto de BERT e XAI em ambiente ITSM de produção.
+\citeonline{razma2026} compararam regressão logística com \textit{TF-IDF} frente a mBERT e XLM-RoBERTa em um corpus de 87 mil \textit{tickets} multilíngues de uma empresa de manufatura. Os resultados confirmaram que \textit{transformers} superam modelos clássicos em macro-F1, especialmente para classes de baixa frequência e semanticamente complexas. A combinação de \textit{fine-tuning} com LIME e SHAP produziu explicações qualitativamente mais ricas do que o modelo linear, validando o uso conjunto de BERT e XAI em ambiente ITSM de produção.
 
 % ===============================================================
 \section{Inteligência Artificial Explicável (XAI)}
@@ -464,7 +464,7 @@ A aplicação de BERT e modelos derivados à classificação de chamados de TI t
 
 Modelos de aprendizado profundo, incluindo o BERT, são frequentemente descritos como caixas-pretas: produzem predições com alta acurácia, mas sem revelar quais características da entrada determinaram a saída. Essa opacidade decorre da arquitetura do modelo, cujas, centenas de milhões de parâmetros organizados em camadas de transformações não-lineares impossibilitam a inspeção direta do processo de decisão por parte de um observador humano \cite{salih2023}.
 
-Em contextos como a triagem de chamados de TI, essa opacidade representa um problema prático concreto. Analistas de suporte e gestores precisam auditar as decisões do sistema, identificar erros sistemáticos e eventualmente contestar categorizações incorretas. Um modelo que não fornece justificativa para suas predições é difícil de depurar, difícil de melhorar e difícil de justificar perante stakeholders organizacionais \cite{zemp2021}.
+Em contextos como a triagem de chamados de TI, essa opacidade representa um problema prático concreto. Analistas de suporte e gestores precisam auditar as decisões do sistema, identificar erros sistemáticos e eventualmente contestar categorizações incorretas. Um modelo que não fornece justificativa para suas predições é difícil de depurar, difícil de melhorar e difícil de justificar perante \textit{stakeholders} organizacionais \cite{zemp2021}.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Confiança, auditabilidade e adoção em produção}
@@ -475,7 +475,7 @@ A relação entre explicabilidade e confiança em sistemas de IA é documentada 
 Esse fenômeno é consistente com a literatura de XAI mais ampla: a explicabilidade não melhora necessariamente a acurácia do modelo, mas aumenta a confiança dos usuários no sistema e facilita a identificação de falhas sistemáticas, o que é essencial para a adoção sustentada em ambientes de produção.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Taxonomia de métodos XAI — intrínsecos versus post-hoc, locais versus globais}
+\subsubsection{Taxonomia de métodos XAI — intrínsecos versus \textit{post-hoc}, locais versus globais}
 \label{subsubsec:xai_taxonomia}
 
 Os métodos de XAI podem ser classificados segundo duas dimensões principais \cite{salih2023}. A primeira dimensão distingue métodos intrínsecos dos métodos \textit{post-hoc}. Métodos intrínsecos são aqueles em que a interpretabilidade é uma propriedade do próprio modelo — árvores de decisão, regressão logística e modelos lineares em geral são interpretáveis por \textit{design}, pois seus parâmetros têm significado diretamente interpretável. Métodos \textit{post-hoc} são aplicados após o treinamento, sobre modelos de qualquer complexidade, e produzem explicações sem modificar o modelo original.
@@ -508,7 +508,7 @@ No contexto de classificação de texto, cada palavra (ou \textit{token}) da ent
 
 A principal vantagem do LIME é sua generalidade: o método funciona com qualquer modelo e qualquer tipo de entrada sem necessidade de acesso ao interior do modelo. Isso o torna especialmente adequado para modelos de caixa-preta como o BERT, cujos mecanismos internos são de difícil interpretação direta.
 
-Sua principal limitação é a instabilidade das explicações. Por depender de amostragem aleatória de perturbações, execuções diferentes do LIME sobre a mesma instância podem produzir explicações distintas, especialmente quando há colinearidade entre as features, ou seja, quando algumas variáveis de entrada são muito parecidas ou carregam informações semelhantes \textit{features} \cite{salih2023}. Para mitigar essa instabilidade, recomenda-se executar o LIME múltiplas vezes e analisar a consistência das explicações, ou fixar a semente aleatória para garantir reprodutibilidade.
+Sua principal limitação é a instabilidade das explicações. Por depender de amostragem aleatória de perturbações, execuções diferentes do LIME sobre a mesma instância podem produzir explicações distintas, especialmente quando há colinearidade entre as \textit{features}, ou seja, quando algumas variáveis de entrada são muito parecidas ou carregam informações semelhantes \textit{features} \cite{salih2023}. Para mitigar essa instabilidade, recomenda-se executar o LIME múltiplas vezes e analisar a consistência das explicações, ou fixar a semente aleatória para garantir reprodutibilidade.
 
 
 % ---------------------------------------------------------------
@@ -527,17 +527,17 @@ Na teoria dos jogos, o valor de Shapley de um jogador em um jogo cooperativo é 
 \subsubsection{Propriedades matemáticas — eficiência, simetria e ausência}
 \label{subsubsec:shap_propriedades}
 
-A formulação baseada em valores de Shapley garante ao SHAP três propriedades matemáticas desejáveis que o distinguem de métodos ad hoc de atribuição de importância \cite{lundberg2017}. A propriedade de eficiência estabelece que a soma dos valores SHAP de todas as \textit{features} iguala a diferença entre a predição do modelo para a instância em questão e o valor base (predição média do modelo sobre o conjunto de dados). A propriedade de simetria estabelece que \textit{features} com contribuições iguais ao modelo recebem valores SHAP iguais, independentemente de sua posição na entrada. A propriedade de ausência estabelece que \textit{features} que não afetam a predição recebem valor SHAP zero.
+A formulação baseada em valores de Shapley garante ao SHAP três propriedades matemáticas desejáveis que o distinguem de métodos \textit{ad hoc} de atribuição de importância \cite{lundberg2017}. A propriedade de eficiência estabelece que a soma dos valores SHAP de todas as \textit{features} iguala a diferença entre a predição do modelo para a instância em questão e o valor base (predição média do modelo sobre o conjunto de dados). A propriedade de simetria estabelece que \textit{features} com contribuições iguais ao modelo recebem valores SHAP iguais, independentemente de sua posição na entrada. A propriedade de ausência estabelece que \textit{features} que não afetam a predição recebem valor SHAP zero.
 
 Essas propriedades conferem ao SHAP uma fundamentação teórica sólida que o LIME não possui, tornando suas explicações mais consistentes e matematicamente justificáveis.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{KernelSHAP e aplicação em modelos de texto}
+\subsubsection{\textit{KernelSHAP} e aplicação em modelos de texto}
 \label{subsubsec:shap_kernel}
 
-O cálculo exato dos valores de Shapley é computacionalmente intratável para modelos com muitas \textit{features}, pois requer a avaliação de todas as $2^n$ possíveis coalizões de $n$ \textit{features}. O KernelSHAP, introduzido por \citeonline{lundberg2017}, aproxima os valores Shapley por amostragem, tornando o método aplicável a modelos com centenas ou milhares de \textit{features}, como é o caso de modelos de texto, onde cada \textit{token} é tratado como uma \textit{feature}.
+O cálculo exato dos valores de Shapley é computacionalmente intratável para modelos com muitas \textit{features}, pois requer a avaliação de todas as $2^n$ possíveis coalizões de $n$ \textit{features}. O \textit{KernelSHAP}, introduzido por \citeonline{lundberg2017}, aproxima os valores Shapley por amostragem, tornando o método aplicável a modelos com centenas ou milhares de \textit{features}, como é o caso de modelos de texto, onde cada \textit{token} é tratado como uma \textit{feature}.
 
-Para modelos baseados em \textit{transformers}, o KernelSHAP é a variante mais utilizada. O resultado é um vetor de importância por \textit{token} que pode ser visualizado como mapa de calor sobre o texto de entrada, \textit{tokens} com valores SHAP positivos contribuem para a classe predita, e \textit{tokens} com valores negativos contribuem contra ela. No presente trabalho, esses valores SHAP por \textit{token} são utilizados como pesos dos nós no grafo de co-ocorrência proposto.
+Para modelos baseados em \textit{transformers}, o \textit{KernelSHAP} é a variante mais utilizada. O resultado é um vetor de importância por \textit{token} que pode ser visualizado como mapa de calor sobre o texto de entrada, \textit{tokens} com valores SHAP positivos contribuem para a classe predita, e \textit{tokens} com valores negativos contribuem contra ela. No presente trabalho, esses valores SHAP por \textit{token} são utilizados como pesos dos nós no grafo de co-ocorrência proposto.
 
 % ---------------------------------------------------------------
 \subsection{Comparação entre SHAP e LIME}
@@ -555,7 +555,7 @@ Os autores concluem que SHAP é preferível quando a consistência e a fundament
 \subsubsection{Custo computacional}
 \label{subsubsec:comparacao_custo}
 
-Em termos de custo computacional, o LIME é geralmente mais eficiente do que o KernelSHAP para textos longos. O LIME gera um número fixo de perturbações e ajusta um modelo linear sobre elas, enquanto o KernelSHAP precisa amostrar um número maior de coalizões para produzir estimativas precisas dos valores Shapley \cite{salih2023}. Para textos curtos, como os chamados de suporte de TI, que tipicamente contêm poucas dezenas de palavras, essa diferença de custo é menos pronunciada.
+Em termos de custo computacional, o LIME é geralmente mais eficiente do que o \textit{KernelSHAP} para textos longos. O LIME gera um número fixo de perturbações e ajusta um modelo linear sobre elas, enquanto o \textit{KernelSHAP} precisa amostrar um número maior de coalizões para produzir estimativas precisas dos valores Shapley \cite{salih2023}. Para textos curtos, como os chamados de suporte de TI, que tipicamente contêm poucas dezenas de palavras, essa diferença de custo é menos pronunciada.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Justificativa para uso conjunto neste trabalho}
@@ -571,7 +571,7 @@ A decisão de implementar e comparar SHAP e LIME neste trabalho, em vez de escol
 \subsubsection{LIME em classificação multiclasse de texto}
 \label{subsubsec:xai_mustafa}
 
-\citeonline{mustafa2025} propuseram um \textit{framework} de classificação de texto com PLN e XAI que combina pré-processamento com NLTK (\textit{Natural Language Toolkit}), balanceamento de classes com SMOTE (\textit{Synthetic Minority Oversampling Technique}), validação cruzada estratificada repetida e um modelo híbrido de regressão ridge com regressão logística. O LIME foi utilizado para validar a explicabilidade das classificações em seis domínios distintos: medicina, esportes, entretenimento, política, tecnologia e negócios. O modelo híbrido atingiu 99\% de acurácia após a aplicação do pré-processamento informado pelas explanações LIME.
+\citeonline{mustafa2025} propuseram um \textit{framework} de classificação de texto com PLN e XAI que combina pré-processamento com NLTK (\textit{Natural Language Toolkit}), balanceamento de classes com SMOTE (\textit{Synthetic Minority Oversampling Technique}), validação cruzada estratificada repetida e um modelo híbrido de regressão \textit{ridge} com regressão logística. O LIME foi utilizado para validar a explicabilidade das classificações em seis domínios distintos: medicina, esportes, entretenimento, política, tecnologia e negócios. O modelo híbrido atingiu 99\% de acurácia após a aplicação do pré-processamento informado pelas explanações LIME.
 
 O trabalho demonstra que a integração de XAI ao \textit{pipeline} de classificação não é apenas uma camada de interpretabilidade adicionada ao final do processo, mas pode retroalimentar decisões de pré-processamento e seleção de \textit{features}, melhorando a qualidade do modelo como um todo.
 
@@ -579,7 +579,7 @@ O trabalho demonstra que a integração de XAI ao \textit{pipeline} de classific
 \subsubsection{SHAP e LIME em ambiente ITSM corporativo}
 \label{subsubsec:xai_razma}
 
-\citeonline{razma2026} aplicaram LIME e SHAP em um ambiente ITSM corporativo real, comparando as explicações geradas para o modelo de regressão logística com TF-IDF e para o mBERT \textit{fine-tuned}. Os resultados qualitativos das explicações foram significativamente distintos: o modelo linear tendia a destacar palavras-chave literais com alta frequência no corpus, enquanto o BERT destacava termos semanticamente coerentes com o significado do chamado.
+\citeonline{razma2026} aplicaram LIME e SHAP em um ambiente ITSM corporativo real, comparando as explicações geradas para o modelo de regressão logística com \textit{TF-IDF} e para o mBERT \textit{fine-tuned}. Os resultados qualitativos das explicações foram significativamente distintos: o modelo linear tendia a destacar palavras-chave literais com alta frequência no corpus, enquanto o BERT destacava termos semanticamente coerentes com o significado do chamado.
 
 Essa diferença qualitativa nas explicações, documentada por \citeonline{razma2026}, reforça o argumento de que o BERTimbau, combinado com SHAP e LIME, produz explicações não apenas mais acuradas em termos de importância de \textit{features}, mas também mais interpretáveis para analistas de TI sem formação em aprendizado de máquina, que podem avaliar se os termos destacados fazem sentido para aquela categoria de chamado específica.
 
