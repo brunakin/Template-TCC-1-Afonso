@@ -408,9 +408,55 @@ Essa limitação motivou o desenvolvimento de representações contextualizadas,
 \subsubsection{\textit{Self-attention} e atenção bidirecional}
 \label{subsubsec:bert_attention}
 
-A arquitetura \textit{Transformer}, proposta por \citeonline{vaswani2017}, introduziu o mecanismo de \textit{self-attention} como alternativa às redes recorrentes (RNN/LSTM) para processamento de sequências. O \textit{self-attention} permite que cada posição da sequência de entrada atenda simultaneamente a todas as outras posições, calculando um score de relevância entre cada par de tokens. Isso possibilita a captura de dependências de longo alcance na sequência sem o problema de degradação do gradiente característico das redes recorrentes.
+A arquitetura \textit{Transformer} é composta por dois blocos principais: 
+um \textit{encoder} (codificador) e um \textit{decoder} (decodificador), 
+cada um formado por camadas empilhadas \cite{vaswani2017}. O \textit{encoder} 
+é responsável por receber a sequência de entrada e transformá-la em 
+representações vetoriais ricas em informação contextual. O \textit{decoder}, 
+por sua vez, utiliza essas representações para gerar a sequência de saída — 
+como uma tradução ou resposta. Cada camada do \textit{encoder} é composta 
+por dois sub-componentes principais: o mecanismo de \textit{self-attention}, 
+que permite que cada \textit{token} ``observe'' todos os outros da sequência, 
+e uma rede neural densa aplicada posição a posição (\textit{feed-forward 
+network}). O resultado de cada sub-componente passa por uma operação de 
+normalização (\textit{layer normalization}) que estabiliza o treinamento 
+\cite{vaswani2017}. Vale destacar que modelos como o BERT utilizam apenas 
+o bloco \textit{encoder}, pois seu objetivo é produzir representações 
+contextuais do texto de entrada, e não gerar novas sequências \cite{devlin2019}.
 
-Modelos como o GPT utilizam atenção unidirecional (cada \textit{token} só pode atender aos \textit{tokens} anteriores). O BERT, por sua vez, utiliza atenção bidirecional: cada \textit{token} atende simultaneamente a todos os outros \textit{tokens} da sequência, tanto os que aparecem antes quanto os que aparecem depois. Essa bidirecionalidade é fundamental para a qualidade das representações contextualizadas geradas pelo modelo, uma vez que o significado de uma palavra frequentemente depende tanto de seu contexto anterior quanto posterior \cite{devlin2019}.
+A arquitetura \textit{Transformer}, proposta por \citeonline{vaswani2017}, 
+introduziu o mecanismo de \textit{self-attention} como alternativa às redes 
+recorrentes para processamento de sequências. As RNN (\textit{Recurrent Neural 
+Networks}, ou Redes Neurais Recorrentes) são uma classe de redes neurais 
+projetadas para processar dados sequenciais, nos quais o contexto e a ordem 
+temporal importam — processando os \textit{tokens} um por vez, da esquerda para 
+a direita. As LSTM (\textit{Long Short-Term Memory}) são um tipo especializado 
+de RNN projetado para aprender dependências de longo prazo em sequências, 
+mitigando o problema de degradação do gradiente presente nas RNN simples. 
+Apesar dessas melhorias, ambas as arquiteturas ainda processam a sequência de 
+forma estritamente sequencial, o que limita o paralelismo computacional e 
+dificulta a captura de relações entre termos distantes.
+
+Para compreender o mecanismo de atenção, considere a frase ``o banco bloqueou 
+meu acesso'': para determinar o significado da palavra ``banco'', é necessário 
+considerar as demais palavras da frase — especialmente ``bloqueou'' e ``acesso'' 
+— que indicam tratar-se de uma instituição financeira e não de um assento. O 
+\textit{self-attention} formaliza esse processo: para cada \textit{token} da 
+sequência, o mecanismo calcula um score de relevância em relação a todos os 
+outros \textit{tokens}, indicando o quanto cada um deve ``influenciar'' a 
+representação do \textit{token} atual. ``Atender simultaneamente a todas as 
+posições'' significa que esse cálculo é realizado em paralelo para todos os 
+pares de \textit{tokens} da sequência, possibilitando a captura de dependências 
+de longo alcance de forma muito mais eficiente do que as arquiteturas recorrentes.
+
+Modelos como o GPT utilizam atenção unidirecional (cada \textit{token} só pode 
+atender aos \textit{tokens} anteriores). O BERT, por sua vez, utiliza atenção 
+bidirecional: cada \textit{token} atende simultaneamente a todos os outros 
+\textit{tokens} da sequência, tanto os que aparecem antes quanto os que aparecem 
+depois. Essa bidirecionalidade é fundamental para a qualidade das representações 
+contextualizadas geradas pelo modelo, uma vez que o significado de uma palavra 
+frequentemente depende tanto de seu contexto anterior quanto posterior 
+\cite{devlin2019}.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Pré-treinamento — \textit{Masked Language Modeling} e \textit{Next Sentence Prediction}}
