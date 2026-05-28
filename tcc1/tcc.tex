@@ -120,18 +120,6 @@ Kayke Ahrens Biscegli -- 1142709883}
 % ---------------------------------------------------------------
 % RESUMO
 % ---------------------------------------------------------------
-%\begin{resumo}
-% Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (TCC1) desenvolvido no SENAC Santo Amaro. O objetivo deste trabalho é desenvolver um sistema de classificação e roteamento inteligente de tickets de suporte TI que integre Processamento de Linguagem Natural (PLN), técnicas de explicabilidade computacional e modelagem em grafos para fornecer auditoria visual do processo decisório. A justificativa para este estudo baseia-se na sobrecarga dos helpdesks corporativos pela triagem manual de chamados, na baixa confiança em classificadores de "caixa-preta" e na ausência de soluções em português brasileiro que combinem PLN profundo com visualização estrutural intuitiva para analistas. A revisão bibliográfica abrange classificação automática de tickets com BERTimbau, técnicas XAI (SHAP e LIME), grafos de co-ocorrência de termos e aplicações em gerenciamento de incidentes de TI. Como solução proposta, pretende-se implementar um pipeline com fine-tuning de BERTimbau, explainers SHAP/LIME, construção dinâmica de grafos ponderados e interface web interativa que demonstre a classificação, relevância de termos e relações contextuais de cada ticket submetido. Este trabalho está organizado em três capítulos que apresentam a introdução ao tema, a revisão bibliográfica que fundamenta a pesquisa, o desenvolvimento com a solução proposta e o cronograma de trabalho, seguidos das referências bibliográficas.
-
-% \vspace{\onelineskip}
-
-% \noindent
-% \textbf{Palavras-chave}: Classificação de tickets. Processamento de Linguagem Natural. Explicabilidade computacional. Grafos de co-ocorrência. Helpdesk inteligente.
-%\end{resumo}
-
-% ---------------------------------------------------------------
-% RESUMO
-% ---------------------------------------------------------------
 \begin{resumo}
 Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (TCC1) desenvolvido no SENAC Santo Amaro. O objetivo deste trabalho é propor e avaliar um pipeline de Processamento de Linguagem Natural (PLN) utilizando o modelo BERTimbau combinado com técnicas de Inteligência Artificial Explicável (XAI) — SHAP e LIME — e visualização em grafos de co-ocorrência para classificação automática e interpretável de chamados de TI em português brasileiro. A justificativa para este estudo baseia-se na necessidade de automatizar a triagem manual de tickets em sistemas de help desk corporativos, processo atualmente lento, inconsistente e sujeito a erros humanos, ao mesmo tempo que se endereça o problema da "caixa-preta" dos modelos de aprendizado profundo, que dificulta a adoção em produção devido à falta de transparência nas decisões algorítmicas. A revisão bibliográfica abrange sistemas de help desk e triagem de chamados, processamento de linguagem natural para classificação de texto, arquitetura Transformer e o modelo BERT, inteligência artificial explicável com foco em SHAP e LIME, e grafos de co-ocorrência como estrutura de representação e visualização. Como solução proposta, pretende-se desenvolver um sistema web composto por: um módulo de classificação baseado em BERTimbau fine-tuned sobre dataset de chamados reais em PT-BR; um módulo de explicabilidade que calcula valores SHAP e scores LIME para cada predição; um módulo de visualização que constrói grafos de co-ocorrência ponderados pelos scores XAI, permitindo aos analistas de TI auditar visualmente as decisões do modelo. Este trabalho está organizado em três capítulos que apresentam a introdução ao tema, a revisão bibliográfica que fundamenta a pesquisa, o desenvolvimento com a solução proposta e o cronograma de trabalho, seguidos das referências bibliográficas.
 
@@ -156,6 +144,44 @@ Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (
 % \cleardoublepage
 
 % ---------------------------------------------------------------
+% LISTA DE ABREVIATURAS E SIGLAS
+% ---------------------------------------------------------------
+\begin{siglas}
+  \item[BERT] \textit{Bidirectional Encoder Representations from Transformers}
+  \item[BERTimbau] Variante do BERT pré-treinada para o português brasileiro
+  \item[BiLSTM] \textit{Bidirectional Long Short-Term Memory}
+  \item[CNN] \textit{Convolutional Neural Network} (Rede Neural Convolucional)
+  \item[GCN] \textit{Graph Convolutional Network} (Rede Neural Convolucional em Grafos)
+  \item[GloVe] \textit{Global Vectors for Word Representation}
+  \item[GNN] \textit{Graph Neural Network} (Rede Neural de Grafos)
+  \item[HOOM] \textit{Hybrid Online Offline Model}
+  \item[ITSM] \textit{IT Service Management} (Gerenciamento de Serviços de TI)
+  \item[JSON] \textit{JavaScript Object Notation}
+  \item[LIME] \textit{Local Interpretable Model-Agnostic Explanations}
+  \item[LSTM] \textit{Long Short-Term Memory}
+  \item[mBERT] \textit{Multilingual BERT}
+  \item[MLM] \textit{Masked Language Modeling}
+  \item[MLP] \textit{Multilayer Perceptron} (Perceptron Multicamadas)
+  \item[NER] \textit{Named Entity Recognition} (Reconhecimento de Entidades Nomeadas)
+  \item[NLTK] \textit{Natural Language Toolkit}
+  \item[NSP] \textit{Next Sentence Prediction}
+  \item[PLN] Processamento de Linguagem Natural
+  \item[PMI] \textit{Pointwise Mutual Information} (Informação Mútua Pontual)
+  \item[PT-BR] Português Brasileiro
+  \item[RNN] \textit{Recurrent Neural Network} (Rede Neural Recorrente)
+  \item[ROC-AUC] \textit{Receiver Operating Characteristic — Area Under the Curve}
+  \item[RoBERTa] \textit{Robustly Optimized BERT Pretraining Approach}
+  \item[SHAP] \textit{SHapley Additive exPlanations}
+  \item[SLA] \textit{Service Level Agreement} (Acordo de Nível de Serviço)
+  \item[SMOTE] \textit{Synthetic Minority Oversampling Technique}
+  \item[SVM] \textit{Support Vector Machine} (Máquina de Vetores de Suporte)
+  \item[TF-IDF] \textit{Term Frequency–Inverse Document Frequency}
+  \item[TI] Tecnologia da Informação
+  \item[XAI] \textit{Explainable Artificial Intelligence} (Inteligência Artificial Explicável)
+  \item[XLM-RoBERTa] \textit{Cross-lingual Language Model RoBERTa}
+\end{siglas}
+
+% ---------------------------------------------------------------
 % SUMÁRIO
 % ---------------------------------------------------------------
 \pdfbookmark[0]{\contentsname}{toc}
@@ -173,9 +199,16 @@ Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (
 \chapter{Introdução}
 \label{cap:introducao}
 
-A gestão eficiente de tickets de suporte técnico em organizações de TI enfrenta desafios crescentes devido ao volume elevado de chamados e à complexidade semântica dos textos gerados por usuários não técnicos. Este trabalho propõe um pipeline híbrido de classificação automática e roteamento inteligente utilizando Processamento de Linguagem Natural (PLN) com modelos BERT, técnicas de explicabilidade (SHAP e LIME) e visualização em grafos de co-ocorrência para tornar transparente o processo decisório em tempo real.
-
-
+A gestão eficiente de tickets de suporte técnico em organizações de TI enfrenta desafios crescentes devido ao volume elevado de chamados e à complexidade semântica dos textos gerados por usuários não técnicos. Este trabalho propõe um pipeline híbrido de classificação automática 
+e roteamento inteligente utilizando Processamento de Linguagem Natural 
+(PLN) com modelos BERT (\textit{Bidirectional Encoder Representations 
+from Transformers}, modelos de linguagem baseados em redes neurais 
+profundas), técnicas de explicabilidade SHAP (\textit{SHapley Additive 
+exPlanations}) e LIME (\textit{Local Interpretable Model-Agnostic 
+Explanations}) — métodos que identificam quais termos do texto 
+influenciaram a decisão do modelo — e visualização em grafos de 
+co-ocorrência (estruturas que representam relações entre termos do 
+texto) para tornar transparente o processo decisório em tempo real.
 % ---------------------------------------------------------------
 \section{Contexto}
 \label{sec:contexto}
@@ -292,7 +325,7 @@ A automação da triagem de chamados por meio de aprendizado de máquina tem sid
 \subsubsection{Modelos clássicos — Naive Bayes e SVM com TF-IDF}
 \label{subsubsec:helpdesk_classicos}
 
-As primeiras abordagens automatizadas para classificação de chamados utilizaram algoritmos clássicos de aprendizado de máquina combinados com representações baseadas em frequência de termos. \citeonline{harun2023} investigaram a classificação automática de perguntas em um sistema de \textit{help desk} universitário, comparando Naive Bayes e \textit{Support Vector Machine} (SVM) com vetorização TF-IDF (\textit{Term Frequency–Inverse Document Frequency}). Os resultados demonstraram que o SVM com TF-IDF supera o Naive Bayes em acurácia e F1-score, estabelecendo-se como referência para abordagens clássicas nesse domínio.
+As primeiras abordagens automatizadas para classificação de chamados utilizaram algoritmos clássicos de aprendizado de máquina combinados com representações baseadas em frequência de termos. \citeonline{harun2023} investigaram a classificação automática de perguntas em um sistema de \textit{help desk} universitário, comparando Naive Bayes e \textit{Support Vector Machine} (SVM) com vetorização TF-IDF (\textit{Term Frequency–Inverse Document Frequency}). Os resultados demonstraram que o SVM com TF-IDF supera o Naive Bayes em acurácia e F1-score (métrica que combina precisão e revocação em um único valor, detalhada na Seção~\ref{sec:metricas_avaliacao}), estabelecendo-se como referência para abordagens clássicas nesse domínio.
 
 Apesar de sua eficiência computacional e facilidade de interpretação, esses modelos apresentam limitações na captura de relações semânticas entre termos. A representação TF-IDF trata cada palavra de forma independente, sem considerar o contexto em que ela aparece, o que restringe a capacidade do modelo de distinguir categorias semanticamente próximas.
 
@@ -300,7 +333,8 @@ Apesar de sua eficiência computacional e facilidade de interpretação, esses m
 \subsubsection{Redes neurais convolucionais aplicadas a tickets}
 \label{subsubsec:helpdesk_cnn}
 
-Com o avanço das técnicas de aprendizado profundo, modelos baseados em redes neurais convolucionais (CNN) passaram a ser aplicados à classificação de chamados de suporte. \citeonline{paramesh2022} propuseram um classificador baseado em CNN com \textit{word embeddings} para categorização automática de \textit{tickets} de \textit{service desk} de infraestrutura de TI. Os autores compararam o modelo proposto com SVM, Naive Bayes, Regressão Logística e K-Nearest Neighbor, demonstrando que a CNN supera todos os modelos clássicos em acurácia e F1-score, especialmente em categorias com descrições textuais mais longas e complexas.
+Com o avanço das técnicas de aprendizado profundo, modelos baseados em redes neurais convolucionais (CNN) passaram a ser aplicados à classificação de chamados de suporte. \citeonline{paramesh2022} propuseram um classificador baseado em CNN com \textit{word embeddings} (representações vetoriais densas de 
+palavras aprendidas por redes neurais) para categorização automática de \textit{tickets} de \textit{service desk} de infraestrutura de TI. Os autores compararam o modelo proposto com SVM, Naive Bayes, Regressão Logística e K-Nearest Neighbor, demonstrando que a CNN supera todos os modelos clássicos em acurácia e F1-score, especialmente em categorias com descrições textuais mais longas e complexas.
 
 A vantagem das CNN em relação aos modelos clássicos reside na capacidade de extrair automaticamente n-gramas relevantes da entrada textual, capturando padrões locais de co-ocorrência entre palavras sem necessidade de engenharia manual de \textit{features}. Essa progressão de modelos lineares com TF-IDF para redes profundas com \textit{embeddings}, estabelece o contexto histórico sobre o qual os modelos baseados em \textit{transformers} representam um novo salto qualitativo.
 
@@ -313,30 +347,6 @@ A literatura sobre classificação automática de chamados de suporte em portugu
 \citeonline{pereira2023} apresentaram um modelo de classificação automática de chamados de suporte de TI em sete categorias, atingindo 75\% de precisão média com modelos de aprendizado de máquina tradicionais. Os autores disponibilizaram publicamente o código, o modelo e os dados anonimizados, e desenvolveram um protótipo \textit{web} com \textit{backend} e \textit{frontend} para uso dos analistas de TI, tornando-o um dos poucos trabalhos nacionais com dataset público e interface funcional. No entanto, a acurácia de 75\% deixa margem considerável para melhoria, especialmente em cenários com maior número de categorias ou com classes semanticamente próximas.
 
 \citeonline{yokota2025} investigou a classificação hierárquica de chamados de suporte utilizando Naive Bayes e \textit{Multilayer Perceptron} (MLP) com duas variações arquiteturais. Os resultados, avaliados por F1-macro para lidar com o desbalanceamento entre classes, foram insatisfatórios, evidenciando que modelos simples falham em capturar as nuances semânticas presentes em textos técnicos de suporte em PT-BR. A autora conclui que a abordagem proposta revelou desafios substanciais na classificação automática de textos especializados, evidenciando a necessidade de abordagens metodológicas mais sofisticadas — motivação direta para o uso do BERTimbau neste trabalho.
-
-% ---------------------------------------------------------------
-\subsection{Limitações dos modelos existentes}
-\label{subsec:helpdesk_limitacoes}
-
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{O debate BERT versus SVM em domínios especializados}
-\label{subsubsec:helpdesk_debate}
-
-\citeonline{wahba2023}, em sua tese de doutorado na Universidade de Western Ontario, propõe um contraponto relevante ao uso indiscriminado de modelos baseados em \textit{transformers} para classificação de texto em domínios especializados. A partir de cinco estudos empíricos conduzidos ao longo de quatro anos com dados reais de uma empresa parceira, a autora demonstra que, em textos técnicos como \textit{tickets} de suporte de TI, o nível de polissemia é baixo e os termos técnicos tendem a ter significado único e preciso, o que reduz a vantagem dos \textit{embeddings} contextualizados do BERT em relação ao SVM com TF-IDF.
-
-Com base nessa observação, Wahba propõe o modelo HOOM (\textit{Hybrid Online Offline Model}), que combina um classificador SVM linear treinado em modo \textit{offline} com um classificador Passive Aggressive Classifier treinado em modo \textit{online} para detectar mudanças na distribuição dos dados ao longo do tempo. O modelo é descrito como mais eficiente, interpretável e reproduzível do que abordagens baseadas em \textit{transformers}.
-
-Este argumento é diretamente relevante para o presente trabalho, pois o TCC responde à questão levantada por Wahba: o custo computacional adicional do BERTimbau se justifica quando se adiciona uma camada de XAI e grafo de co-ocorrência que transforma a saída pouco interpretável do modelo em algo auditável pelos analistas. Em outras palavras, a interpretabilidade não é apenas uma funcionalidade adicional, é a justificativa central para a escolha do modelo mais complexo.
-
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{A caixa-preta como barreira à adoção em produção}
-\label{subsubsec:helpdesk_caixapreta}
-
-\citeonline{zemp2021}, em estudo desenvolvido na ZHAW com dados reais de um banco suíço de médio porte, treinou modelos CNN, BiLSTM e RoBERTa sobre mais de um milhão de \textit{tickets} históricos, atingindo 92\% de acurácia de validação e F1-macro de 0,75 em mais de 300 classes. O sistema foi parcialmente implantado em produção, e os agentes de suporte foram convidados a utilizá-lo em seu trabalho diário. Um dos principais achados do estudo é que, apesar dos resultados técnicos expressivos, a adoção prática foi limitada pela incapacidade do sistema de explicar suas predições. Os agentes relataram dificuldade em confiar em um sistema que não fornecia justificativa para suas sugestões de categorização.
-
-\citeonline{razma2026} corroboram essa observação no contexto de um ambiente ITSM corporativo multilíngue com mais de 87 mil \textit{tickets}. Os autores aplicaram LIME e SHAP para gerar explicações das predições do mBERT e do modelo de regressão logística, e concluíram que a camada de interpretabilidade aumentou a confiança dos operadores no sistema, mesmo nos casos em que a predição estava incorreta pois o analista conseguia identificar por que o modelo havia errado.
-
-Esses dois estudos estabelecem coletivamente a motivação central deste trabalho: sistemas de classificação de chamados de TI em produção real funcionam, mas a ausência de mecanismos de explicabilidade limita sua adoção e auditabilidade. A proposta deste TCC ataca diretamente essa lacuna.
 
 % ===============================================================
 \section{Processamento de Linguagem Natural para Classificação de Texto}
@@ -358,7 +368,7 @@ Apesar de sua simplicidade, o TF-IDF ainda é amplamente utilizado como \textit{
 \subsubsection{Embeddings estáticos — Word2Vec e GloVe}
 \label{subsubsec:pln_embeddings}
 
-Os \textit{embeddings} de palavras representam um avanço significativo em relação às abordagens baseadas em frequência, ao mapear cada palavra para um vetor denso em um espaço de baixa dimensionalidade, de forma que palavras semanticamente relacionadas sejam representadas por vetores próximos. O Word2Vec, proposto por \citeonline{mikolov2013}, aprende \textit{embeddings} a partir de grandes corpora textuais utilizando redes neurais rasas, treinadas para predizer palavras a partir de seu contexto ou contexto a partir de palavras. O GloVe (\textit{Global Vectors for Word Representation}) utiliza estatísticas globais de co-ocorrência do corpus para produzir representações com propriedades algébricas interessantes.
+Os \textit{embeddings} de palavras representam um avanço significativo em relação às abordagens baseadas em frequência, ao mapear cada palavra para um vetor denso em um espaço de baixa dimensionalidade, de forma que palavras semanticamente relacionadas sejam representadas por vetores próximos. O Word2Vec, proposto por \citeonline{mikolov2013}, aprende \textit{embeddings} a partir de grandes corpora (plural de \textit{corpus}, conjunto amplo de textos usado para treinamento) textuais utilizando redes neurais rasas, treinadas para predizer palavras a partir de seu contexto ou contexto a partir de palavras. O GloVe (\textit{Global Vectors for Word Representation}) utiliza estatísticas globais de co-ocorrência do corpus para produzir representações com propriedades algébricas notáveis: vetores de palavras semanticamente relacionadas tendem a ser próximos no espaço vetorial, e operações aritméticas entre vetores refletem relações semânticas. O exemplo clássico é que o vetor de ``rei'' menos ``homem'' mais ``mulher'' resulta em um vetor próximo ao de ``rainha''.
 
 Esses \textit{embeddings} estáticos representaram um avanço expressivo na qualidade das representações textuais e foram amplamente adotados como camada de entrada em modelos de aprendizado profundo para PLN. No entanto, eles atribuem um único vetor a cada palavra, independentemente do contexto em que ela aparece, limitação conhecida como o problema da representação estática.
 
@@ -382,7 +392,45 @@ Essa limitação motivou o desenvolvimento de representações contextualizadas,
 \subsubsection{Self-attention e atenção bidirecional}
 \label{subsubsec:bert_attention}
 
-A arquitetura \textit{Transformer}, proposta por \citeonline{vaswani2017}, introduziu o mecanismo de \textit{self-attention} como alternativa às redes recorrentes (RNN/LSTM) para processamento de sequências. O \textit{self-attention} permite que cada posição da sequência de entrada atenda simultaneamente a todas as outras posições, calculando um score de relevância entre cada par de tokens. Isso possibilita a captura de dependências de longo alcance na sequência sem o problema de degradação do gradiente característico das redes recorrentes.
+A arquitetura \textit{Transformer} é composta por dois blocos principais: 
+um \textit{encoder} (codificador) e um \textit{decoder} (decodificador), 
+cada um formado por camadas empilhadas \cite{vaswani2017}. O \textit{encoder} 
+é responsável por receber a sequência de entrada e transformá-la em 
+representações vetoriais ricas em informação contextual. O \textit{decoder}, 
+por sua vez, utiliza essas representações para gerar a sequência de saída
+como uma tradução ou resposta. Cada camada do \textit{encoder} é composta 
+por dois sub-componentes principais: o mecanismo de \textit{self-attention}, 
+que permite que cada \textit{token} ``observe'' todos os outros da sequência, 
+e uma rede neural densa aplicada posição a posição (\textit{feed-forward 
+network}). O resultado de cada sub-componente passa por uma operação de 
+normalização (\textit{layer normalization}) que estabiliza o treinamento 
+\cite{vaswani2017}. Vale destacar que modelos como o BERT utilizam apenas 
+o bloco \textit{encoder}, pois seu objetivo é produzir representações 
+contextuais do texto de entrada, e não gerar novas sequências \cite{devlin2019}.
+
+A arquitetura \textit{Transformer}, proposta por \citeonline{vaswani2017}, 
+introduziu o mecanismo de \textit{self-attention} como alternativa às redes 
+recorrentes para processamento de sequências. As RNN (\textit{Recurrent Neural 
+Networks}) são uma classe de redes neurais 
+projetadas para processar dados sequenciais, nos quais o contexto e a ordem 
+temporal importam, processando os \textit{tokens} um por vez, da esquerda para 
+a direita. As LSTM (\textit{Long Short-Term Memory}) são um tipo especializado 
+de RNN projetado para aprender dependências de longo prazo em sequências, 
+mitigando o problema de degradação do gradiente presente nas RNN simples. 
+Apesar dessas melhorias, ambas as arquiteturas ainda processam a sequência de 
+forma estritamente sequencial, o que limita o paralelismo computacional e 
+dificulta a captura de relações entre termos distantes.
+
+Para compreender o mecanismo de atenção, considere a frase ``o banco bloqueou 
+meu acesso'': para determinar o significado da palavra ``banco'', é necessário 
+considerar as demais palavras da frase, especialmente ``bloqueou'' e ``acesso'', que indicam tratar-se de uma instituição financeira e não de um assento. O 
+\textit{self-attention} formaliza esse processo: para cada \textit{token} da 
+sequência, o mecanismo calcula um score de relevância em relação a todos os 
+outros \textit{tokens}, indicando o quanto cada um deve ``influenciar'' a 
+representação do \textit{token} atual. Além disso, ele atende simultaneamente a todas as 
+posições, o que significa que esse cálculo é realizado em paralelo para todos os 
+pares de \textit{tokens} da sequência, possibilitando a captura de dependências 
+de longo alcance de forma muito mais eficiente do que as arquiteturas recorrentes.
 
 Modelos como o GPT utilizam atenção unidirecional (cada \textit{token} só pode atender aos tokens anteriores). O BERT, por sua vez, utiliza atenção bidirecional: cada \textit{token} atende simultaneamente a todos os outros \textit{tokens} da sequência, tanto os que aparecem antes quanto os que aparecem depois. Essa bidirecionalidade é fundamental para a qualidade das representações contextualizadas geradas pelo modelo, uma vez que o significado de uma palavra frequentemente depende tanto de seu contexto anterior quanto posterior \cite{devlin2019}.
 
@@ -418,7 +466,8 @@ O BERT estabeleceu o estado da arte em onze tarefas de PLN no momento de sua pub
 \subsubsection{Token [CLS] e classificação de sequências}
 \label{subsubsec:bert_cls}
 
-Para tarefas de classificação de sequências, o BERT utiliza um \textit{token} especial [CLS] inserido no início de cada sequência de entrada. Após o processamento pelas camadas de \textit{encoder}, a representação vetorial correspondente ao [CLS] agrega informação contextual de toda a sequência e é usada como entrada para a camada de classificação \cite{devlin2019}. Durante o \textit{fine-tuning}, essa camada de classificação, tipicamente uma camada \textit{linear} seguida de \textit{softmax}, aprende a mapear a representação do [CLS] para as probabilidades de cada categoria. No presente trabalho, essa representação é usada para classificar o chamado de TI em uma das categorias predefinidas, e os valores SHAP são calculados sobre os \textit{tokens} de entrada para identificar quais contribuíram mais para a predição.
+Para tarefas de classificação de sequências, o BERT utiliza um \textit{token} especial [CLS] (abreviação de \textit{Classification}, marcador inserido pelo modelo para agregar a representação global da sequência) inserido no início de cada sequência de entrada. Após o processamento pelas camadas de \textit{encoder}, a representação vetorial correspondente ao [CLS] agrega informação contextual de toda a sequência e é usada como entrada para a camada de classificação \cite{devlin2019}. Durante o \textit{fine-tuning}, essa camada de classificação, tipicamente uma camada \textit{linear} seguida de \textit{softmax}, aprende a mapear a representação do [CLS] para as probabilidades de cada categoria. No presente trabalho, essa representação é usada para classificar o chamado de TI em uma das categorias predefinidas, e os valores SHAP são calculados sobre os \textit{tokens} de entrada para identificar quais contribuíram mais para a predição.
+
 
 % ---------------------------------------------------------------
 \subsection{BERTimbau — BERT para o português brasileiro}
@@ -446,9 +495,33 @@ Para o presente trabalho, a escolha do BERTimbau em detrimento do mBERT é motiv
 
 A aplicação de BERT e modelos derivados à classificação de chamados de TI tem demonstrado resultados expressivos na literatura recente. \citeonline{borges2024} realizou uma comparação sistemática entre BERT e algoritmos clássicos — SVM e Naive Bayes — em tarefas de classificação de texto em português e inglês, utilizando quatro datasets públicos. Os resultados confirmaram que o BERT supera consistentemente os modelos tradicionais em acurácia e F1, especialmente em tarefas multiclasse com nuances semânticas mais complexas, embora com custo computacional consideravelmente maior.
 
-\citeonline{zemp2021} realizou o \textit{fine-tuning} de RoBERTa — variante do BERT com treinamento aprimorado — sobre mais de um milhão de \textit{tickets} reais de um banco suíço, atingindo F1-macro de 0,75 em mais de 300 classes. O autor demonstra que \textit{transformers} superam CNN e BiLSTM nesse domínio, mas aponta a opacidade do modelo como barreira à adoção em produção.
+\citeonline{zemp2021} realizou o \textit{fine-tuning} de RoBERTa — variante do BERT com treinamento aprimorado — sobre mais de um milhão de \textit{tickets} reais de um banco suíço, atingindo F1-macro de 0,75 em mais de 300 classes. O autor demonstra que \textit{transformers} superam CNN e BiLSTM (\textit{Bidirectional Long Short-Term Memory}, um tipo de rede neural recorrente que processa sequências nos dois sentidos) nesse domínio, mas aponta a opacidade do modelo como barreira à adoção em produção.
 
 \citeonline{razma2026} compararam regressão logística com TF-IDF frente a mBERT e XLM-RoBERTa em um corpus de 87 mil \textit{tickets} multilíngues de uma empresa de manufatura. Os resultados confirmaram que \textit{transformers} superam modelos clássicos em macro-F1, especialmente para classes de baixa frequência e semanticamente complexas. A combinação de \textit{fine-tuning} com LIME e SHAP produziu explicações qualitativamente mais ricas do que o modelo linear, validando o uso conjunto de BERT e XAI em ambiente ITSM de produção.
+
+% ---------------------------------------------------------------
+\subsection{Limitações dos modelos existentes}
+\label{subsec:helpdesk_limitacoes}
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\subsubsection{O debate BERT versus SVM em domínios especializados}
+\label{subsubsec:helpdesk_debate}
+
+\citeonline{wahba2023}, em sua tese de doutorado na Universidade de Western Ontario, propõe um contraponto relevante ao uso indiscriminado de modelos baseados em \textit{transformers} para classificação de texto em domínios especializados. A partir de cinco estudos empíricos conduzidos ao longo de quatro anos com dados reais de uma empresa parceira, a autora demonstra que, em textos técnicos como \textit{tickets} de suporte de TI, o nível de polissemia é baixo e os termos técnicos tendem a ter significado único e preciso, o que reduz a vantagem dos \textit{embeddings} contextualizados do BERT em relação ao SVM com TF-IDF.
+
+Com base nessa observação, Wahba propõe o modelo HOOM (\textit{Hybrid Online Offline Model}), que combina um classificador SVM linear treinado em modo \textit{offline} com um classificador Passive Aggressive Classifier (algoritmo de aprendizado incremental que atualiza o modelo a cada nova amostra, mantendo-se ``passivo'' quando a predição está correta e ``agressivo'' ao corrigir erros) treinado em modo \textit{online} para detectar mudanças na distribuição dos dados ao longo do tempo. O modelo é descrito como mais eficiente, interpretável e reproduzível do que abordagens baseadas em \textit{transformers}.
+
+Este argumento é diretamente relevante para o presente trabalho, pois o TCC responde à questão levantada por Wahba: o custo computacional adicional do BERTimbau se justifica quando se adiciona uma camada de XAI e grafo de co-ocorrência que transforma a saída pouco interpretável do modelo em algo auditável pelos analistas. Em outras palavras, a interpretabilidade não é apenas uma funcionalidade adicional, é a justificativa central para a escolha do modelo mais complexo.
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\subsubsection{A caixa-preta como barreira à adoção em produção}
+\label{subsubsec:helpdesk_caixapreta}
+
+\citeonline{zemp2021}, em estudo desenvolvido na ZHAW com dados reais de um banco suíço de médio porte, treinou modelos CNN, BiLSTM e RoBERTa sobre mais de um milhão de \textit{tickets} históricos, atingindo 92\% de acurácia de validação e F1-macro de 0,75 em mais de 300 classes. O sistema foi parcialmente implantado em produção, e os agentes de suporte foram convidados a utilizá-lo em seu trabalho diário. Um dos principais achados do estudo é que, apesar dos resultados técnicos expressivos, a adoção prática foi limitada pela incapacidade do sistema de explicar suas predições. Os agentes relataram dificuldade em confiar em um sistema que não fornecia justificativa para suas sugestões de categorização.
+
+\citeonline{razma2026} corroboram essa observação no contexto de um ambiente ITSM corporativo multilíngue com mais de 87 mil \textit{tickets}. Os autores aplicaram LIME e SHAP para gerar explicações das predições do mBERT e do modelo de regressão logística, e concluíram que a camada de interpretabilidade aumentou a confiança dos operadores no sistema, mesmo nos casos em que a predição estava incorreta pois o analista conseguia identificar por que o modelo havia errado.
+
+Esses dois estudos estabelecem coletivamente a motivação central deste trabalho: sistemas de classificação de chamados de TI em produção real funcionam, mas a ausência de mecanismos de explicabilidade limita sua adoção e auditabilidade. A proposta deste TCC ataca diretamente essa lacuna.
 
 % ===============================================================
 \section{Inteligência Artificial Explicável (XAI)}
@@ -462,9 +535,9 @@ A aplicação de BERT e modelos derivados à classificação de chamados de TI t
 \subsubsection{O problema da caixa-preta em aprendizado profundo}
 \label{subsubsec:xai_caixapreta}
 
-Modelos de aprendizado profundo, incluindo o BERT, são frequentemente descritos como caixas-pretas: produzem predições com alta acurácia, mas sem revelar quais características da entrada determinaram a saída. Essa opacidade decorre da arquitetura do modelo, cujas, centenas de milhões de parâmetros organizados em camadas de transformações não-lineares impossibilitam a inspeção direta do processo de decisão por parte de um observador humano \cite{salih2023}.
+Modelos de aprendizado profundo, incluindo o BERT, são frequentemente descritos como caixas-pretas: produzem predições com alta acurácia, mas sem revelar quais características da entrada determinaram a saída. Essa opacidade decorre da arquitetura do modelo, cujas centenas de milhões de parâmetros organizados em camadas de transformações não-lineares impossibilitam a inspeção direta do processo de decisão por parte de um observador humano \cite{salih2023}.
 
-Em contextos como a triagem de chamados de TI, essa opacidade representa um problema prático concreto. Analistas de suporte e gestores precisam auditar as decisões do sistema, identificar erros sistemáticos e eventualmente contestar categorizações incorretas. Um modelo que não fornece justificativa para suas predições é difícil de depurar, difícil de melhorar e difícil de justificar perante stakeholders organizacionais \cite{zemp2021}.
+Em contextos como a triagem de chamados de TI, essa opacidade representa um problema prático concreto. Analistas de suporte e gestores precisam auditar as decisões do sistema, identificar erros sistemáticos e eventualmente contestar categorizações incorretas. Um modelo que não fornece justificativa para suas predições é difícil de depurar, difícil de melhorar e difícil de justificar perante stakeholders (partes interessadas, como gestores e diretores) organizacionais \cite{zemp2021}.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Confiança, auditabilidade e adoção em produção}
@@ -581,7 +654,13 @@ O trabalho demonstra que a integração de XAI ao \textit{pipeline} de classific
 
 \citeonline{razma2026} aplicaram LIME e SHAP em um ambiente ITSM corporativo real, comparando as explicações geradas para o modelo de regressão logística com TF-IDF e para o mBERT \textit{fine-tuned}. Os resultados qualitativos das explicações foram significativamente distintos: o modelo linear tendia a destacar palavras-chave literais com alta frequência no corpus, enquanto o BERT destacava termos semanticamente coerentes com o significado do chamado.
 
-Essa diferença qualitativa nas explicações, documentada por \citeonline{razma2026}, reforça o argumento de que o BERTimbau, combinado com SHAP e LIME, produz explicações não apenas mais acuradas em termos de importância de \textit{features}, mas também mais interpretáveis para analistas de TI sem formação em aprendizado de máquina, que podem avaliar se os termos destacados fazem sentido para aquela categoria de chamado específica.
+Essa diferença qualitativa nas explicações, documentada por 
+\citeonline{razma2026}, sugere que o BERTimbau, combinado com SHAP 
+e LIME, tende a produzir explicações mais acuradas em termos de 
+importância de \textit{features} e potencialmente mais interpretáveis 
+para analistas de TI sem formação em aprendizado de máquina, hipótese que será verificada empiricamente no presente trabalho, 
+avaliando se os termos destacados fazem sentido para cada categoria 
+de chamado classificada.
 
 % ===============================================================
 \section{Grafos de Co-ocorrência como Representação Estrutural de Texto}
@@ -661,10 +740,22 @@ O presente trabalho adota uma abordagem estruturalmente análoga, mas com difere
 \subsubsection{Visualização interativa como camada de auditabilidade}
 \label{subsubsec:grafo_xai_visualizacao}
 
-A visualização do grafo de co-ocorrência ponderado por SHAP é exibida em uma interface \textit{web} interativa desenvolvida em React com a biblioteca Vis.js. Nessa interface, os nós são dimensionados proporcionalmente ao valor SHAP do \textit{token} correspondente, nós maiores indicam \textit{tokens} com maior influência na predição, e as arestas são ponderadas pela frequência de co-ocorrência no chamado. O analista pode interagir com o grafo, inspecionar \textit{clusters} de termos e verificar se os \textit{tokens} destacados pelo modelo são semanticamente coerentes com a categoria predita.
+A literatura aponta que a combinação de grafos de co-ocorrência com 
+scores de explicabilidade pode ser exibida em interfaces interativas 
+que tornam o processo decisório auditável. Nessa abordagem, os nós 
+do grafo são dimensionados proporcionalmente à importância de cada 
+\textit{token} calculada pelo método XAI, e as arestas são ponderadas 
+pela frequência de co-ocorrência, produzindo uma representação visual 
+que combina estrutura relacional do texto com relevância explicativa 
+do modelo \cite{talebi2025}.
 
-Essa camada de visualização transforma a saída opaca do modelo em uma representação auditável, endereçando diretamente o problema identificado por \citeonline{zemp2021} e \citeonline{razma2026}: analistas de suporte precisam compreender por que o modelo tomou determinada decisão para confiar no sistema e adotá-lo em produção.
-
+Essa camada de visualização tem o potencial de transformar a saída 
+opaca do modelo em uma representação auditável, endereçando diretamente 
+o problema identificado por \citeonline{zemp2021} e 
+\citeonline{razma2026}: analistas de suporte precisam compreender por 
+que o modelo tomou determinada decisão para confiar no sistema e 
+adotá-lo em produção. A solução proposta neste trabalho adota essa 
+abordagem, cuja implementação é detalhada no Capítulo~\ref{cap:desenvolvimento}.
 % ===============================================================
 \section{Síntese da Literatura e Posicionamento do Trabalho}
 \label{sec:sintese}
@@ -795,16 +886,42 @@ A utilização de modelagem em grafos como camada de explicabilidade visual para
 \section{Métricas de Avaliação}
 \label{sec:metricas_avaliacao}
 
-A avaliação do desempenho do modelo será realizada por meio de métricas amplamente utilizadas em tarefas de classificação textual:
+A avaliação do desempenho do modelo será realizada por meio de métricas 
+amplamente utilizadas em tarefas de classificação textual:
 
 \begin{itemize}
-\item \textbf{Acurácia (Accuracy)} – proporção de classificações corretas realizadas pelo modelo.
+\item \textbf{Acurácia (Accuracy)} – proporção de classificações corretas 
+realizadas pelo modelo sobre o total de instâncias avaliadas.
 
-\item \textbf{Precisão (Precision)} – proporção de classificações corretas entre os casos previstos para uma determinada categoria.
+\item \textbf{Precisão (Precision)} – proporção de classificações corretas 
+entre os casos previstos para uma determinada categoria, medindo a 
+capacidade do modelo de evitar falsos positivos.
 
-\item \textbf{Revocação (Recall)} – capacidade do modelo de identificar corretamente os chamados pertencentes a cada categoria.
+\item \textbf{Revocação (Recall)} – capacidade do modelo de identificar 
+corretamente os chamados pertencentes a cada categoria, medindo a 
+capacidade de evitar falsos negativos.
 
-\item \textbf{Matriz de confusão} – análise detalhada dos tipos de erros cometidos pelo modelo durante a classificação.
+\item \textbf{F1-score} – média harmônica entre precisão e revocação, 
+expressa pela fórmula $F1 = 2 \cdot \frac{Precisão \times Revocação}{Precisão 
++ Revocação}$. Será utilizada a variante \textbf{F1-macro}, que calcula o 
+F1-score para cada categoria individualmente e tira a média, tratando todas 
+as categorias com peso igual independentemente de seu tamanho, métrica 
+especialmente importante em datasets desbalanceados.
+
+\item \textbf{ROC-AUC} (\textit{Receiver Operating Characteristic - Area 
+Under the Curve}) – mede a capacidade do modelo de distinguir entre classes 
+ao longo de diferentes limiares de decisão. O valor varia entre 0 e 1, sendo 
+que 1 representa um classificador perfeito e 0,5 representa um classificador 
+aleatório. Em cenários multiclasse, será utilizada a variante 
+\textbf{ROC-AUC macro}, que agrega as curvas ROC de cada categoria. Essa 
+métrica permite análises complementares, como a avaliação do impacto de 
+diferentes combinações de hiperparâmetros sobre a capacidade discriminativa 
+do modelo.
+
+\item \textbf{Matriz de confusão} – representação tabular que detalha os 
+tipos de erros cometidos pelo modelo durante a classificação, permitindo 
+identificar padrões sistemáticos de confusão entre categorias semanticamente 
+próximas.
 \end{itemize}
 
 % ===============================================================
