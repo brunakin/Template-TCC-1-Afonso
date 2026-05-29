@@ -290,7 +290,16 @@ Propor e avaliar um \textit{pipeline} utilizando PLN e modelagem em grafos, inco
 \chapter{Revisão Bibliográfica}
 \label{cap:revisao}
 
-Esta seção apresenta os fundamentos conceituais que sustentam a proposta deste trabalho. Os temas estão organizados em seis blocos temáticos que conduzem o leitor do problema ao estado da arte, culminando na lacuna que este trabalho se propõe a preencher: (1) Sistemas de \textit{Help Desk} e a triagem de chamados de TI; (2) Processamento de Linguagem Natural para classificação de texto; (3) o modelo BERT e suas variantes; (4) Inteligência Artificial Explicável (XAI); (5) grafos de co-ocorrência como representação estrutural de texto; e (6) a síntese literatura e posicionamento do trabalho.
+Esta seção apresenta os fundamentos conceituais que sustentam a 
+proposta deste trabalho. Os temas foram organizados em seis blocos 
+para apresentar a evolução do problema até chegar às limitações 
+identificadas na literatura e à proposta deste trabalho: 
+(1) Sistemas de \textit{Help Desk} e a triagem de chamados de TI; 
+(2) Processamento de Linguagem Natural para classificação de texto; 
+(3) o modelo BERT e suas variantes; (4) Inteligência Artificial 
+Explicável (XAI); (5) grafos de co-ocorrência como representação 
+estrutural de texto; e (6) a síntese da literatura e posicionamento 
+do trabalho.
 
 % ===============================================================
 \section{Sistemas de \textit{Help Desk} e a Triagem de Chamados de TI}
@@ -345,7 +354,17 @@ A literatura sobre classificação automática de chamados de suporte em portugu
 
 \citeonline{pereira2023} apresentaram um modelo de classificação automática de chamados de suporte de TI em sete categorias, atingindo 75\% de precisão média com modelos de aprendizado de máquina tradicionais. Os autores disponibilizaram publicamente o código, o modelo e os dados anonimizados, e desenvolveram um protótipo \textit{web} com \textit{backend} e \textit{frontend} para uso dos analistas de TI, tornando-o um dos poucos trabalhos nacionais com \textit{dataset} público e interface funcional. No entanto, a acurácia de 75\% deixa margem considerável para melhoria, especialmente em cenários com maior número de categorias ou com classes semanticamente próximas.
 
-\citeonline{yokota2025} investigou a classificação hierárquica de chamados de suporte utilizando \textit{Naive Bayes} e \textit{Multilayer Perceptron} (MLP) com duas variações arquiteturais. Os resultados, avaliados por F1-macro para lidar com o desbalanceamento entre classes, foram insatisfatórios, evidenciando que modelos simples falham em capturar as nuances semânticas presentes em textos técnicos de suporte em PT-BR. A autora conclui que a abordagem proposta revelou desafios substanciais na classificação automática de textos especializados, evidenciando a necessidade de abordagens metodológicas mais sofisticadas — motivação direta para o uso do BERTimbau neste trabalho.
+\citeonline{yokota2025} investigou a classificação hierárquica de 
+chamados de suporte utilizando \textit{Naive Bayes} e 
+\textit{Multilayer Perceptron} (MLP) com duas variações arquiteturais. 
+Os resultados, avaliados por F1-macro para lidar com o 
+desbalanceamento entre classes, foram insatisfatórios, evidenciando 
+que modelos simples falham em capturar as nuances semânticas presentes 
+em textos técnicos de suporte em PT-BR. A autora conclui que a 
+abordagem proposta revelou desafios substanciais na classificação 
+automática de textos especializados, evidenciando a necessidade de 
+abordagens metodológicas mais sofisticadas, o que reforça a escolha 
+do BERTimbau neste trabalho.
 
 % ---------------------------------------------------------------
 \subsection{Limitações dos modelos existentes}
