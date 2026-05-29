@@ -318,7 +318,8 @@ A automação da triagem de chamados por meio de aprendizado de máquina tem sid
 \subsubsection{Modelos clássicos — \textit{Naive Bayes} e SVM com TF-IDF}
 \label{subsubsec:helpdesk_classicos}
 
-As primeiras abordagens automatizadas para classificação de chamados utilizaram algoritmos clássicos de aprendizado de máquina combinados com representações baseadas em frequência de termos. \citeonline{harun2023} investigaram a classificação automática de perguntas em um sistema de \textit{help desk} universitário, comparando \textit{Naive Bayes} e \textit{Support Vector Machine} (SVM) com vetorização TF-IDF (\textit{Term Frequency–Inverse Document Frequency}). Os resultados demonstraram que o SVM com TF-IDF supera o \textit{Naive Bayes} em acurácia e F1-score, estabelecendo-se como referência para abordagens clássicas nesse domínio.
+As primeiras abordagens automatizadas para classificação de chamados utilizaram algoritmos clássicos de aprendizado de máquina combinados com representações baseadas em frequência de termos. \citeonline{harun2023} investigaram a classificação automática de perguntas em um sistema de \textit{help desk} universitário, comparando \textit{Naive Bayes} e \textit{Support Vector Machine} (SVM) com vetorização TF-IDF (\textit{Term Frequency–Inverse Document Frequency}). Os resultados demonstraram que o SVM com TF-IDF supera o \textit{Naive Bayes} em acurácia e F1-score (métrica que combina precisão e revocação em 
+um único valor, detalhada na Seção~\ref{sec:metricas_avaliacao}), estabelecendo-se como referência para abordagens clássicas nesse domínio.
 
 Apesar de sua eficiência computacional e facilidade de interpretação, esses modelos apresentam limitações na captura de relações semânticas entre termos. A representação TF-IDF trata cada palavra de forma independente, sem considerar o contexto em que ela aparece, o que restringe a capacidade do modelo de distinguir categorias semanticamente próximas.
 
@@ -350,7 +351,7 @@ A literatura sobre classificação automática de chamados de suporte em portugu
 
 \citeonline{wahba2023}, em sua tese de doutorado na Universidade de Western Ontario, propõe um contraponto relevante ao uso indiscriminado de modelos baseados em \textit{transformers} para classificação de texto em domínios especializados. A partir de cinco estudos empíricos conduzidos ao longo de quatro anos com dados reais de uma empresa parceira, a autora demonstra que, em textos técnicos como \textit{tickets} de suporte de TI, o nível de polissemia é baixo e os termos técnicos tendem a ter significado único e preciso, o que reduz a vantagem dos \textit{embeddings} contextualizados do BERT em relação ao SVM com TF-IDF.
 
-Com base nessa observação, Wahba propõe o modelo HOOM (\textit{Hybrid Online Offline Model}), que combina um classificador SVM linear treinado em modo \textit{offline} com um um classificador \textit{Passive Aggressive Classifier} (algoritmo de aprendizado incremental que atualiza o modelo a cada nova amostra, mantendo-se ``passivo'' quando a predição está correta e ``agressivo'' ao corrigir erros) treinado em modo \textit{online} para detectar mudanças na distribuição dos dados ao longo do tempo. O modelo é descrito como mais eficiente, interpretável e reproduzível do que abordagens baseadas em \textit{transformers}.
+Com base nessa observação, Wahba propõe o modelo HOOM (\textit{Hybrid Online Offline Model}), que combina um classificador SVM linear treinado em modo \textit{offline} com um classificador \textit{Passive Aggressive Classifier} (algoritmo de aprendizado incremental que atualiza o modelo a cada nova amostra, mantendo-se ``passivo'' quando a predição está correta e ``agressivo'' ao corrigir erros) treinado em modo \textit{online} para detectar mudanças na distribuição dos dados ao longo do tempo. O modelo é descrito como mais eficiente, interpretável e reproduzível do que abordagens baseadas em \textit{transformers}.
 
 Este argumento é diretamente relevante para o presente trabalho, pois o TCC responde à questão levantada por Wahba: o custo computacional adicional do BERTimbau se justifica quando se adiciona uma camada de XAI e grafo de co-ocorrência que transforma a saída pouco interpretável do modelo em algo auditável pelos analistas. Em outras palavras, a interpretabilidade não é apenas uma funcionalidade adicional, é a justificativa central para a escolha do modelo mais complexo.
 
@@ -358,7 +359,9 @@ Este argumento é diretamente relevante para o presente trabalho, pois o TCC res
 \subsubsection{A caixa-preta como barreira à adoção em produção}
 \label{subsubsec:helpdesk_caixapreta}
 
-\citeonline{zemp2021}, em estudo desenvolvido na ZHAW com dados reais de um banco suíço de médio porte, treinou modelos CNN, BiLSTM e RoBERTa sobre mais de um milhão de \textit{tickets} históricos, atingindo 92\% de acurácia de validação e F1-macro de 0,75 em mais de 300 classes. O sistema foi parcialmente implantado em produção, e os agentes de suporte foram convidados a utilizá-lo em seu trabalho diário. Um dos principais achados do estudo é que, apesar dos resultados técnicos expressivos, a adoção prática foi limitada pela incapacidade do sistema de explicar suas predições. Os agentes relataram dificuldade em confiar em um sistema que não fornecia justificativa para suas sugestões de categorização.
+\citeonline{zemp2021}, em estudo desenvolvido na ZHAW com dados reais de um banco suíço de médio porte, treinou modelos CNN, BiLSTM e RoBERTa (\textit{Robustly Optimized BERT 
+Pretraining Approach}, variante do BERT com treinamento aprimorado) 
+sobre mais de um milhão de \textit{tickets} históricos, atingindo 92\% de acurácia de validação e F1-macro de 0,75 em mais de 300 classes. O sistema foi parcialmente implantado em produção, e os agentes de suporte foram convidados a utilizá-lo em seu trabalho diário. Um dos principais achados do estudo é que, apesar dos resultados técnicos expressivos, a adoção prática foi limitada pela incapacidade do sistema de explicar suas predições. Os agentes relataram dificuldade em confiar em um sistema que não fornecia justificativa para suas sugestões de categorização.
 
 \citeonline{razma2026} corroboram essa observação no contexto de um ambiente ITSM corporativo multilíngue com mais de 87 mil \textit{tickets}. Os autores aplicaram LIME e SHAP para gerar explicações das predições do mBERT e do modelo de regressão logística, e concluíram que a camada de interpretabilidade aumentou a confiança dos operadores no sistema, mesmo nos casos em que a predição estava incorreta pois o analista conseguia identificar por que o modelo havia errado.
 
@@ -384,7 +387,7 @@ Apesar de sua simplicidade, o \textit{TF-IDF} ainda é amplamente utilizado como
 \subsubsection{\textit{Embeddings} estáticos — \textit{Word2Vec} e \textit{GloVe}}
 \label{subsubsec:pln_embeddings}
 
-Os \textit{embeddings} de palavras representam um avanço significativo em relação às abordagens baseadas em frequência, ao mapear cada palavra para um vetor denso em um espaço de baixa dimensionalidade, de forma que palavras semanticamente relacionadas sejam representadas por vetores próximos. O \textit{Word2Vec}, proposto por \citeonline{mikolov2013}, aprende \textit{embeddings} a partir de grandes corpora textuais utilizando redes neurais rasas, treinadas para predizer palavras a partir de seu contexto ou contexto a partir de palavras. 
+Os \textit{embeddings} de palavras representam um avanço significativo em relação às abordagens baseadas em frequência, ao mapear cada palavra para um vetor denso em um espaço de baixa dimensionalidade, de forma que palavras semanticamente relacionadas sejam representadas por vetores próximos. O \textit{Word2Vec}, proposto por \citeonline{mikolov2013}, aprende \textit{embeddings} a partir de grandes corpora (plural de \textit{corpus}, conjunto amplo de textos usado para treinamento) textuais utilizando redes neurais rasas, treinadas para predizer palavras a partir de seu contexto ou contexto a partir de palavras. 
 
 O GloVe (\textit{Global Vectors for Word Representation}) utiliza 
 estatísticas globais de co-ocorrência do corpus para produzir 
@@ -589,7 +592,7 @@ No contexto de classificação de texto, cada palavra (ou \textit{token}) da ent
 
 A principal vantagem do LIME é sua generalidade: o método funciona com qualquer modelo e qualquer tipo de entrada sem necessidade de acesso ao interior do modelo. Isso o torna especialmente adequado para modelos de caixa-preta como o BERT, cujos mecanismos internos são de difícil interpretação direta.
 
-Sua principal limitação é a instabilidade das explicações. Por depender de amostragem aleatória de perturbações, execuções diferentes do LIME sobre a mesma instância podem produzir explicações distintas, especialmente quando há colinearidade entre as \textit{features}, ou seja, quando algumas variáveis de entrada são muito parecidas ou carregam informações semelhantes \textit{features} \cite{salih2023}. Para mitigar essa instabilidade, recomenda-se executar o LIME múltiplas vezes e analisar a consistência das explicações, ou fixar a semente aleatória para garantir reprodutibilidade.
+Sua principal limitação é a instabilidade das explicações. Por depender de amostragem aleatória de perturbações, execuções diferentes do LIME sobre a mesma instância podem produzir explicações distintas, especialmente quando há colinearidade entre as \textit{features}, ou seja, quando algumas variáveis de entrada são muito parecidas ou carregam informações semelhantes \cite{salih2023}. Para mitigar essa instabilidade, recomenda-se executar o LIME múltiplas vezes e analisar a consistência das explicações, ou fixar a semente aleatória para garantir reprodutibilidade.
 
 
 % ---------------------------------------------------------------
@@ -748,8 +751,7 @@ O presente trabalho adota uma abordagem estruturalmente análoga, mas com difere
 \subsubsection{Visualização interativa como camada de auditabilidade}
 \label{subsubsec:grafo_xai_visualizacao}
 
-A literatura aponta que a combinação de grafos de co-ocorrência com 
-scores de explicabilidade pode ser exibida em interfaces interativas 
+A literatura aponta que a combinação de grafos de co-ocorrência com \textit{scores} de explicabilidade pode ser exibida em interfaces interativas 
 que tornam o processo decisório auditável. Nessa abordagem, os nós 
 do grafo são dimensionados proporcionalmente à importância de cada 
 \textit{token} calculada pelo método XAI, e as arestas são ponderadas 
