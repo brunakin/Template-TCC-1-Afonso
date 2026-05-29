@@ -206,7 +206,13 @@ A gestão eficiente de \textit{tickets} de suporte técnico em organizações de
 \section{Contexto}
 \label{sec:contexto}
 
-Os \textit{helpdesks} corporativos processam diariamente milhares de \textit{tickets} com descrições variadas que misturam jargão técnico, erros ortográficos e expressões coloquiais, sobrecarregando analistas que realizam triagem manual sujeita a erros humanos e inconsistências. Estudos recentes demonstram que sistemas automatizados com \textit{Transformers} alcançam até 92\% de acurácia em classificação multi-categoria, mas sua natureza de "caixa-preta" gera resistência entre equipes operacionais que precisam confiar nas decisões algorítmicas para roteamento.
+Os \textit{helpdesks} corporativos processam diariamente milhares de \textit{tickets} com descrições variadas que misturam jargão técnico, erros ortográficos e expressões coloquiais. Isso sobrecarrega os analistas, tornando a triagem manual lenta, inconsistente e propensa a erros.
+
+Estudos recentes demonstram que sistemas automatizados com 
+\textit{Transformers} alcançam até 92\% de acurácia em classificação 
+multi-categoria \cite{zemp2021}, mas sua natureza de "caixa-preta" 
+gera resistência entre equipes operacionais que precisam confiar nas 
+decisões algorítmicas para roteamento.
 
 No contexto brasileiro, onde grande parte da comunicação técnica ocorre em português, \textit{datasets} de \textit{tickets} reais revelam limitações significativas de modelos tradicionais como \textit{Naive Bayes} e até redes MLP superficiais, devido à variabilidade semântica e falta de contexto \textit{domain-specific}. A ausência de ferramentas que expliquem visualmente a contribuição de cada termo na decisão agrava o problema, pois analistas experientes questionam previsões contraintuitivas sem mecanismos de auditoria.
 
@@ -284,7 +290,7 @@ Propor e avaliar um \textit{pipeline} utilizando PLN e modelagem em grafos, inco
 \chapter{Revisão Bibliográfica}
 \label{cap:revisao}
 
-Esta seção apresenta os fundamentos conceituais que sustentam a proposta deste trabalho. Os temas estão organizados em seis blocos temáticos que conduzem o leitor do problema ao estado da arte, culminando na lacuna que este trabalho se propõe a preencher: (1) o problema da triagem manual de chamados de TI; (2) Processamento de Linguagem Natural para classificação de texto; (3) o modelo BERT e suas variantes; (4) o problema da caixa-preta e os métodos de Inteligência Artificial Explicável; (5) grafos de co-ocorrência como estrutura de representação; e (6) a síntese das lacunas identificadas e o direcionamento para a proposta.
+Esta seção apresenta os fundamentos conceituais que sustentam a proposta deste trabalho. Os temas estão organizados em seis blocos temáticos que conduzem o leitor do problema ao estado da arte, culminando na lacuna que este trabalho se propõe a preencher: (1) Sistemas de \textit{Help Desk} e a triagem de chamados de TI; (2) Processamento de Linguagem Natural para classificação de texto; (3) o modelo BERT e suas variantes; (4) Inteligência Artificial Explicável (XAI); (5) grafos de co-ocorrência como representação estrutural de texto; e (6) a síntese literatura e posicionamento do trabalho.
 
 % ===============================================================
 \section{Sistemas de \textit{Help Desk} e a Triagem de Chamados de TI}
@@ -306,7 +312,7 @@ Em grande parte das organizações, a triagem de chamados ainda é realizada man
 
 A inconsistência na categorização é um dos principais problemas. Analistas diferentes podem categorizar o mesmo tipo de chamado de formas distintas, e um mesmo analista pode ser inconsistente ao longo do tempo. Além disso, a triagem manual depende do conhecimento individual de cada analista sobre a estrutura de categorias da organização, conhecimento que não é facilmente transferível e que se perde quando há rotatividade de pessoal \cite{wahba2023}.
 
-Chamados categorizados incorretamente são encaminhados para equipes que não possuem competência para resolvê-los, o que desencadeia um ciclo de reatribuições que aumenta o tempo de resolução, consome recursos humanos desnecessariamente e deteriora a experiência do usuário \cite{harun2023}. \citeonline{pereira2023} observam que, no contexto brasileiro, esse problema é agravado pela informalidade da linguagem utilizada pelos usuários ao descrever seus problemas, o que dificulta ainda mais a categorização manual.
+Chamados categorizados incorretamente são encaminhados para equipes que não possuem competência para resolvê-los, isso gera um ciclo de reatribuição de chamados que eleva o tempo de resolução, desperdiça o tempo da equipe e deixa o usuário frustrado \cite{harun2023}. \citeonline{pereira2023} observam que, no contexto brasileiro, esse problema é agravado pela informalidade da linguagem utilizada pelos usuários ao descrever seus problemas, o que dificulta ainda mais a categorização manual.
 
 % ---------------------------------------------------------------
 \subsection{Abordagens de aprendizado de máquina para classificação automática de \textit{tickets}}
@@ -329,7 +335,7 @@ Apesar de sua eficiência computacional e facilidade de interpretação, esses m
 
 Com o avanço das técnicas de aprendizado profundo, modelos baseados em redes neurais convolucionais (CNN) passaram a ser aplicados à classificação de chamados de suporte. \citeonline{paramesh2022} propuseram um classificador baseado em CNN com \textit{word embeddings} (representações vetoriais densas de palavras aprendidas por redes neurais) para categorização automática de \textit{tickets} de \textit{service desk} de infraestrutura de TI. Os autores compararam o modelo proposto com SVM, \textit{Naive Bayes}, Regressão Logística e \textit{K-Nearest Neighbor}, demonstrando que a CNN supera todos os modelos clássicos em acurácia e F1-score, especialmente em categorias com descrições textuais mais longas e complexas.
 
-A vantagem das CNN em relação aos modelos clássicos reside na capacidade de extrair automaticamente n-gramas relevantes da entrada textual, capturando padrões locais de co-ocorrência entre palavras sem necessidade de engenharia manual de \textit{features}. Essa progressão de modelos lineares com TF-IDF para redes profundas com \textit{embeddings}, estabelece o contexto histórico sobre o qual os modelos baseados em \textit{transformers} representam um novo salto qualitativo.
+A vantagem das CNN em relação aos modelos clássicos reside na capacidade de extrair automaticamente n-gramas relevantes da entrada textual, capturando padrões locais de co-ocorrência entre palavras sem necessidade de engenharia manual de \textit{features} (características extraídas dos dados de entrada). Essa progressão de modelos lineares com TF-IDF para redes profundas com \textit{embeddings}, estabelece o contexto histórico sobre o qual os modelos baseados em \textit{transformers} representam um novo salto qualitativo.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Classificação de chamados no contexto brasileiro}
@@ -349,7 +355,12 @@ A literatura sobre classificação automática de chamados de suporte em portugu
 \subsubsection{O debate BERT versus SVM em domínios especializados}
 \label{subsubsec:helpdesk_debate}
 
-\citeonline{wahba2023}, em sua tese de doutorado na Universidade de Western Ontario, propõe um contraponto relevante ao uso indiscriminado de modelos baseados em \textit{transformers} para classificação de texto em domínios especializados. A partir de cinco estudos empíricos conduzidos ao longo de quatro anos com dados reais de uma empresa parceira, a autora demonstra que, em textos técnicos como \textit{tickets} de suporte de TI, o nível de polissemia é baixo e os termos técnicos tendem a ter significado único e preciso, o que reduz a vantagem dos \textit{embeddings} contextualizados do BERT em relação ao SVM com TF-IDF.
+\citeonline{wahba2023}, em sua tese de doutorado na Universidade de Western Ontario, propõe um contraponto relevante ao uso indiscriminado de modelos baseados em \textit{transformers} para classificação de texto em domínios especializados. Com base em quatro anos de estudos empíricos com dados reais de uma empresa parceira, a autora demonstra 
+que chamados de suporte de TI utilizam vocabulário técnico específico 
+e de baixa ambiguidade. Nesse contexto, a principal vantagem do BERT 
+— compreender palavras com múltiplos sentidos dependendo do contexto 
+— tem impacto reduzido, tornando o SVM com TF-IDF competitivo em 
+termos de desempenho.
 
 Com base nessa observação, Wahba propõe o modelo HOOM (\textit{Hybrid Online Offline Model}), que combina um classificador SVM linear treinado em modo \textit{offline} com um classificador \textit{Passive Aggressive Classifier} (algoritmo de aprendizado incremental que atualiza o modelo a cada nova amostra, mantendo-se ``passivo'' quando a predição está correta e ``agressivo'' ao corrigir erros) treinado em modo \textit{online} para detectar mudanças na distribuição dos dados ao longo do tempo. O modelo é descrito como mais eficiente, interpretável e reproduzível do que abordagens baseadas em \textit{transformers}.
 
@@ -359,13 +370,23 @@ Este argumento é diretamente relevante para o presente trabalho, pois o TCC res
 \subsubsection{A caixa-preta como barreira à adoção em produção}
 \label{subsubsec:helpdesk_caixapreta}
 
-\citeonline{zemp2021}, em estudo desenvolvido na ZHAW com dados reais de um banco suíço de médio porte, treinou modelos CNN, BiLSTM e RoBERTa (\textit{Robustly Optimized BERT 
-Pretraining Approach}, variante do BERT com treinamento aprimorado) 
-sobre mais de um milhão de \textit{tickets} históricos, atingindo 92\% de acurácia de validação e F1-macro de 0,75 em mais de 300 classes. O sistema foi parcialmente implantado em produção, e os agentes de suporte foram convidados a utilizá-lo em seu trabalho diário. Um dos principais achados do estudo é que, apesar dos resultados técnicos expressivos, a adoção prática foi limitada pela incapacidade do sistema de explicar suas predições. Os agentes relataram dificuldade em confiar em um sistema que não fornecia justificativa para suas sugestões de categorização.
+\citeonline{zemp2021}, em estudo desenvolvido na ZHAW com dados reais 
+de um banco suíço de médio porte, treinou modelos CNN, BiLSTM e 
+RoBERTa (\textit{Robustly Optimized BERT Pretraining Approach}, 
+variante do BERT com treinamento aprimorado) sobre mais de um milhão 
+de \textit{tickets} históricos, atingindo 92\% de acurácia de 
+validação e F1-macro de 0,75 em mais de 300 classes. O sistema foi 
+parcialmente implantado em produção, e os agentes de suporte foram 
+convidados a utilizá-lo em seu trabalho diário. O estudo revelou que, 
+apesar dos resultados técnicos expressivos, os analistas resistiram 
+à adoção do sistema na prática. A principal razão relatada foi a 
+ausência de justificativas para as predições: os agentes não 
+conseguiam confiar em um sistema que não explicava por que havia 
+escolhido determinada categoria.
 
 \citeonline{razma2026} corroboram essa observação no contexto de um ambiente ITSM corporativo multilíngue com mais de 87 mil \textit{tickets}. Os autores aplicaram LIME e SHAP para gerar explicações das predições do mBERT e do modelo de regressão logística, e concluíram que a camada de interpretabilidade aumentou a confiança dos operadores no sistema, mesmo nos casos em que a predição estava incorreta pois o analista conseguia identificar por que o modelo havia errado.
 
-Esses dois estudos estabelecem coletivamente a motivação central deste trabalho: sistemas de classificação de chamados de TI em produção real funcionam, mas a ausência de mecanismos de explicabilidade limita sua adoção e auditabilidade. A proposta deste TCC ataca diretamente essa lacuna.
+Esses estudos ajudam a justificar a proposta deste trabalho: sistemas de classificação de chamados de TI em produção real funcionam, mas a ausência de mecanismos de explicabilidade limita sua adoção e auditabilidade. A proposta deste TCC busca lidar com essa limitação.
 
 % ===============================================================
 \section{Processamento de Linguagem Natural para Classificação de Texto}
@@ -403,7 +424,12 @@ Esses \textit{embeddings} estáticos representaram um avanço expressivo na qual
 \subsubsection{Limitações das representações estáticas — polissemia e contexto}
 \label{subsubsec:pln_limitacoes}
 
-A limitação fundamental dos \textit{embeddings} estáticos é a incapacidade de lidar com polissemia, o fenômeno pelo qual uma mesma palavra possui significados distintos dependendo do contexto. A palavra ``banco'', por exemplo, recebe o mesmo vetor independentemente de estar sendo usada para designar uma instituição financeira ou um assento. Em textos técnicos de suporte de TI, esse problema se manifesta de forma específica: termos como ``acesso'', ``serviço'' ou ``sistema'' podem ter significados muito distintos dependendo do contexto do chamado.
+O grande problema dos \textit{embeddings} estáticos é que eles não 
+conseguem identificar quando uma palavra muda de sentido dependendo 
+do contexto — como ``banco'', que pode ser um assento ou uma 
+instituição financeira. Em textos técnicos de suporte de TI, isso se 
+manifesta em termos como ``acesso'', ``serviço'' ou ``sistema'', que 
+podem ter significados muito distintos dependendo do chamado.
 
 Essa limitação motivou o desenvolvimento de representações contextualizadas, nas quais o \textit{embedding} de cada palavra é computado dinamicamente a partir do contexto completo da frase. Os modelos baseados na arquitetura \textit{Transformer} —  e em particular o BERT — representam a abordagem dominante nessa direção \cite{devlin2019}.
 
@@ -495,7 +521,13 @@ Essa abordagem de pré-treinamento seguido de \textit{fine-tuning} é particular
 
 \citeonline{devlin2019} propuseram o BERT em duas configurações. O \textit{BERT-base} possui 12 camadas de \textit{encoder} \textit{Transformer}, 12 cabeças de atenção e 110 milhões de parâmetros. O \textit{BERT-large} possui 24 camadas, 16 cabeças de atenção e 340 milhões de parâmetros. Ambas as versões foram pré-treinadas sobre o corpus da Wikipedia em inglês e o BookCorpus, totalizando aproximadamente 3,3 bilhões de \textit{tokens}.
 
-O BERT estabeleceu o estado da arte em onze tarefas de PLN no momento de sua publicação, incluindo classificação de texto, reconhecimento de entidades nomeadas, resposta a perguntas e inferência textual. Seu lançamento marcou uma mudança de paradigma na área, consolidando a abordagem de pré-treinamento em larga escala seguido de \textit{fine-tuning} como a estratégia dominante para tarefas de PLN.
+O BERT estabeleceu o estado da arte em onze tarefas de PLN no momento 
+de sua publicação, incluindo classificação de texto, reconhecimento 
+de entidades nomeadas, resposta a perguntas e inferência textual. 
+Seu lançamento popularizou o uso de modelos pré-treinados em tarefas 
+de PLN, consolidando a abordagem de pré-treinamento em larga escala 
+seguido de \textit{fine-tuning} como a estratégia dominante para 
+tarefas de PLN.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{\textit{Token} [CLS] e classificação de sequências}
@@ -546,7 +578,12 @@ A aplicação de BERT e modelos derivados à classificação de chamados de TI t
 \subsubsection{O problema da caixa-preta em aprendizado profundo}
 \label{subsubsec:xai_caixapreta}
 
-Modelos de aprendizado profundo, incluindo o BERT, são frequentemente descritos como caixas-pretas: produzem predições com alta acurácia, mas sem revelar quais características da entrada determinaram a saída. Essa opacidade decorre da arquitetura do modelo, cujas centenas de milhões de parâmetros organizados em camadas de transformações não-lineares impossibilitam a inspeção direta do processo de decisão por parte de um observador humano \cite{salih2023}.
+Modelos de aprendizado profundo, incluindo o BERT, são frequentemente descritos como caixas-pretas: produzem predições com alta acurácia, mas sem revelar quais características da entrada determinaram a saída. Isso acontece porque esses modelos possuem centenas de milhões de 
+parâmetros internos — valores numéricos ajustados durante o 
+treinamento — organizados em múltiplas camadas de cálculos complexos. 
+Essa estrutura torna impossível para um ser humano acompanhar ou 
+explicar, passo a passo, como o modelo chegou a uma determinada 
+decisão \cite{salih2023}.
 
 Em contextos como a triagem de chamados de TI, essa opacidade representa um problema prático concreto. Analistas de suporte e gestores precisam auditar as decisões do sistema, identificar erros sistemáticos e eventualmente contestar categorizações incorretas. Um modelo que não fornece justificativa para suas predições é difícil de depurar, difícil de melhorar e difícil de justificar perante \textit{stakeholders} (partes interessadas, como gestores e diretores) organizacionais \cite{zemp2021}.
 
@@ -576,7 +613,17 @@ A segunda dimensão distingue explicações locais das globais. Explicações lo
 
 LIME foi proposto por \citeonline{ribeiro2016} como um método de explicação local, agnóstico ao modelo e aplicável a qualquer tipo de entrada. O método parte do princípio de que, embora um modelo de aprendizado profundo seja globalmente complexo e não-linear, seu comportamento em uma vizinhança local de uma instância específica pode ser aproximado por um modelo simples e interpretável.
 
-O processo de geração de uma explicação LIME para uma instância de texto ocorre em quatro etapas. Primeiro, a instância original é perturbada pela remoção ou substituição aleatória de palavras, gerando um conjunto de instâncias vizinhas. Segundo, o modelo de caixa-preta é consultado para produzir predições para cada instância perturbada. Terceiro, as instâncias perturbadas são ponderadas pela similaridade com a instância original — perturbações mais próximas recebem peso maior. Quarto, um modelo linear interpretável é ajustado sobre esse conjunto ponderado de perturbações e predições, e os coeficientes desse modelo linear são apresentados como a explicação \cite{ribeiro2016}.
+O processo de geração de uma explicação LIME para uma instância de 
+texto ocorre em quatro etapas. Primeiro, o texto original é perturbado 
+pela remoção ou substituição aleatória de palavras, criando um conjunto 
+de versões modificadas da frase. Segundo, cada versão modificada é 
+submetida ao modelo para que ele produza uma predição, permitindo 
+observar se e como a resposta muda conforme as palavras são alteradas. 
+Terceiro, as versões modificadas são ponderadas pela similaridade com 
+o texto original, sendo que versões mais próximas do original recebem 
+peso maior. Quarto, um modelo linear simples é ajustado sobre esse 
+conjunto, e seus coeficientes indicam quais palavras mais influenciaram 
+a classificação \cite{ribeiro2016}.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Aplicação em classificação de texto}
@@ -619,7 +666,13 @@ Essas propriedades conferem ao SHAP uma fundamentação teórica sólida que o L
 \subsubsection{\textit{KernelSHAP} e aplicação em modelos de texto}
 \label{subsubsec:shap_kernel}
 
-O cálculo exato dos valores de Shapley é computacionalmente intratável para modelos com muitas \textit{features}, pois requer a avaliação de todas as $2^n$ possíveis coalizões de $n$ \textit{features}. O \textit{KernelSHAP}, introduzido por \citeonline{lundberg2017}, aproxima os valores Shapley por amostragem, tornando o método aplicável a modelos com centenas ou milhares de \textit{features}, como é o caso de modelos de texto, onde cada \textit{token} é tratado como uma \textit{feature}.
+Calcular o valor exato de Shapley se torna inviável quando o modelo 
+possui muitas \textit{features}, pois seria necessário testar todas 
+as combinações possíveis entre elas, o que cresce exponencialmente. 
+Para resolver isso, o \textit{KernelSHAP} \cite{lundberg2017} estima 
+esses valores testando apenas uma amostra dessas combinações, tornando 
+o método viável mesmo em modelos de texto, onde cada \textit{token} 
+é tratado como uma \textit{feature}.
 
 Para modelos baseados em \textit{transformers}, o \textit{KernelSHAP} é a variante mais utilizada. O resultado é um vetor de importância por \textit{token} que pode ser visualizado como mapa de calor sobre o texto de entrada, \textit{tokens} com valores SHAP positivos contribuem para a classe predita, e \textit{tokens} com valores negativos contribuem contra ela. No presente trabalho, esses valores SHAP por \textit{token} são utilizados como pesos dos nós no grafo de co-ocorrência proposto.
 
@@ -639,8 +692,14 @@ Os autores concluem que SHAP é preferível quando a consistência e a fundament
 \subsubsection{Custo computacional}
 \label{subsubsec:comparacao_custo}
 
-Em termos de custo computacional, o LIME é geralmente mais eficiente do que o \textit{KernelSHAP} para textos longos. O LIME gera um número fixo de perturbações e ajusta um modelo linear sobre elas, enquanto o \textit{KernelSHAP} precisa amostrar um número maior de coalizões para produzir estimativas precisas dos valores Shapley \cite{salih2023}. Para textos curtos, como os chamados de suporte de TI, que tipicamente contêm poucas dezenas de palavras, essa diferença de custo é menos pronunciada.
-
+Em termos de custo computacional, o LIME é mais eficiente que o 
+\textit{KernelSHAP} em textos longos porque trabalha com um número 
+fixo de perturbações. Já o \textit{KernelSHAP} exige uma amostragem 
+muito maior de combinações de \textit{features} para gerar estimativas 
+precisas, o que eleva o tempo de processamento \cite{salih2023}. 
+Para textos curtos, como os chamados de suporte de TI, que tipicamente 
+contêm poucas dezenas de palavras, essa diferença de custo é menos 
+pronunciada.
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Justificativa para uso conjunto neste trabalho}
 \label{subsubsec:comparacao_justificativa}
@@ -655,7 +714,20 @@ A decisão de implementar e comparar SHAP e LIME neste trabalho, em vez de escol
 \subsubsection{LIME em classificação multiclasse de texto}
 \label{subsubsec:xai_mustafa}
 
-\citeonline{mustafa2025} propuseram um \textit{framework} de classificação de texto com PLN e XAI que combina pré-processamento com NLTK (\textit{Natural Language Toolkit}), balanceamento de classes com SMOTE (\textit{Synthetic Minority Oversampling Technique}), validação cruzada estratificada repetida e um modelo híbrido de regressão \textit{ridge} com regressão logística. O LIME foi utilizado para validar a explicabilidade das classificações em seis domínios distintos: medicina, esportes, entretenimento, política, tecnologia e negócios. O modelo híbrido atingiu 99\% de acurácia após a aplicação do pré-processamento informado pelas explanações LIME.
+\citeonline{mustafa2025} propuseram um \textit{framework} de 
+classificação de texto que combina PLN e XAI. O sistema inclui 
+pré-processamento com NLTK (\textit{Natural Language Toolkit}), 
+balanceamento de classes com SMOTE (\textit{Synthetic Minority 
+Oversampling Technique}) para lidar com datasets desbalanceados, 
+e validação cruzada estratificada repetida, uma técnica que divide 
+os dados em múltiplos subconjuntos para avaliar o modelo de forma 
+mais robusta, garantindo que todas as classes estejam representadas 
+em cada divisão. O modelo utilizado foi um híbrido de regressão 
+\textit{ridge} com regressão logística. O LIME foi utilizado para 
+validar a explicabilidade das classificações em seis domínios 
+distintos: medicina, esportes, entretenimento, política, tecnologia 
+e negócios. O modelo híbrido atingiu 99\% de acurácia após a 
+aplicação do pré-processamento informado pelas explanações LIME.
 
 O trabalho demonstra que a integração de XAI ao \textit{pipeline} de classificação não é apenas uma camada de interpretabilidade adicionada ao final do processo, mas pode retroalimentar decisões de pré-processamento e seleção de \textit{features}, melhorando a qualidade do modelo como um todo.
 
@@ -1066,7 +1138,7 @@ O experimento será estruturado em quatro cenários comparativos, conforme descr
 A & SVM + TF-IDF & Nenhum & Baseline clássico \\
 B & BERTimbau & Nenhum & Ganho do transformer \\
 C & BERTimbau & SHAP + LIME & Qualidade das explicações \\
-D & BERTimbau & SHAP + grafo & Auditabilidade visual \\
+D & BERTimbau & SHAP + LIME + grafo & Auditabilidade visual \\
 \bottomrule
 \end{tabular}
 \legend{Fonte: Elaborado pelos autores (2026)}
