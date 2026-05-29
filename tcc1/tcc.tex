@@ -214,7 +214,14 @@ multi-categoria \cite{zemp2021}, mas sua natureza de "caixa-preta"
 gera resistência entre equipes operacionais que precisam confiar nas 
 decisões algorítmicas para roteamento.
 
-No contexto brasileiro, onde grande parte da comunicação técnica ocorre em português, \textit{datasets} de \textit{tickets} reais revelam limitações significativas de modelos tradicionais como \textit{Naive Bayes} e até redes MLP superficiais, devido à variabilidade semântica e falta de contexto \textit{domain-specific}. A ausência de ferramentas que expliquem visualmente a contribuição de cada termo na decisão agrava o problema, pois analistas experientes questionam previsões contraintuitivas sem mecanismos de auditoria.
+No contexto brasileiro, onde grande parte da comunicação técnica 
+ocorre em português, modelos tradicionais como o \textit{Naive Bayes}, 
+que classifica textos com base em probabilidades, e redes MLP 
+(\textit{Multilayer Perceptron}), que são redes neurais simples sem 
+capacidade de entender o contexto das palavras, apresentam limitações 
+significativas ao lidar com \textit{tickets} reais, pois não conseguem 
+capturar a variabilidade semântica nem o vocabulário técnico específico 
+do domínio de TI.
 
 \vspace{0.3cm}
 % \noindent\fbox{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule}{%
@@ -344,7 +351,7 @@ Apesar de sua eficiência computacional e facilidade de interpretação, esses m
 
 Com o avanço das técnicas de aprendizado profundo, modelos baseados em redes neurais convolucionais (CNN) passaram a ser aplicados à classificação de chamados de suporte. \citeonline{paramesh2022} propuseram um classificador baseado em CNN com \textit{word embeddings} (representações vetoriais densas de palavras aprendidas por redes neurais) para categorização automática de \textit{tickets} de \textit{service desk} de infraestrutura de TI. Os autores compararam o modelo proposto com SVM, \textit{Naive Bayes}, Regressão Logística e \textit{K-Nearest Neighbor}, demonstrando que a CNN supera todos os modelos clássicos em acurácia e F1-score, especialmente em categorias com descrições textuais mais longas e complexas.
 
-A vantagem das CNN em relação aos modelos clássicos reside na capacidade de extrair automaticamente n-gramas relevantes da entrada textual, capturando padrões locais de co-ocorrência entre palavras sem necessidade de engenharia manual de \textit{features} (características extraídas dos dados de entrada). Essa progressão de modelos lineares com TF-IDF para redes profundas com \textit{embeddings}, estabelece o contexto histórico sobre o qual os modelos baseados em \textit{transformers} representam um novo salto qualitativo.
+A vantagem das CNN em relação aos modelos clássicos reside na capacidade de identificar automaticamente quais grupos de palavras que aparecem juntas são importantes para a classificação, sem que um especialista precise definir isso manualmente. Essa progressão de modelos lineares com TF-IDF para redes profundas com \textit{embeddings}, estabelece o contexto histórico sobre o qual os modelos baseados em \textit{transformers} representam um novo salto qualitativo.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Classificação de chamados no contexto brasileiro}
@@ -376,12 +383,18 @@ do BERTimbau neste trabalho.
 
 \citeonline{wahba2023}, em sua tese de doutorado na Universidade de Western Ontario, propõe um contraponto relevante ao uso indiscriminado de modelos baseados em \textit{transformers} para classificação de texto em domínios especializados. Com base em quatro anos de estudos empíricos com dados reais de uma empresa parceira, a autora demonstra 
 que chamados de suporte de TI utilizam vocabulário técnico específico 
-e de baixa ambiguidade. Nesse contexto, a principal vantagem do BERT 
-— compreender palavras com múltiplos sentidos dependendo do contexto 
-— tem impacto reduzido, tornando o SVM com TF-IDF competitivo em 
-termos de desempenho.
+e de baixa ambiguidade. Nesse contexto, a principal vantagem do BERT, que é compreender 
+palavras com múltiplos sentidos dependendo do contexto, tem impacto 
+reduzido, tornando o SVM com TF-IDF competitivo em termos de 
+desempenho.
 
-Com base nessa observação, Wahba propõe o modelo HOOM (\textit{Hybrid Online Offline Model}), que combina um classificador SVM linear treinado em modo \textit{offline} com um classificador \textit{Passive Aggressive Classifier} (algoritmo de aprendizado incremental que atualiza o modelo a cada nova amostra, mantendo-se ``passivo'' quando a predição está correta e ``agressivo'' ao corrigir erros) treinado em modo \textit{online} para detectar mudanças na distribuição dos dados ao longo do tempo. O modelo é descrito como mais eficiente, interpretável e reproduzível do que abordagens baseadas em \textit{transformers}.
+Com base nessa observação, Wahba propõe o modelo HOOM 
+(\textit{Hybrid Online Offline Model}), que combina um classificador SVM linear treinado em modo \textit{offline} com um classificador \textit{Passive Aggressive Classifier}. Esse segundo classificador 
+é um algoritmo de aprendizado incremental que atualiza o modelo a cada nova amostra, mantendo-se ``passivo'' quando a predição está correta e ``agressivo'' ao corrigir erros e treinado em modo 
+\textit{online} para detectar mudanças na distribuição dos dados ao longo do tempo. O modelo é descrito como mais eficiente, interpretável e reproduzível 
+do que abordagens baseadas em \textit{transformers}, que são modelos 
+de linguagem baseados em redes neurais profundas e que serão 
+detalhados na Seção~\ref{sec:bert}.
 
 Este argumento é diretamente relevante para o presente trabalho, pois o TCC responde à questão levantada por Wahba: o custo computacional adicional do BERTimbau se justifica quando se adiciona uma camada de XAI e grafo de co-ocorrência que transforma a saída pouco interpretável do modelo em algo auditável pelos analistas. Em outras palavras, a interpretabilidade não é apenas uma funcionalidade adicional, é a justificativa central para a escolha do modelo mais complexo.
 
@@ -390,12 +403,13 @@ Este argumento é diretamente relevante para o presente trabalho, pois o TCC res
 \label{subsubsec:helpdesk_caixapreta}
 
 \citeonline{zemp2021}, em estudo desenvolvido na ZHAW com dados reais 
-de um banco suíço de médio porte, treinou modelos CNN, BiLSTM e 
-RoBERTa (\textit{Robustly Optimized BERT Pretraining Approach}, 
-variante do BERT com treinamento aprimorado) sobre mais de um milhão 
-de \textit{tickets} históricos, atingindo 92\% de acurácia de 
-validação e F1-macro de 0,75 em mais de 300 classes. O sistema foi 
-parcialmente implantado em produção, e os agentes de suporte foram 
+de um banco suíço de médio porte, treinou três tipos de modelos: CNN, 
+BiLSTM, que é uma rede neural recorrente bidirecional capaz de 
+processar sequências de texto nos dois sentidos, e RoBERTa, uma 
+variante aprimorada do BERT com treinamento mais robusto. O estudo 
+utilizou mais de um milhão de \textit{tickets} históricos, atingindo 
+92\% de acurácia de validação e F1-macro de 0,75 em mais de 300 
+classes. O sistema foi parcialmente implantado em produção, e os agentes de suporte foram 
 convidados a utilizá-lo em seu trabalho diário. O estudo revelou que, 
 apesar dos resultados técnicos expressivos, os analistas resistiram 
 à adoção do sistema na prática. A principal razão relatada foi a 
@@ -403,7 +417,7 @@ ausência de justificativas para as predições: os agentes não
 conseguiam confiar em um sistema que não explicava por que havia 
 escolhido determinada categoria.
 
-\citeonline{razma2026} corroboram essa observação no contexto de um ambiente ITSM corporativo multilíngue com mais de 87 mil \textit{tickets}. Os autores aplicaram LIME e SHAP para gerar explicações das predições do mBERT e do modelo de regressão logística, e concluíram que a camada de interpretabilidade aumentou a confiança dos operadores no sistema, mesmo nos casos em que a predição estava incorreta pois o analista conseguia identificar por que o modelo havia errado.
+\citeonline{razma2026} corroboram essa observação no contexto de um ambiente ITSM corporativo multilíngue com mais de 87 mil \textit{tickets}. Os autores aplicaram LIME e SHAP para gerar explicações das predições do mBERT, uma versão do BERT treinada simultaneamente em mais de 100 idimas, e do modelo de regressão logística, e concluíram que a camada de interpretabilidade aumentou a confiança dos operadores no sistema, mesmo nos casos em que a predição estava incorreta pois o analista conseguia identificar por que o modelo havia errado.
 
 Esses estudos ajudam a justificar a proposta deste trabalho: sistemas de classificação de chamados de TI em produção real funcionam, mas a ausência de mecanismos de explicabilidade limita sua adoção e auditabilidade. A proposta deste TCC busca lidar com essa limitação.
 
@@ -581,7 +595,7 @@ Para o presente trabalho, a escolha do BERTimbau em detrimento do mBERT é motiv
 
 A aplicação de BERT e modelos derivados à classificação de chamados de TI tem demonstrado resultados expressivos na literatura recente. \citeonline{borges2024} realizou uma comparação sistemática entre BERT e algoritmos clássicos — SVM e \textit{Naive Bayes} — em tarefas de classificação de texto em português e inglês, utilizando quatro \textit{datasets} públicos. Os resultados confirmaram que o BERT supera consistentemente os modelos tradicionais em acurácia e F1, especialmente em tarefas multiclasse com nuances semânticas mais complexas, embora com custo computacional consideravelmente maior.
 
-\citeonline{zemp2021} realizou o \textit{fine-tuning} de RoBERTa — variante do BERT com treinamento aprimorado — sobre mais de um milhão de \textit{tickets} reais de um banco suíço, atingindo F1-macro de 0,75 em mais de 300 classes. O autor demonstra que \textit{transformers} superam CNN e BiLSTM (\textit{Bidirectional Long Short-Term Memory}, um tipo de rede neural recorrente que processa sequências nos dois sentidos) nesse domínio, mas aponta a opacidade do modelo como barreira à adoção em produção.
+\citeonline{zemp2021} realizou o \textit{fine-tuning} de RoBERTa — variante do BERT com treinamento aprimorado — sobre mais de um milhão de \textit{tickets} reais de um banco suíço, atingindo F1-macro de 0,75 em mais de 300 classes. O autor demonstra que \textit{transformers} superam CNN e BiLSTM nesse domínio, mas aponta a opacidade do modelo como barreira à adoção em produção.
 
 \citeonline{razma2026} compararam regressão logística com TF-IDF frente a mBERT e XLM-RoBERTa em um corpus de 87 mil \textit{tickets} multilíngues de uma empresa de manufatura. Os resultados confirmaram que \textit{transformers} superam modelos clássicos em macro-F1, especialmente para classes de baixa frequência e semanticamente complexas. A combinação de \textit{fine-tuning} com LIME e SHAP produziu explicações qualitativamente mais ricas do que o modelo linear, validando o uso conjunto de BERT e XAI em ambiente ITSM de produção.
 
