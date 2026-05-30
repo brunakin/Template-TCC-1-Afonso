@@ -340,8 +340,7 @@ A automação da triagem de chamados por meio de aprendizado de máquina tem sid
 \subsubsection{Modelos clássicos — \textit{Naive Bayes} e SVM com TF-IDF}
 \label{subsubsec:helpdesk_classicos}
 
-As primeiras abordagens automatizadas para classificação de chamados utilizaram algoritmos clássicos de aprendizado de máquina combinados com representações baseadas em frequência de termos. \citeonline{harun2023} investigaram a classificação automática de perguntas em um sistema de \textit{help desk} universitário, comparando \textit{Naive Bayes} e \textit{Support Vector Machine} (SVM) com vetorização TF-IDF (\textit{Term Frequency–Inverse Document Frequency}). Os resultados demonstraram que o SVM com TF-IDF supera o \textit{Naive Bayes} em acurácia e F1-score (métrica que combina precisão e revocação em 
-um único valor, detalhada na Seção~\ref{sec:metricas_avaliacao}), estabelecendo-se como referência para abordagens clássicas nesse domínio.
+As primeiras abordagens automatizadas para classificação de chamados utilizaram algoritmos clássicos de aprendizado de máquina combinados com representações baseadas em frequência de termos. \citeonline{harun2023} investigaram a classificação automática de perguntas em um sistema de \textit{help desk} universitário, comparando \textit{Naive Bayes} e \textit{Support Vector Machine} (SVM), um algoritmo que classifica textos encontrando a melhor separação possível entre as categorias, com vetorização TF-IDF (\textit{Term Frequency–Inverse Document Frequency}). Os resultados demonstraram que o SVM com TF-IDF supera o \textit{Naive Bayes} em acurácia e F1-score (métrica que combina precisão e revocação em um único valor, detalhada na Seção~\ref{sec:metricas_avaliacao}), estabelecendo-se como referência para abordagens clássicas nesse domínio.
 
 Apesar de sua eficiência computacional e facilidade de interpretação, esses modelos apresentam limitações na captura de relações semânticas entre termos. A representação TF-IDF trata cada palavra de forma independente, sem considerar o contexto em que ela aparece, o que restringe a capacidade do modelo de distinguir categorias semanticamente próximas.
 
@@ -433,9 +432,9 @@ Esses estudos ajudam a justificar a proposta deste trabalho: sistemas de classif
 \subsubsection{\textit{TF-IDF} e modelos baseados em frequência}
 \label{subsubsec:pln_tfidf}
 
-A representação mais simples de um documento para fins de classificação é o modelo \textit{bag-of-words}: cada documento é representado como um vetor de contagens de palavras, sem considerar a ordem em que aparecem. O \textit{TF-IDF} (\textit{Term Frequency–Inverse Document Frequency}) é um refinamento desse modelo que pondera cada termo pelo produto de sua frequência no documento e pelo inverso de sua frequência no corpus, reduzindo o peso de termos muito comuns e aumentando o peso de termos mais informativos \cite{razma2026}.
+A representação mais simples de um documento para fins de classificação é o modelo \textit{bag-of-words}: cada documento é representado como um vetor de contagens de palavras, sem considerar a ordem em que aparecem. O \textit{TF-IDF} é um refinamento desse modelo que pondera cada termo pelo produto de sua frequência no documento e pelo inverso de sua frequência no corpus, reduzindo o peso de termos muito comuns e aumentando o peso de termos mais informativos \cite{razma2026}.
 
-Apesar de sua simplicidade, o \textit{TF-IDF} ainda é amplamente utilizado como \textit{baseline} em tarefas de classificação de texto, especialmente quando combinado com SVM, e apresenta desempenho competitivo em domínios com vocabulário técnico específico e baixa polissemia \cite{wahba2023}. Sua principal limitação é a incapacidade de capturar relações semânticas entre termos: palavras sinônimas ou semanticamente relacionadas são tratadas como completamente distintas.
+Apesar de sua simplicidade, o \textit{TF-IDF} ainda é amplamente utilizado como \textit{baseline} em tarefas de classificação de texto, especialmente quando combinado com SVM, e apresenta desempenho competitivo em domínios com vocabulário técnico específico e baixa polissemia,ou seja, onde as palavras raramente mudam de sentido dependendo do contexto \cite{wahba2023}. Sua principal limitação é a incapacidade de capturar relações semânticas entre termos: palavras sinônimas ou semanticamente relacionadas são tratadas como completamente distintas.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{\textit{Embeddings} estáticos — \textit{Word2Vec} e \textit{GloVe}}
@@ -464,7 +463,7 @@ instituição financeira. Em textos técnicos de suporte de TI, isso se
 manifesta em termos como ``acesso'', ``serviço'' ou ``sistema'', que 
 podem ter significados muito distintos dependendo do chamado.
 
-Essa limitação motivou o desenvolvimento de representações contextualizadas, nas quais o \textit{embedding} de cada palavra é computado dinamicamente a partir do contexto completo da frase. Os modelos baseados na arquitetura \textit{Transformer} —  e em particular o BERT — representam a abordagem dominante nessa direção \cite{devlin2019}.
+Essa limitação motivou o desenvolvimento de representações contextualizadas, nas quais o \textit{embedding} de cada palavra é computado dinamicamente a partir do contexto completo da frase. Os modelos baseados na arquitetura \textit{Transformer}, em particular o BERT, representam a abordagem dominante nessa direção \cite{devlin2019}.
 
 % ===============================================================
 \section{O Modelo BERT e suas Variantes}
@@ -483,8 +482,7 @@ um \textit{encoder} (codificador) e um \textit{decoder} (decodificador),
 cada um formado por camadas empilhadas \cite{vaswani2017}. O \textit{encoder} 
 é responsável por receber a sequência de entrada e transformá-la em 
 representações vetoriais ricas em informação contextual. O \textit{decoder}, 
-por sua vez, utiliza essas representações para gerar a sequência de saída — 
-como uma tradução ou resposta. Cada camada do \textit{encoder} é composta 
+por sua vez, utiliza essas representações para gerar a sequência de saída como uma tradução ou resposta. Cada camada do \textit{encoder} é composta 
 por dois sub-componentes principais: o mecanismo de \textit{self-attention}, 
 que permite que cada \textit{token} ``observe'' todos os outros da sequência, 
 e uma rede neural densa aplicada posição a posição (\textit{feed-forward 
@@ -497,9 +495,9 @@ contextuais do texto de entrada, e não gerar novas sequências \cite{devlin2019
 A arquitetura \textit{Transformer}, proposta por \citeonline{vaswani2017}, 
 introduziu o mecanismo de \textit{self-attention} como alternativa às redes 
 recorrentes para processamento de sequências. As RNN (\textit{Recurrent Neural 
-Networks}, ou Redes Neurais Recorrentes) são uma classe de redes neurais 
+Networks}) são uma classe de redes neurais 
 projetadas para processar dados sequenciais, nos quais o contexto e a ordem 
-temporal importam — processando os \textit{tokens} um por vez, da esquerda para 
+temporal importam, processando os \textit{tokens} um por vez, da esquerda para 
 a direita. As LSTM (\textit{Long Short-Term Memory}) são um tipo especializado 
 de RNN projetado para aprender dependências de longo prazo em sequências, 
 mitigando o problema de degradação do gradiente presente nas RNN simples. 
