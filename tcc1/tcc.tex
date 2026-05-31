@@ -132,16 +132,16 @@ Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (
 % ---------------------------------------------------------------
 % LISTA DE ILUSTRAÇÕES
 % ---------------------------------------------------------------
-% \pdfbookmark[0]{\listfigurename}{lof}
-% \listoffigures*
-% \cleardoublepage
+ \pdfbookmark[0]{\listfigurename}{lof}
+ \listoffigures*
+ \cleardoublepage
 
 % ---------------------------------------------------------------
 % LISTA DE TABELAS
 % ---------------------------------------------------------------
-% \pdfbookmark[0]{\listtablename}{lot}
-% \listoftables*
-% \cleardoublepage
+ \pdfbookmark[0]{\listtablename}{lot}
+ \listoftables*
+ \cleardoublepage
 
 % ---------------------------------------------------------------
 % LISTA DE ABREVIATURAS E SIGLAS
@@ -416,7 +416,7 @@ ausência de justificativas para as predições: os agentes não
 conseguiam confiar em um sistema que não explicava por que havia 
 escolhido determinada categoria.
 
-\citeonline{razma2026} corroboram essa observação no contexto de um ambiente ITSM corporativo multilíngue com mais de 87 mil \textit{tickets}. Os autores aplicaram LIME e SHAP para gerar explicações das predições do mBERT (multilingual BERT), uma versão do BERT treinada simultaneamente em mais de 100 idimas, e do modelo de regressão logística, e concluíram que a camada de interpretabilidade aumentou a confiança dos operadores no sistema, mesmo nos casos em que a predição estava incorreta pois o analista conseguia identificar por que o modelo havia errado.
+\citeonline{razma2026} corroboram essa observação no contexto de um ambiente ITSM corporativo multilíngue com mais de 87 mil \textit{tickets}. Os autores aplicaram LIME e SHAP para gerar explicações das predições do mBERT (multilingual BERT), uma versão do BERT treinada simultaneamente em mais de 100 idiomas, e do modelo de regressão logística, e concluíram que a camada de interpretabilidade aumentou a confiança dos operadores no sistema, mesmo nos casos em que a predição estava incorreta pois o analista conseguia identificar por que o modelo havia errado.
 
 Esses estudos ajudam a justificar a proposta deste trabalho: sistemas de classificação de chamados de TI em produção real funcionam, mas a ausência de mecanismos de explicabilidade limita sua adoção e auditabilidade. A proposta deste TCC busca lidar com essa limitação.
 
@@ -587,6 +587,14 @@ A principal diferença em relação ao mBERT está no foco linguístico: o mBERT
 
 Para o presente trabalho, a escolha do BERTimbau em detrimento do mBERT é motivada por dois fatores. Primeiro, os chamados de suporte analisados estão em português brasileiro, idioma para o qual o BERTimbau possui representações mais ricas. Segundo, os chamados utilizam terminologia técnica de TI em português, que pode diferir substancialmente de sua versão em inglês. E o BERTimbau, pré-treinado em corpus nacional, tem maior probabilidade de ter encontrado esse vocabulário durante o pré-treinamento.
 
+Vale destacar que o BERTimbau permanece como escolha principal 
+deste trabalho, dado que os chamados de suporte a serem analisados 
+estão predominantemente em português brasileiro. No entanto, caso a 
+análise exploratória do \textit{dataset} a ser utilizado revele 
+uma proporção significativa de termos técnicos em inglês, a escolha 
+do modelo será reavaliada empiricamente durante o TCC2, podendo 
+considerar modelos multilíngues como o mBERT ou o XLM-RoBERTa.
+
 % ---------------------------------------------------------------
 \subsection{\textit{Fine-tuning} de BERT para classificação de chamados de TI}
 \label{subsec:bert_tickets}
@@ -677,6 +685,18 @@ peso maior. Quarto, um modelo linear simples é ajustado sobre esse
 conjunto, e seus coeficientes indicam quais palavras mais influenciaram 
 a classificação \cite{ribeiro2016}.
 
+A Figura~\ref{fig:lime_exemplo} ilustra esse processo: as palavras 
+destacadas indicam sua contribuição positiva ou negativa para a 
+classe predita.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{imagens/lime_exemplo.png}
+    \caption{Exemplo de explicação gerada pelo LIME}
+    \label{fig:lime_exemplo}
+    \legend{Fonte: \citeonline{ribeiro2016}}
+\end{figure}
+
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Aplicação em classificação de texto}
 \label{subsubsec:lime_texto}
@@ -729,6 +749,18 @@ para o contexto de modelos de aprendizado de máquina: cada
 ``valor do jogo'', e o valor SHAP de cada \textit{feature} mede 
 o quanto ela contribuiu para a predição, considerando todas as 
 possíveis ordens em que as \textit{features} poderiam ser incluídas.
+
+A Figura~\ref{fig:shap_exemplo} ilustra esse conceito: cada 
+\textit{feature} desloca a predição do valor base até o 
+valor final do modelo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{imagens/shap_exemplo.png}
+    \caption{Representação dos valores SHAP por \textit{feature}}
+    \label{fig:shap_exemplo}
+    \legend{Fonte: \citeonline{lundberg2017}}
+\end{figure}
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Propriedades matemáticas — eficiência, simetria e ausência}
@@ -945,7 +977,7 @@ abordagem, cuja implementação é detalhada no Capítulo~\ref{cap:desenvolvimen
 \subsubsection{Ausência de XAI em sistemas de classificação de tickets em produção}
 \label{subsubsec:lacuna_xai}
 
-O trabalho de \citeonline{zemp2021} demonstra que sistemas de classificação de chamados de TI com alta acurácia são tecnicamente viáveis e já foram implantados em produção. No entanto, a ausência de mecanismos de explicabilidade limita a adoção e a auditabilidade desses sistemas. Os agentes de suporte recebem predições sem justificativa, o que dificulta a identificação de erros sistemáticos e a construção de confiança no sistema. Nenhum dos trabalhos de classificação de chamados de TI identificados no screening incorpora uma camada de visualização interativa para explanações XAI.
+O trabalho de \citeonline{zemp2021} demonstra que sistemas de classificação de chamados de TI com alta acurácia são tecnicamente viáveis e já foram implantados em produção. No entanto, a ausência de mecanismos de explicabilidade limita a adoção e a auditabilidade desses sistemas. Os agentes de suporte recebem predições sem justificativa, o que dificulta a identificação de erros sistemáticos e a construção de confiança no sistema. Nenhum dos trabalhos de classificação de chamados de TI identificados no screening incorpora uma camada de visualização gráfica para explanações XAI.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Carência de soluções robustas para PT-BR em \textit{helpdesk}}
@@ -1028,8 +1060,6 @@ Esta seção analisa três trabalhos que enfrentaram o desafio de automatizar a 
 
 \vspace{0.5cm}
 
-
-
 \begin{table}[htb]
     \centering
     \caption{Comparação entre trabalhos relacionados}
@@ -1037,15 +1067,19 @@ Esta seção analisa três trabalhos que enfrentaram o desafio de automatizar a 
     \resizebox{\textwidth}{!}{
     \begin{tabular}{l|c|c|c|c}
         \toprule
-        \textbf{Critério} & \textbf{Zemp (2021)} & \textbf{Wahba (2023)} & \textbf{Yokota (2025)} & \textbf{Este trabalho} \\
+        \textbf{Critério} & \textbf{Zemp (2021)} & \textbf{Wahba (2023)} & 
+        \textbf{Yokota (2025)} & \textbf{Este trabalho} \\
         \midrule
-        Objetivo           & Classificação & Eficiência & Classificação PT-BR & Classificação + XAI \\
+        Objetivo & Classificação & Eficiência & Classificação PT-BR & 
+        Classificação + XAI \\
         \midrule
-        Tecnologia         & RoBERTa / CNN & SVM / HOOM  & \textit{Naive Bayes} / MLP   & BERTimbau + Grafos \\
+        Tecnologia & RoBERTa / CNN & SVM / HOOM & \textit{Naive Bayes} / MLP & 
+        BERTimbau + Grafos \\
         \midrule
-        Explicabilidade    & Não           & Intrínseca  & Limitada            & SHAP / LIME / Grafos \\
+        Explicabilidade & Não & Intrínseca & Limitada & SHAP / LIME / Grafos \\
         \midrule
-        Limitação          & Caixa-Preta   & Baixo Contexto & Baixa Performance & --- \\
+        Limitação & Caixa-Preta & Baixo Contexto & Baixa Performance & 
+        Custo Computacional \\
         \bottomrule
     \end{tabular}
     }
@@ -1210,11 +1244,28 @@ Neste capítulo, apresenta-se a solução proposta para o problema identificado,
 
 \subsubsection{Visão geral da solução}
 
-A solução proposta consiste em uma aplicação web denominada \textit{Classificador de Tickets de TI}, voltada para automatizar a triagem de chamados de suporte técnico utilizando técnicas de Processamento de Linguagem Natural (PLN) e Inteligência Artificial Explicável (XAI). O sistema recebe como entrada a descrição textual de um chamado submetida pelo usuário, processa o texto utilizando o modelo BERTimbau \textit{fine-tuned}, classifica o chamado em uma das categorias predefinidas do sistema de \textit{help desk}, e apresenta a predição acompanhada de explicações visuais que demonstram quais termos do texto mais influenciaram a decisão do modelo.
+A solução proposta tem como objetivo central classificar 
+automaticamente chamados de suporte técnico de forma transparente 
+e auditável, utilizando técnicas de Processamento de Linguagem 
+Natural (PLN) e Inteligência Artificial Explicável (XAI). O 
+diferencial da proposta não é apenas a classificação automática, 
+mas a capacidade de explicar cada decisão: o analista poderá 
+identificar quais termos do chamado influenciaram a classificação 
+e por quê.
 
-Além da classificação automática, a proposta possui foco na interpretabilidade das decisões do modelo de inteligência artificial. Para isso, são utilizadas técnicas de explicabilidade como SHAP e LIME, combinadas com visualizações gráficas e grafos de co-ocorrência que permitem compreender como os tokens do texto influenciaram a predição realizada.
+Para isso, serão utilizadas duas técnicas complementares de 
+explicabilidade: o SHAP, que atribui a cada termo do chamado um 
+valor numérico indicando o quanto ele contribuiu para a 
+classificação, e o LIME, que gera explicações locais testando 
+versões modificadas do texto. Os valores SHAP serão utilizados 
+como pesos dos nós em um grafo de co-ocorrência, produzindo uma 
+visualização gráfica que combina a estrutura relacional do 
+texto com a relevância explicativa de cada termo.
 
-A interface foi concebida para atender principalmente gestores e analistas de TI, que poderão utilizar o sistema como ferramenta durante o processo de triagem e categorização dos chamados, para acompanhar de forma mais transparente o resultado da classificação e compreender quais informações do chamado influenciaram a decisão do modelo.
+O sistema será desenvolvido para atender principalmente gestores 
+e analistas de TI, que poderão utilizá-lo durante o processo de 
+triagem para acompanhar de forma transparente e auditável o 
+resultado da classificação automática.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Protocolo experimental}
@@ -1284,23 +1335,40 @@ Os protótipos de baixa fidelidade foram utilizados para estruturar os principai
     \label{fig:prototipo_baixa_estatisticas}
 \end{figure}
 
-Posteriormente, foram elaborados protótipos de média fidelidade com maior nível de detalhamento visual, permitindo validar aspectos relacionados à experiência do usuário, hierarquia das informações e interpretação das explicações geradas pelo sistema.
+Posteriormente, foram elaborados protótipos de média fidelidade com maior nível de detalhamento visual, com foco em validar como as explicações geradas pelo modelo seriam apresentadas de forma compreensível para os analistas de TI. 
 
-Na tela principal da aplicação, o usuário pode inserir a descrição de um chamado técnico em um campo textual localizado na parte superior da interface. Após o envio da solicitação, o sistema apresenta automaticamente a categoria prevista juntamente com o percentual de confiança associado à classificação.
-
-A interface também apresenta uma área dedicada às explicações da classificação, organizada em duas abas principais:
+A área central do sistema será dedicada às explicações da 
+classificação, organizada em duas abas principais, ambas voltadas 
+para tornar o processo decisório do modelo auditável:
 
 \begin{itemize}
-    \item \textbf{Grafo de Co-Ocorrência}: representação visual das relações entre os \textit{tokens} identificados no texto do chamado. O tamanho dos nós representa a importância dos termos calculada pelos métodos XAI, enquanto a espessura das conexões indica a frequência de associação entre os \textit{tokens};
+    \item \textbf{Grafo de Co-Ocorrência}: representação visual das 
+    relações entre os \textit{tokens} do chamado, onde o tamanho de 
+    cada nó será proporcional ao valor SHAP do termo, indicando sua 
+    importância para a classificação, e a espessura das conexões 
+    indicará a frequência de co-ocorrência entre os \textit{tokens};
     
-    \item \textbf{Estatísticas}: painel responsável por apresentar numericamente a importância individual de cada \textit{token}, utilizando barras comparativas e valores associados às contribuições de cada termo na decisão do modelo.
+    \item \textbf{Estatísticas}: painel que apresentará numericamente 
+    a importância individual de cada \textit{token} calculada pelos 
+    métodos SHAP e LIME, permitindo ao analista comparar e validar 
+    as contribuições de cada termo na decisão do modelo.
 \end{itemize}
 
-A escolha por disponibilizar tanto visualizações gráficas quanto estatísticas numéricas busca atender diferentes perfis de interpretação dos usuários. Enquanto alguns usuários podem preferir interpretar padrões visuais por meio do grafo, outros podem priorizar comparações quantitativas entre os valores de importância dos \textit{tokens}.
+A escolha por disponibilizar tanto visualizações gráficas quanto 
+estatísticas numéricas busca garantir que analistas com diferentes 
+perfis consigam auditar as decisões do modelo, seja por meio de 
+padrões visuais no grafo ou por comparações quantitativas entre os 
+valores de importância dos \textit{tokens}.
 
-Na lateral esquerda da interface encontra-se a seção ``Tickets recentes'', responsável por apresentar classificações realizadas anteriormente juntamente com seus respectivos níveis de confiança. Esse recurso permite consultar rapidamente chamados processados anteriormente e auxilia na análise das classificações realizadas pelo sistema.
+Na lateral esquerda do sistema encontra-se a seção ``Tickets 
+recentes'', responsável por apresentar classificações realizadas 
+anteriormente juntamente com seus respectivos níveis de confiança. 
+Esse recurso permitirá consultar rapidamente chamados processados 
+anteriormente e auxiliará na análise das classificações realizadas.
 
-Os protótipos desenvolvidos tiveram como principal objetivo verificar se os recursos de explicabilidade seriam apresentados de forma intuitiva, clara e acessível aos usuários finais.
+Os protótipos desenvolvidos tiveram como principal objetivo verificar 
+se os recursos de explicabilidade seriam apresentados de forma 
+intuitiva, clara e acessível aos analistas de TI.
 
 \begin{figure}[H]
     \centering
@@ -1348,7 +1416,9 @@ O fluxo geral de funcionamento da aplicação seguirá as seguintes etapas:
 
 \subsubsection{Tecnologias e ferramentas}
 
-As tecnologias selecionadas foram escolhidas considerando compatibilidade com aplicações de PLN, facilidade de integração e suporte da comunidade.
+As tecnologias listadas a seguir representam as opções inicialmente 
+consideradas para o desenvolvimento do sistema, podendo ser ajustadas 
+conforme as decisões técnicas tomadas ao longo da implementação.
 
 \textbf{Interface e visualização:}
 
@@ -1378,22 +1448,37 @@ As tecnologias selecionadas foram escolhidas considerando compatibilidade com ap
 \subsubsection{Funcionalidades principais}
 
 Entre as principais funcionalidades previstas para o sistema estão:
+%
+%\begin{itemize}
+%    \item Classificação automática de chamados de TI;
+%    \item Exibição da categoria prevista;
+%    \item Apresentação do nível de confiança da classificação;
+%    \item Visualização da importância dos \textit{tokens} via SHAP e LIME;
+%    \item Construção de grafos de co-ocorrência;
+%    \item Histórico simplificado de \textit{tickets} classificados;
+%    \item Visualização interativa das explicações do modelo.
+%\end{itemize}
 
 \begin{itemize}
-    \item Classificação automática de chamados de TI;
-    \item Exibição da categoria prevista;
-    \item Apresentação do nível de confiança da classificação;
-    \item Visualização da importância dos \textit{tokens} via SHAP e LIME;
-    \item Construção de grafos de co-ocorrência;
-    \item Histórico simplificado de \textit{tickets} classificados;
-    \item Visualização interativa das explicações do modelo.
+    \item \textbf{Funcionalidades de explicabilidade:}
+    \begin{itemize}
+        \item Construção de grafos de co-ocorrência;
+        \item Visualização das explicações do modelo.
+    \end{itemize}
+    \item \textbf{Funcionalidades de classificação e suporte:}
+    \begin{itemize}
+        \item Classificação automática de chamados de TI;
+        \item Exibição da categoria prevista;
+        \item Apresentação do nível de confiança da classificação;
+        \item Histórico simplificado de \textit{tickets} classificados.
+    \end{itemize}
 \end{itemize}
 
 \subsubsection{Metodologia de implementação}
 
 A implementação do projeto seguirá uma abordagem iterativa baseada em prototipação e validações incrementais.
 
-Inicialmente foram realizados levantamento bibliográfico, definição dos requisitos e elaboração dos protótipos da interface. Em seguida serão implementados os módulos de classificação automática, explicabilidade e visualização gráfica.
+Inicialmente foram realizados levantamento bibliográfico, definição dos requisitos e elaboração dos protótipos da interface, etapas já concluídas nesta fase do projeto. Em seguida serão implementados os módulos de classificação automática, explicabilidade e visualização gráfica.
 
 Posteriormente serão realizados testes de integração entre os componentes e ajustes relacionados à usabilidade e apresentação das explicações geradas pelo sistema.
 
@@ -1401,7 +1486,7 @@ Posteriormente serão realizados testes de integração entre os componentes e a
 
 O modelo BERTimbau será ajustado utilizando um conjunto de chamados de dados reais obtidos junto à Bayer Brasil, mediante acordo de confidencialidade e anonimização.
 
-O processo de \textit{fine-tuning} seguirá uma abordagem supervisionada de classificação textual, utilizando divisão entre conjuntos de treino, validação e teste. Também serão aplicadas técnicas de balanceamento de classes e validação de desempenho para reduzir problemas relacionados a \textit{overfitting} e desbalanceamento do \textit{dataset}.
+O processo de \textit{fine-tuning} seguirá uma abordagem supervisionada de classificação textual, utilizando divisão entre conjuntos de treino, validação e teste. Também serão aplicadas técnicas de balanceamento de classes e validação de desempenho para reduzir problemas relacionados a \textit{overfitting}, fenômeno que ocorre quando o modelo aprende os dados de treino com precisão excessiva e perde a capacidade de generalizar para novos exemplos, e ao desbalanceamento do \textit{dataset}.
 
 \subsubsection{Critérios de validação}
 
