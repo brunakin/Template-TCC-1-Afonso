@@ -340,7 +340,7 @@ A automação da triagem de chamados por meio de aprendizado de máquina tem sid
 \subsubsection{Modelos clássicos — \textit{Naive Bayes} e SVM com TF-IDF}
 \label{subsubsec:helpdesk_classicos}
 
-As primeiras abordagens automatizadas para classificação de chamados utilizaram algoritmos clássicos de aprendizado de máquina combinados com representações baseadas em frequência de termos. \citeonline{harun2023} investigaram a classificação automática de perguntas em um sistema de \textit{help desk} universitário, comparando \textit{Naive Bayes} e \textit{Support Vector Machine} (SVM), um algoritmo que classifica textos encontrando a melhor separação possível entre as categorias, com vetorização TF-IDF (\textit{Term Frequency–Inverse Document Frequency}). Os resultados demonstraram que o SVM com TF-IDF supera o \textit{Naive Bayes} em acurácia e F1-score (métrica que combina precisão e revocação em um único valor, detalhada na Seção~\ref{sec:metricas_avaliacao}), estabelecendo-se como referência para abordagens clássicas nesse domínio.
+As primeiras abordagens automatizadas para classificação de chamados utilizaram algoritmos clássicos de aprendizado de máquina combinados com representações baseadas em frequência de termos. \citeonline{harun2023} investigaram a classificação automática de perguntas em um sistema de \textit{help desk} universitário, comparando \textit{Naive Bayes} e SVM (\textit{Support Vector Machine}), um algoritmo que classifica textos encontrando a melhor separação possível entre as categorias, com vetorização TF-IDF. Os resultados demonstraram que o SVM com TF-IDF supera o \textit{Naive Bayes} em acurácia e F1-score (métrica que combina precisão e revocação em um único valor, detalhada na Seção~\ref{sec:metricas_avaliacao}), estabelecendo-se como referência para abordagens clássicas nesse domínio.
 
 Apesar de sua eficiência computacional e facilidade de interpretação, esses modelos apresentam limitações na captura de relações semânticas entre termos. A representação TF-IDF trata cada palavra de forma independente, sem considerar o contexto em que ela aparece, o que restringe a capacidade do modelo de distinguir categorias semanticamente próximas.
 
@@ -416,7 +416,7 @@ ausência de justificativas para as predições: os agentes não
 conseguiam confiar em um sistema que não explicava por que havia 
 escolhido determinada categoria.
 
-\citeonline{razma2026} corroboram essa observação no contexto de um ambiente ITSM corporativo multilíngue com mais de 87 mil \textit{tickets}. Os autores aplicaram LIME e SHAP para gerar explicações das predições do mBERT, uma versão do BERT treinada simultaneamente em mais de 100 idimas, e do modelo de regressão logística, e concluíram que a camada de interpretabilidade aumentou a confiança dos operadores no sistema, mesmo nos casos em que a predição estava incorreta pois o analista conseguia identificar por que o modelo havia errado.
+\citeonline{razma2026} corroboram essa observação no contexto de um ambiente ITSM corporativo multilíngue com mais de 87 mil \textit{tickets}. Os autores aplicaram LIME e SHAP para gerar explicações das predições do mBERT (multilingual BERT), uma versão do BERT treinada simultaneamente em mais de 100 idimas, e do modelo de regressão logística, e concluíram que a camada de interpretabilidade aumentou a confiança dos operadores no sistema, mesmo nos casos em que a predição estava incorreta pois o analista conseguia identificar por que o modelo havia errado.
 
 Esses estudos ajudam a justificar a proposta deste trabalho: sistemas de classificação de chamados de TI em produção real funcionam, mas a ausência de mecanismos de explicabilidade limita sua adoção e auditabilidade. A proposta deste TCC busca lidar com essa limitação.
 
@@ -564,7 +564,7 @@ tarefas de PLN.
 \subsubsection{\textit{Token} [CLS] e classificação de sequências}
 \label{subsubsec:bert_cls}
 
-Para tarefas de classificação de sequências, o BERT utiliza um \textit{token} especial [CLS] (abreviação de \textit{Classification}, marcador inserido pelo modelo para agregar a representação global da sequência) inserido no início de cada sequência de entrada. Após o processamento pelas camadas de \textit{encoder}, a representação vetorial correspondente ao [CLS] agrega informação contextual de toda a sequência e é usada como entrada para a camada de classificação \cite{devlin2019}. Durante o \textit{fine-tuning}, essa camada de classificação, tipicamente uma camada \textit{linear} seguida de \textit{softmax}, aprende a mapear a representação do [CLS] para as probabilidades de cada categoria. O presente trabalho, pretende usar essa representação para classificar o chamado de TI em uma das categorias predefinidas, e os valores SHAP são calculados sobre os tokens de entrada para identificar quais contribuíram mais para a predição.
+Para tarefas de classificação de sequências, o BERT utiliza um \textit{token} especial [CLS] (abreviação de \textit{Classification}, marcador inserido pelo modelo para agregar a representação global da sequência) inserido no início de cada sequência de entrada. Após o processamento pelas camadas de \textit{encoder}, a representação vetorial correspondente ao [CLS] agrega informação contextual de toda a sequência e é usada como entrada para a camada de classificação \cite{devlin2019}. Durante o \textit{fine-tuning}, essa camada de classificação, tipicamente uma camada \textit{linear} seguida de \textit{softmax}, aprende a mapear a representação do [CLS] para as probabilidades de cada categoria. O presente trabalho, pretende usar essa representação para classificar o chamado de TI em uma das categorias predefinidas, e os valores SHAP serão calculados sobre os tokens de entrada para identificar quais contribuíram mais para a predição.
 
 
 % ---------------------------------------------------------------
@@ -681,7 +681,7 @@ a classificação \cite{ribeiro2016}.
 \subsubsection{Aplicação em classificação de texto}
 \label{subsubsec:lime_texto}
 
-No contexto de classificação de texto, cada palavra (ou \textit{token}) da entrada é tratada como uma \textit{feature} binária, presente ou ausente. A explicação LIME indica quais palavras, quando presentes, aumentam a probabilidade de cada classe, e quais palavras a diminuem. O resultado pode ser visualizado como um destaque colorido sobre o texto original, onde palavras em verde contribuem positivamente para a classe predita e palavras em vermelho contribuem negativamente \cite{mustafa2025}.
+No contexto de classificação de texto, cada palavra (ou \textit{token}) da entrada é tratada como uma \textit{feature}, ou seja, uma característica binária que indica se está presente ou ausente no texto. A explicação LIME indica quais palavras, quando presentes, aumentam a probabilidade de cada classe, e quais palavras a diminuem. O resultado pode ser visualizado como um destaque colorido sobre o texto original, onde palavras em verde contribuem positivamente para a classe predita e palavras em vermelho contribuem negativamente \cite{mustafa2025}.
 
 \citeonline{mustafa2025} demonstraram que a aplicação de LIME na 
 classificação de texto não apenas produz explicações úteis para o 
@@ -866,7 +866,7 @@ Essa estrutura permite que as redes neurais de grafos (GCN) propaguem informaç�
 
 As redes neurais de grafos (GNN, do inglês \textit{Graph Neural Networks}) operam sobre grafos propagando informação entre nós vizinhos por meio de operações de agregação e transformação. Em cada camada da rede, a representação de cada nó é atualizada com base nas representações de seus vizinhos na iteração anterior \cite{yao2019}. Após múltiplas camadas, cada nó possui uma representação que agrega informação de sua vizinhança local de múltiplos saltos.
 
-No contexto deste trabalho, a relevância do \textit{TextGCN} é fundamentalmente teórica: ele formaliza matematicamente a estrutura do grafo de co-ocorrência e demonstra sua utilidade para classificação de texto. O presente trabalho não irá mplementar GCN, o grafo de co-ocorrência será utilizado exclusivamente como estrutura de visualização para as explanações XAI, não como componente do modelo de classificação.
+No contexto deste trabalho, a relevância do \textit{TextGCN} é fundamentalmente teórica: ele formaliza matematicamente a estrutura do grafo de co-ocorrência e demonstra sua utilidade para classificação de texto. O presente trabalho não irá implementar GCN, o grafo de co-ocorrência será utilizado exclusivamente como estrutura de visualização para as explanações XAI, não como componente do modelo de classificação.
 
 % ---------------------------------------------------------------
 \subsection{Combinação de BERT com grafos de co-ocorrência}
@@ -963,7 +963,7 @@ Os trabalhos de \citeonline{yokota2025} e \citeonline{pereira2023} evidenciam qu
 \subsection{Direcionamento para a proposta}
 \label{subsec:sintese_direcao}
 
-Diante das lacunas identificadas: ausência de XAI em sistemas de classificação de chamados em produção, carência de soluções robustas para PT-BR em \textit{helpdesk} de TI, e a questão do custo-benefício do BERT sem explicabilidade, o presente trabalho propõe um \textit{pipeline} que combina BERTimbau, SHAP, LIME e grafo de co-ocorrência ponderado para classificação de chamados em PT-BR com explicabilidade visual. A descrição detalhada da arquitetura, do \textit{dataset}, dos experimentos e da interface desenvolvida é apresentada no Capítulo~\ref{cap:desenvolvimento}.
+Diante das lacunas identificadas: ausência de XAI em sistemas de classificação de chamados em produção, carência de soluções robustas para PT-BR em \textit{helpdesk} de TI, e a questão do custo-benefício do BERT sem explicabilidade, o presente trabalho propõe um \textit{pipeline} que combina BERTimbau, SHAP, LIME e grafo de co-ocorrência ponderado para classificação de chamados em PT-BR com explicabilidade visual. A descrição detalhada da arquitetura, do \textit{dataset}, dos experimentos e da interface que será desenvolvida é apresentada no Capítulo~\ref{cap:desenvolvimento}.
 
 % ---------------------------------------------------------------
 \section{Metodologia da pesquisa bibliográfica}
@@ -1016,11 +1016,11 @@ Esta seção analisa três trabalhos que enfrentaram o desafio de automatizar a 
 
 \subsection{Trabalho 1: Ticket Automation: An Insight into Current Research}
 
-\citeonline{zemp2021} abordou o problema da triagem automática num ambiente corporativo com mais de um milhão de chamados. Para resolvê-lo, o autor comparou modelos CNN, BiLSTM e RoBERTa. A metodologia envolveu o treino em larga escala num \textit{dataset} real de um banco suíço. Os resultados mostraram uma acurácia de 92\%. No entanto, a solução apresentou limitações na aceitação pelos utilizadores finais devido à natureza de "caixa-preta" do modelo. O presente trabalho diferencia-se por focar na explicabilidade via SHAP e Grafos, permitindo que o humano entenda o "porquê" da classificação.
+\citeonline{zemp2021} abordou o problema da triagem automática num ambiente corporativo com mais de um milhão de chamados. Para resolvê-lo, o autor comparou modelos CNN, BiLSTM e RoBERTa. A metodologia envolveu o treino em larga escala num \textit{dataset} real de um banco suíço. Os resultados mostraram uma acurácia de 92\%. No entanto, a solução apresentou limitações na aceitação pelos utilizadores finais devido à natureza de "caixa-preta" do modelo. O presente trabalho diferencia-se por focar na explicabilidade via SHAP e Grafos, permitindo que os analistas de TI entendam o "porquê" da classificação.
 
 \subsection{Trabalho 2: Machine Learning for Classification of IT Support Tickets}
 
-\citeonline{wahba2023} enfrentou o mesmo desafio de classificação de \textit{tickets}, mas propôs uma abordagem focada em eficiência para domínios especializados. A solução utilizou um modelo híbrido (HOOM) que combina SVM linear com classificadores \textit{online}. A metodologia demonstrou que em textos técnicos, modelos mais simples podem ser competitivos. Os resultados mostraram boa performance com baixo custo computacional. A limitação identificada é que essa abordagem perde as nuances contextuais que modelos baseados em \textit{Transformers} capturam. Este trabalho avança ao utilizar o BERTimbau (específico para PT-BR) e visualização de grafos para suprir a falta de contexto de modelos lineares.
+\citeonline{wahba2023} enfrentou o mesmo desafio de classificação de \textit{tickets}, mas propôs uma abordagem focada em eficiência para domínios especializados. A solução utilizou um modelo híbrido (HOOM) que combina SVM linear com classificadores \textit{online}. A metodologia demonstrou que em textos técnicos, modelos mais simples podem ser competitivos. Os resultados mostraram boa performance com baixo custo computacional. A limitação identificada é que essa abordagem perde as nuances contextuais que modelos baseados em \textit{Transformers} capturam. O presente trabalho propõe o uso do BERTimbau, específico para PT-BR, combinado com visualização de grafos para suprir a falta de contexto de modelos lineares.
 
 \subsection{Trabalho 3: Classificação hierárquica de textos aplicado ao contexto chamados de suporte}
 
@@ -1407,7 +1407,8 @@ O processo de \textit{fine-tuning} seguirá uma abordagem supervisionada de clas
 
 O sucesso da solução será avaliado sob duas perspectivas complementares.
 
-A primeira perspectiva, \textbf{quantitativa}, avalia o desempenho do modelo de classificação por meio das seguintes métricas: acurácia, precisão, revocação, F1-score macro (para lidar com possível desbalanceamento entre categorias) e matriz de confusão para análise de erros sistemáticos. O BERTimbau será considerado satisfatório se superar o \textit{baseline} SVM em pelo menos 5 pontos percentuais de F1-macro.
+A primeira perspectiva, \textbf{quantitativa}, avalia o desempenho do modelo de classificação por meio das seguintes métricas: acurácia, precisão, revocação, F1-score macro para lidar com possível desbalanceamento entre categorias, ROC-AUC macro para avaliar a capacidade do modelo de distinguir entre as categorias ao longo de 
+diferentes limiares de decisão e matriz de confusão para análise de erros sistemáticos. O BERTimbau será considerado satisfatório se superar o \textit{baseline} SVM em pelo menos 5 pontos percentuais de F1-macro.
 
 A segunda perspectiva, \textbf{qualitativa}, avalia a utilidade das explicações geradas. Serão analisadas: a concordância entre as explicações SHAP e LIME para os mesmos chamados, e a coerência semântica dos \textit{tokens} destacados no grafo em relação à categoria predita — verificando se os termos com maior importância SHAP correspondem intuitivamente ao tipo de problema descrito no chamado.
 
@@ -1421,7 +1422,6 @@ O cronograma apresentado a seguir organiza as atividades previstas para o TCC2 d
     \caption{Cronograma de atividades -- Diagrama de Gantt}
     \label{fig:gantt}
     
-    % O resizebox garante que o gráfico ocupe exatamente a largura do texto
     \resizebox{\textwidth}{!}{
         \begin{ganttchart}[
             hgrid,
@@ -1462,10 +1462,9 @@ O cronograma apresentado a seguir organiza as atividades previstas para o TCC2 d
      
             \ganttgroup{Fase 4: Validação e escrita}{13}{16} \\
             \ganttbar{Experimentos e análise de resultados}{13}{15} \\
-            \ganttbar{Redação final do TCC2}{14}{16} \\
+            \ganttbar{Redação do TCC2}{5}{16} \\
             \ganttmilestone{Entrega final}{16}
      
-            % Links de dependência
             \ganttlink{elem2}{elem3}
             \ganttlink{elem3}{elem4}
             \ganttlink{elem4}{elem5}
