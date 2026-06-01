@@ -464,7 +464,7 @@ Esses estudos ajudam a justificar a proposta deste trabalho: sistemas de classif
 
 A representação mais simples de um documento para fins de classificação é o modelo \textit{bag-of-words}: cada documento é representado como um vetor de contagens de palavras, sem considerar a ordem em que aparecem. O \textit{TF-IDF} é um refinamento desse modelo que pondera cada termo pelo produto de sua frequência no documento e pelo inverso de sua frequência no corpus, reduzindo o peso de termos muito comuns e aumentando o peso de termos mais informativos \cite{razma2026}.
 
-Apesar de sua simplicidade, o \textit{TF-IDF} ainda é amplamente utilizado como \textit{baseline} em tarefas de classificação de texto, especialmente quando combinado com SVM, e apresenta desempenho competitivo em domínios com vocabulário técnico específico e baixa polissemia,ou seja, onde as palavras raramente mudam de sentido dependendo do contexto \cite{wahba2023}. Sua principal limitação é a incapacidade de capturar relações semânticas entre termos: palavras sinônimas ou semanticamente relacionadas são tratadas como completamente distintas.
+Apesar de sua simplicidade, o \textit{TF-IDF} ainda é amplamente utilizado como \textit{baseline} em tarefas de classificação de texto, especialmente quando combinado com SVM, e apresenta desempenho competitivo em domínios com vocabulário técnico específico e baixa polissemia, ou seja, onde as palavras raramente mudam de sentido dependendo do contexto \cite{wahba2023}. Sua principal limitação é a incapacidade de capturar relações semânticas entre termos: palavras sinônimas ou semanticamente relacionadas são tratadas como completamente distintas.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{\textit{Embeddings} estáticos — \textit{Word2Vec} e \textit{GloVe}}
@@ -514,7 +514,8 @@ cada um formado por camadas empilhadas \cite{vaswani2017}. O \textit{encoder}
 representações vetoriais ricas em informação contextual. O \textit{decoder}, 
 por sua vez, utiliza essas representações para gerar a sequência de saída como uma tradução ou resposta. Cada camada do \textit{encoder} é composta 
 por dois sub-componentes principais: o mecanismo de \textit{self-attention}, 
-que permite que cada \textit{token} ``observe'' todos os outros da sequência, 
+que permite que cada \textit{token}, ou seja, cada unidade mínima de texto em que 
+o modelo divide a entrada, ``observe'' todos os outros da sequência, 
 e uma rede neural densa aplicada posição a posição (\textit{feed-forward 
 network}). O resultado de cada sub-componente passa por uma operação de 
 normalização (\textit{layer normalization}) que estabiliza o treinamento 
@@ -594,7 +595,7 @@ tarefas de PLN.
 \subsubsection{\textit{Token} [CLS] e classificação de sequências}
 \label{subsubsec:bert_cls}
 
-Para tarefas de classificação de sequências, o BERT utiliza um \textit{token} especial [CLS] (abreviação de \textit{Classification}, marcador inserido pelo modelo para agregar a representação global da sequência) inserido no início de cada sequência de entrada. Após o processamento pelas camadas de \textit{encoder}, a representação vetorial correspondente ao [CLS] agrega informação contextual de toda a sequência e é usada como entrada para a camada de classificação \cite{devlin2019}. Durante o \textit{fine-tuning}, essa camada de classificação, tipicamente uma camada \textit{linear} seguida de \textit{softmax}, aprende a mapear a representação do [CLS] para as probabilidades de cada categoria. O presente trabalho, pretende usar essa representação para classificar o chamado de TI em uma das categorias predefinidas, e os valores SHAP serão calculados sobre os tokens de entrada para identificar quais contribuíram mais para a predição.
+Para tarefas de classificação de sequências, o BERT utiliza um \textit{token} especial [CLS] (abreviação de \textit{Classification}, marcador inserido pelo modelo para agregar a representação global da sequência) inserido no início de cada sequência de entrada. Após o processamento pelas camadas de \textit{encoder}, a representação vetorial correspondente ao [CLS] agrega informação contextual de toda a sequência e é usada como entrada para a camada de classificação \cite{devlin2019}. Durante o \textit{fine-tuning}, essa camada de classificação, tipicamente uma camada \textit{linear} seguida de \textit{softmax}, aprende a mapear a representação do [CLS] para as probabilidades de cada categoria. O presente trabalho pretende usar essa representação para classificar o chamado de TI em uma das categorias predefinidas, e os valores SHAP serão calculados sobre os tokens de entrada para identificar quais contribuíram mais para a predição.
 
 
 % ---------------------------------------------------------------
@@ -849,7 +850,7 @@ esses valores testando apenas uma amostra dessas combinações, tornando
 o método viável mesmo em modelos de texto, onde cada \textit{token} 
 é tratado como uma \textit{feature}.
 
-Para modelos baseados em \textit{transformers}, o \textit{KernelSHAP} é a variante mais utilizada. O resultado é um vetor de importância por \textit{token} que pode ser visualizado como mapa de calor sobre o texto de entrada, \textit{tokens} com valores SHAP positivos contribuem para a classe predita, e \textit{tokens} com valores negativos contribuem contra ela. O presente trabalho, pretende utilizar esses valores SHAP por token como pesos dos nós no grafo de co-ocorrência proposto.
+Para modelos baseados em \textit{transformers}, o \textit{KernelSHAP} é a variante mais utilizada. O resultado é um vetor de importância por \textit{token} que pode ser visualizado como mapa de calor sobre o texto de entrada, \textit{tokens} com valores SHAP positivos contribuem para a classe predita, e \textit{tokens} com valores negativos contribuem contra ela. O presente trabalho pretende utilizar esses valores SHAP por token como pesos dos nós no grafo de co-ocorrência proposto.
 % ---------------------------------------------------------------
 \subsection{Comparação entre SHAP e LIME}
 \label{subsec:shap_lime}
