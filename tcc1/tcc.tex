@@ -199,29 +199,51 @@ Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (
 \chapter{Introdução}
 \label{cap:introducao}
 
-
-A gestão eficiente de \textit{tickets} de suporte técnico em organizações de TI enfrenta desafios crescentes devido ao volume elevado de chamados e à complexidade semântica dos textos gerados por usuários não técnicos. Este trabalho propõe um \textit{pipeline} híbrido de classificação automática e roteamento inteligente utilizando Processamento de Linguagem Natural (PLN) com modelos BERT (\textit{Bidirectional Encoder Representations from Transformers}, modelos de linguagem baseados em redes neurais profundas), técnicas de explicabilidade SHAP (\textit{SHapley Additive exPlanations}) e LIME (\textit{Local Interpretable Model-Agnostic Explanations}) — métodos que identificam quais termos do texto influenciaram a decisão do modelo — e visualização em grafos de co-ocorrência (estruturas que representam relações entre termos do texto) para tornar transparente o processo decisório em tempo real.
+A gestão eficiente de \textit{tickets} de suporte técnico em 
+organizações de TI enfrenta desafios crescentes devido ao 
+volume elevado de chamados e à complexidade semântica dos 
+textos gerados por usuários não técnicos \cite{zemp2021, 
+razma2026}. Este trabalho investiga o uso de um 
+\textit{pipeline} de classificação automática utilizando 
+Processamento de Linguagem Natural (PLN) com modelos BERT 
+(\textit{Bidirectional Encoder Representations from 
+Transformers}, modelos de linguagem baseados em redes neurais 
+profundas), técnicas de explicabilidade SHAP 
+(\textit{SHapley Additive exPlanations}) e LIME 
+(\textit{Local Interpretable Model-Agnostic Explanations}) 
+— métodos que identificam quais termos do texto influenciaram 
+a decisão do modelo — e visualização em grafos de 
+co-ocorrência (estruturas que representam relações entre 
+termos do texto) para tornar transparente o processo 
+decisório.
 
 % ---------------------------------------------------------------
 \section{Contexto}
 \label{sec:contexto}
 
-Os \textit{helpdesks} corporativos processam diariamente milhares de \textit{tickets} com descrições variadas que misturam jargão técnico, erros ortográficos e expressões coloquiais. Isso sobrecarrega os analistas, tornando a triagem manual lenta, inconsistente e propensa a erros.
+Os \textit{helpdesks} corporativos processam diariamente milhares 
+de \textit{tickets} com descrições variadas que misturam jargão 
+técnico, erros ortográficos e expressões coloquiais 
+\cite{zemp2021}. Isso sobrecarrega os analistas, tornando a 
+triagem manual lenta, inconsistente e propensa a erros.
 
 Estudos recentes demonstram que sistemas automatizados com 
-\textit{Transformers} alcançam até 92\% de acurácia em classificação 
-multi-categoria \cite{zemp2021}, mas sua natureza de "caixa-preta" 
-gera resistência entre equipes operacionais que precisam confiar nas 
-decisões algorítmicas para roteamento.
+\textit{Transformers} alcançam até 92\% de acurácia em 
+classificação multi-categoria \cite{zemp2021}, mas sua natureza 
+de ``caixa-preta'', modelos que produzem predições sem revelar 
+os critérios utilizados para tomá-las, gera resistência entre 
+equipes operacionais que precisam confiar nas decisões 
+algorítmicas para roteamento \cite{razma2026}.
 
 No contexto brasileiro, onde grande parte da comunicação técnica 
-ocorre em português, modelos tradicionais como o \textit{Naive Bayes}, 
-que classifica textos com base em probabilidades, e redes MLP 
-(\textit{Multilayer Perceptron}), que são redes neurais simples sem 
-capacidade de entender o contexto das palavras, apresentam limitações 
-significativas ao lidar com \textit{tickets} reais, pois não conseguem 
-capturar a variabilidade semântica nem o vocabulário técnico específico 
-do domínio de TI.
+ocorre em português, modelos tradicionais como o \textit{Naive 
+Bayes}, que classifica textos com base em probabilidades, e redes 
+MLP (\textit{Multilayer Perceptron}), que são redes neurais 
+simples sem capacidade de entender o contexto das palavras, 
+apresentam limitações significativas ao lidar com 
+\textit{tickets} reais, pois não conseguem capturar a 
+variabilidade semântica nem o vocabulário técnico específico 
+do domínio de TI \cite{yokota2025}.
 
 \vspace{0.3cm}
 % \noindent\fbox{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule}{%
@@ -273,23 +295,31 @@ Dessa forma, investigar se mecanismos de explicabilidade baseados em grafos pode
 \section{Objetivo}
 \label{sec:objetivo}
 
-Este trabalho estrutura-se a partir de um objetivo central, que define o escopo principal da pesquisa, e de objetivos específicos que detalham as etapas técnicas e metodológicas necessárias para sua execução. 
+Este trabalho estrutura-se a partir de um objetivo central, que define o escopo principal da pesquisa, e de objetivos específicos que representam as metas intermediárias e os subprodutos analíticos necessários para responder à questão central de investigação.
 
 \subsection{Objetivo principal}
 
-Propor e avaliar um \textit{pipeline} utilizando PLN e modelagem em grafos, incorporando mecanismos de explicabilidade para compreender o processo de decisão e a relevância de cada termo na classificação de chamados de TI.
+Investigar se a inclusão de uma camada de explicabilidade baseada em SHAP, LIME e grafos de co-ocorrência a um \textit{pipeline} de classificação com BERTimbau aumenta a transparência e auditabilidade do processo decisório, em relação a abordagens sem explicabilidade, utilizando chamados de suporte técnico em português brasileiro.
 
 \subsection{Objetivos secundários}
 
 \begin{enumerate}
-    \item Propor um \textit{pipeline} de PLN com BERT para classificação semântica de chamados de suporte técnico.
 
-    \item Utilizar mecanismos de explicabilidade com SHAP ou LIME para atribuição de importância aos termos da entrada textual.
+    \item Analisar o ganho de desempenho do modelo BERTimbau com \textit{fine-tuning} em relação ao \textit{baseline} SVM com TF-IDF, utilizando a métrica F1-macro.
 
-    \item Construir grafos de decisão, exibindo visualmente a relação entre os termos e a categoria classificada.
+    \item Avaliar a consistência e a coerência semântica das explicações geradas por SHAP e LIME no contexto de chamados de TI.
 
-    \item Avaliar o desempenho do modelo BERT na tarefa de classificação automática de chamados de suporte técnico.
+    \item Comparar SHAP e LIME em termos de estabilidade e 
+    relevância das explicações geradas para chamados de suporte 
+    técnico em português brasileiro, identificando qual método 
+    produz explicações mais consistentes nesse domínio.
+
+    \item Analisar se a visualização em grafos de co-ocorrência 
+    ponderados por valores SHAP fornece auditabilidade adicional 
+    ao processo de classificação em relação à exibição isolada 
+    de \textit{scores} de importância.
 \end{enumerate}
+
 
 % ===============================================================
 % CAPÍTULO 2 - REVISÃO BIBLIOGRÁFICA
@@ -685,6 +715,24 @@ peso maior. Quarto, um modelo linear simples é ajustado sobre esse
 conjunto, e seus coeficientes indicam quais palavras mais influenciaram 
 a classificação \cite{ribeiro2016}.
 
+Formalmente, o LIME resolve o seguinte problema de otimização 
+para encontrar a explicação $\xi(x)$ de uma instância $x$:
+
+\begin{equation}
+\xi(x) = \arg\min_{g \in G} \mathcal{L}(f, g, \pi_x) + \Omega(g)
+\end{equation}
+
+onde $f$ é o modelo de caixa-preta a ser explicado, $G$ é o 
+conjunto de modelos interpretáveis candidatos, $\mathcal{L}$ é 
+uma função de perda que mede a fidelidade da explicação $g$ ao 
+modelo $f$ na vizinhança de $x$, $\pi_x$ é uma função de 
+proximidade que pondera as instâncias perturbadas pela 
+similaridade com $x$, e $\Omega(g)$ é uma medida de 
+complexidade do modelo explicativo \cite{ribeiro2016}. O 
+objetivo é encontrar o modelo interpretável mais simples 
+possível que seja localmente fiel ao comportamento do modelo 
+complexo.
+
 A Figura~\ref{fig:lime_exemplo} ilustra esse processo: as palavras 
 destacadas indicam sua contribuição positiva ou negativa para a 
 classe predita.
@@ -749,6 +797,25 @@ para o contexto de modelos de aprendizado de máquina: cada
 ``valor do jogo'', e o valor SHAP de cada \textit{feature} mede 
 o quanto ela contribuiu para a predição, considerando todas as 
 possíveis ordens em que as \textit{features} poderiam ser incluídas.
+
+Formalmente, o valor de Shapley de uma \textit{feature} $i$ 
+é calculado como:
+
+\begin{equation}
+\phi_i = \sum_{S \subseteq F \setminus \{i\}} 
+\frac{|S|!(|F| - |S| - 1)!}{|F|!} 
+\left[ f_{S \cup \{i\}}(x_{S \cup \{i\}}) - f_S(x_S) \right]
+\end{equation}
+
+onde $F$ é o conjunto de todas as \textit{features}, $S$ é um 
+subconjunto que não inclui $i$, $f(S)$ é a predição do modelo 
+usando apenas as \textit{features} em $S$, e 
+$f(S \cup \{i\})$ é a predição incluindo a \textit{feature} 
+$i$ \cite{lundberg2017}. O fator 
+$\frac{|S|!(|F| - |S| - 1)!}{|F|!}$ garante que todas as 
+ordenações possíveis de inclusão das \textit{features} sejam 
+consideradas com peso igual, assegurando a propriedade de 
+simetria.
 
 A Figura~\ref{fig:shap_exemplo} ilustra esse conceito: cada 
 \textit{feature} desloca a predição do valor base até o 
