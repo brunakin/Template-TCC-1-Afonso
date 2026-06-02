@@ -850,7 +850,8 @@ esses valores testando apenas uma amostra dessas combinações, tornando
 o método viável mesmo em modelos de texto, onde cada \textit{token} 
 é tratado como uma \textit{feature}.
 
-Para modelos baseados em \textit{transformers}, o \textit{KernelSHAP} é a variante mais utilizada. O resultado é um vetor de importância por \textit{token} que pode ser visualizado como mapa de calor sobre o texto de entrada, \textit{tokens} com valores SHAP positivos contribuem para a classe predita, e \textit{tokens} com valores negativos contribuem contra ela. O presente trabalho pretende utilizar esses valores SHAP por token como pesos dos nós no grafo de co-ocorrência proposto.
+Para modelos baseados em \textit{transformers}, o \textit{KernelSHAP} é a variante mais utilizada. O resultado é um vetor de importância por \textit{token} que pode ser visualizado como mapa de calor sobre o texto de entrada, \textit{tokens} com valores SHAP positivos contribuem para a classe predita, e \textit{tokens} com valores negativos contribuem contra ela. O presente trabalho pretende utilizar esses valores SHAP por \textit{token} como pesos dos nós no grafo de co-ocorrência, em conjunto com os valores LIME, permitindo comparação visual entre os dois métodos de explicabilidade.
+
 % ---------------------------------------------------------------
 \subsection{Comparação entre SHAP e LIME}
 \label{subsec:shap_lime}
@@ -946,7 +947,7 @@ Essa representação captura informação estrutural sobre o texto que as repres
 
 O peso das arestas em um grafo de co-ocorrência pode ser determinado por diferentes métricas. A abordagem mais simples utiliza a frequência bruta de co-ocorrência, ou seja, a contagem de quantas vezes o par de \textit{tokens} co-ocorreu dentro da janela deslizante. Métricas mais sofisticadas, como a Informação Mútua Pontual (PMI, do inglês \textit{Pointwise Mutual Information}), normalizam a frequência de co-ocorrência pelas frequências individuais de cada \textit{token}, favorecendo pares que co-ocorrem mais do que seria esperado pelo acaso \cite{yao2019}.
 
-No presente trabalho, os pesos das arestas serão determinados pela frequência de co-ocorrência normalizada, enquanto os pesos dos \textit{nós}, que constituem o elemento central da proposta, serão determinados pelos valores SHAP calculados para cada \textit{token} pelo modelo BERTimbau. Essa distinção entre ponderação de arestas (estrutura relacional) e ponderação de nós (relevância explicativa) é a inovação central da camada de visualização proposta.
+No presente trabalho, os pesos das arestas serão determinados pela frequência de co-ocorrência normalizada, enquanto os pesos dos \textit{nós}, que constituem o elemento central da proposta, serão determinados pelos valores SHAP e LIME calculados para cada \textit{token} pelo modelo BERTimbau, permitindo comparar visualmente a importância atribuída por cada método. Essa distinção entre ponderação de arestas (estrutura relacional) e ponderação de nós (relevância explicativa) é a inovação central da camada de visualização proposta.
 
 % ---------------------------------------------------------------
 \subsection{\textit{TextGCN} — formalização do grafo de co-ocorrência}
