@@ -71,7 +71,7 @@ Bruna Kinjo Luiz Pinto -- 1142710312 \\
 Kayke Ahrens Biscegli -- 1142709883}
 \local{São Paulo}
 \data{2026}
-\orientador{Prof. Douglas Baquião}
+\orientador{Prof. Douglas José Baquião Ribeiro}
 % \coorientador{Prof. Nome do Coorientador} % Descomente se houver coorientador
 
 \instituicao{%
@@ -223,27 +223,46 @@ decisório.
 
 Os \textit{helpdesks} corporativos processam diariamente milhares 
 de \textit{tickets} com descrições variadas que misturam jargão 
-técnico, erros ortográficos e expressões coloquiais 
-\cite{zemp2021}. Isso sobrecarrega os analistas, tornando a 
-triagem manual lenta, inconsistente e propensa a erros.
+técnico, erros ortográficos e expressões coloquiais \cite{zemp2021}. 
+Isso sobrecarrega os analistas, tornando a triagem manual lenta, 
+inconsistente e propensa a erros.
 
 Estudos recentes demonstram que sistemas automatizados com 
-\textit{Transformers} alcançam até 92\% de acurácia em 
-classificação multi-categoria \cite{zemp2021}, mas sua natureza 
-de ``caixa-preta'', modelos que produzem predições sem revelar 
-os critérios utilizados para tomá-las, gera resistência entre 
-equipes operacionais que precisam confiar nas decisões 
-algorítmicas para roteamento \cite{razma2026}.
+\textit{Transformers} alcançam até 92\% de acurácia em classificação 
+multi-categoria \cite{zemp2021}, mas sua natureza de ``caixa-preta'', 
+modelos que produzem predições sem revelar os critérios utilizados 
+para tomá-las, gera resistência entre equipes operacionais que 
+precisam confiar nas decisões algorítmicas para roteamento 
+\cite{razma2026}.
+
+A raiz matemática dessa instransparência está no mecanismo central 
+desses modelos. A cada camada de processamento, o modelo realiza 
+operações do tipo:
+
+\begin{equation*}
+\text{Attention}(Q, K, V) = 
+\text{softmax}\!\left(\frac{QK^{\top}}{\sqrt{d_k}}\right)V
+\end{equation*}
+
+onde $Q$, $K$ e $V$ são matrizes de consulta, chave e valor 
+derivadas da entrada \cite{vaswani2017}. Essas transformações 
+se repetem em centenas de milhões de parâmetros distribuídos 
+em múltiplas camadas, tornando impossível rastrear por que uma 
+palavra específica influenciou determinada classificação. Embora 
+o modelo produza resultados precisos, o caminho percorrido até 
+a decisão permanece completamente não auditável, o que justifica a 
+necessidade de técnicas de explicabilidade como SHAP e LIME para 
+atribuir, de forma matematicamente justificável, a importância 
+de cada termo na predição \cite{lundberg2017, ribeiro2016}.
 
 No contexto brasileiro, onde grande parte da comunicação técnica 
 ocorre em português, modelos tradicionais como o \textit{Naive 
 Bayes}, que classifica textos com base em probabilidades, e redes 
-MLP (\textit{Multilayer Perceptron}), que são redes neurais 
-simples sem capacidade de entender o contexto das palavras, 
-apresentam limitações significativas ao lidar com 
-\textit{tickets} reais, pois não conseguem capturar a 
-variabilidade semântica nem o vocabulário técnico específico 
-do domínio de TI \cite{yokota2025}.
+MLP (\textit{Multilayer Perceptron}), que são redes neurais simples 
+sem capacidade de entender o contexto das palavras, apresentam 
+limitações significativas ao lidar com \textit{tickets} reais, 
+pois não conseguem capturar a variabilidade semântica nem o 
+vocabulário técnico específico do domínio de TI \cite{yokota2025}.
 
 \vspace{0.3cm}
 % \noindent\fbox{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule}{%
@@ -299,25 +318,32 @@ Este trabalho estrutura-se a partir de um objetivo central, que define o escopo 
 
 \subsection{Objetivo principal}
 
-Investigar se a inclusão de uma camada de explicabilidade e grafos de co-ocorrência, a um pipeline de classificação baseado em transformers, aumenta a transparência e auditabilidade do processo decisório, em relação a abordagens sem explicabilidade, utilizando chamados de suporte de TI em português brasileiro.
+Investigar se a inclusão de uma camada de explicabilidade e grafos de co-ocorrência, a um \textit{pipeline} de classificação baseado em \textit{transformers}, aumenta a transparência e auditabilidade do processo decisório, em relação a abordagens sem explicabilidade, utilizando chamados de suporte de TI em português brasileiro.
 
 \subsection{Objetivos secundários}
 
 \begin{enumerate}
 
-    \item Analisar o ganho de desempenho do modelo BERTimbau com \textit{fine-tuning} em relação ao \textit{baseline} SVM com TF-IDF, utilizando a métrica F1-macro.
+    \item Analisar o ganho de desempenho do modelo BERTimbau com 
+    \textit{fine-tuning} em relação ao \textit{baseline} SVM com 
+    TF-IDF, utilizando a métrica F1-macro.
 
-    \item Avaliar a consistência e a coerência semântica das explicações geradas por SHAP e LIME no contexto de chamados de TI.
-
-    \item Comparar SHAP e LIME em termos de estabilidade e 
-    relevância das explicações geradas para chamados de suporte 
-    técnico em português brasileiro, identificando qual método 
-    produz explicações mais consistentes nesse domínio.
+    \item Comparar a explicabilidade gerada por SHAP e LIME em 
+    termos de consistência, estabilidade e relevância semântica 
+    das explicações produzidas para chamados de suporte técnico 
+    em português brasileiro.
 
     \item Analisar se a visualização em grafos de co-ocorrência 
-    ponderados por valores SHAP fornece auditabilidade adicional 
-    ao processo de classificação em relação à exibição isolada 
-    de \textit{scores} de importância.
+    ponderados por valores SHAP e LIME fornece auditabilidade 
+    adicional ao processo de classificação em relação à exibição 
+    isolada de \textit{scores} de importância.
+
+    \item Validar a consistência semântica das explicações 
+    geradas pelo \textit{pipeline} no contexto de chamados de 
+    suporte técnico em português brasileiro, verificando se os 
+    termos destacados correspondem ao vocabulário técnico 
+    esperado para cada categoria classificada.
+
 \end{enumerate}
 
 
@@ -595,7 +621,7 @@ tarefas de PLN.
 \subsubsection{\textit{Token} [CLS] e classificação de sequências}
 \label{subsubsec:bert_cls}
 
-Para tarefas de classificação de sequências, o BERT utiliza um \textit{token} especial [CLS] (abreviação de \textit{Classification}, marcador inserido pelo modelo para agregar a representação global da sequência) inserido no início de cada sequência de entrada. Após o processamento pelas camadas de \textit{encoder}, a representação vetorial correspondente ao [CLS] agrega informação contextual de toda a sequência e é usada como entrada para a camada de classificação \cite{devlin2019}. Durante o \textit{fine-tuning}, essa camada de classificação, tipicamente uma camada \textit{linear} seguida de \textit{softmax}, aprende a mapear a representação do [CLS] para as probabilidades de cada categoria. O presente trabalho pretende usar essa representação para classificar o chamado de TI em uma das categorias predefinidas, e os valores SHAP serão calculados sobre os tokens de entrada para identificar quais contribuíram mais para a predição.
+Para tarefas de classificação de sequências, o BERT utiliza um \textit{token} especial [CLS] (abreviação de \textit{Classification}, marcador inserido pelo modelo para agregar a representação global da sequência) inserido no início de cada sequência de entrada. Após o processamento pelas camadas de \textit{encoder}, a representação vetorial correspondente ao [CLS] agrega informação contextual de toda a sequência e é usada como entrada para a camada de classificação \cite{devlin2019}. Durante o \textit{fine-tuning}, essa camada de classificação, tipicamente uma camada \textit{linear} seguida de \textit{softmax}, aprende a mapear a representação do [CLS] para as probabilidades de cada categoria. O presente trabalho pretende usar essa representação para classificar o chamado de TI em uma das categorias predefinidas, e os valores SHAP e LIME serão calculados sobre os tokens de entrada para identificar quais contribuíram mais para a predição.
 
 
 % ---------------------------------------------------------------
@@ -880,7 +906,10 @@ pronunciada.
 \subsubsection{Justificativa para uso conjunto neste trabalho}
 \label{subsubsec:comparacao_justificativa}
 
-A decisão de implementar e comparar SHAP e LIME neste trabalho, em vez de escolher apenas um dos métodos, é fundamentada em duas razões. Primeiro, a comparação entre os dois métodos produz evidência empírica sobre a qualidade e consistência das explicações geradas para chamados de TI em PT-BR, contribuição metodológica relevante para a literatura sobre XAI em domínios especializados. Segundo, a construção do grafo de co-ocorrência proposto utiliza os valores SHAP como pesos dos nós, mas a comparação com as explicações LIME permite avaliar se a escolha do método de XAI afeta a estrutura e a interpretabilidade do grafo resultante.
+A decisão de implementar e comparar SHAP e LIME neste trabalho, em vez de escolher apenas um dos métodos, é fundamentada em duas razões. Primeiro, a comparação entre os dois métodos produz evidência empírica sobre a qualidade e consistência das explicações geradas para chamados de TI em PT-BR, contribuição metodológica relevante para a literatura sobre XAI em domínios especializados. Segundo, a construção do grafo de co-ocorrência proposto utiliza os 
+valores SHAP e LIME como pesos dos nós, permitindo avaliar 
+se a escolha do método de XAI afeta a estrutura e a 
+interpretabilidade do grafo resultante.
 
 % ---------------------------------------------------------------
 \subsection{XAI aplicado a classificação de texto e tickets de TI}
@@ -937,12 +966,44 @@ de chamado classificada.
 \subsubsection{Definição de grafo de co-ocorrência — nós, arestas e janela deslizante}
 \label{subsubsec:grafos_definicao}
 
-Um grafo de co-ocorrência de texto é uma estrutura $G = (V, E)$ onde o conjunto de nós $V$ representa os \textit{tokens} únicos do texto e o conjunto de arestas $E$ conecta pares de \textit{tokens} que co-ocorrem dentro de uma janela deslizante de tamanho $w$ sobre o texto. A janela deslizante percorre o texto posição por posição; em cada posição, todos os pares de \textit{tokens} dentro da janela recebem uma aresta ou têm o peso de sua aresta existente incrementado \cite{yao2019}.
+Um grafo de co-ocorrência de texto é uma estrutura 
+$G = (V, E, W, f_{\text{shap}}, f_{\text{lime}})$, onde:
 
-Essa representação captura informação estrutural sobre o texto que as representações vetoriais não preservam: dois \textit{tokens} que frequentemente aparecem juntos no mesmo contexto estarão conectados por uma aresta de alto peso no grafo, independentemente de sua posição absoluta na sequência. Para chamados de TI, isso significa que termos técnicos que tendem a co-ocorrer em chamados de uma mesma categoria, como ``VPN'' e ``acesso'' em chamados de conectividade, estarão estruturalmente próximos no grafo.
+\begin{itemize}
+    \item $V$ representa o conjunto de nós, correspondendo aos 
+    \textit{tokens} únicos do texto;
+    
+    \item $E$ representa o conjunto de arestas, conectando pares 
+    de \textit{tokens} que co-ocorrem dentro de uma janela 
+    deslizante de tamanho $w$;
+    
+    \item $W$ representa os pesos das arestas, determinados pela 
+    frequência de co-ocorrência entre os \textit{tokens};
+    
+    \item $f_{\text{shap}}$ representa os pesos dos nós calculados 
+    pelo método SHAP, indicando a contribuição de cada 
+    \textit{token} para a predição do modelo \cite{lundberg2017};
+    
+    \item $f_{\text{lime}}$ representa os pesos dos nós calculados 
+    pelo método LIME, permitindo comparação visual entre os dois 
+    métodos de explicabilidade \cite{ribeiro2016}.
+\end{itemize}
 
+A janela deslizante percorre o texto posição por posição; em cada 
+posição, todos os pares de \textit{tokens} dentro da janela 
+recebem uma aresta ou têm o peso de sua aresta existente 
+incrementado \cite{yao2019}. Essa representação captura informação 
+estrutural sobre o texto que as representações vetoriais não 
+preservam: dois \textit{tokens} que frequentemente aparecem juntos 
+no mesmo contexto estarão conectados por uma aresta de alto peso 
+no grafo, independentemente de sua posição absoluta na sequência. 
+Para chamados de TI, isso significa que termos técnicos que tendem 
+a co-ocorrer em chamados de uma mesma categoria, como ``VPN'' e 
+``acesso'' em chamados de conectividade, estarão estruturalmente 
+próximos no grafo, com pesos de nós proporcionais à sua 
+importância explicativa calculada por SHAP e LIME.
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsubsection{Ponderação de arestas — frequência, PMI e TF-IDF}
+\subsubsection{Ponderação de arestas — frequência, PMI}
 \label{subsubsec:grafos_ponderacao}
 
 O peso das arestas em um grafo de co-ocorrência pode ser determinado por diferentes métricas. A abordagem mais simples utiliza a frequência bruta de co-ocorrência, ou seja, a contagem de quantas vezes o par de \textit{tokens} co-ocorreu dentro da janela deslizante. Métricas mais sofisticadas, como a Informação Mútua Pontual (PMI, do inglês \textit{Pointwise Mutual Information}), normalizam a frequência de co-ocorrência pelas frequências individuais de cada \textit{token}, favorecendo pares que co-ocorrem mais do que seria esperado pelo acaso \cite{yao2019}.
@@ -1007,7 +1068,7 @@ maior peso com seus vizinhos na janela de co-ocorrência.
 
 O presente trabalho adotará uma abordagem estruturalmente análoga, 
 mas com diferenças importantes: utilizará BERTimbau em vez de 
-RoBERTa, aplicará os valores SHAP como pesos dos nós em vez dos 
+RoBERTa, aplicará os valores SHAP e LIME como pesos dos nós em vez dos 
 \textit{scores} LIME como pesos de arestas, e o domínio de aplicação 
 será a classificação de chamados de suporte de TI em português 
 brasileiro. A escolha de ponderar os nós em vez das arestas reflete 
@@ -1046,7 +1107,7 @@ abordagem, cuja implementação é detalhada no Capítulo~\ref{cap:desenvolvimen
 \subsubsection{Ausência de XAI em sistemas de classificação de tickets em produção}
 \label{subsubsec:lacuna_xai}
 
-O trabalho de \citeonline{zemp2021} demonstra que sistemas de classificação de chamados de TI com alta acurácia são tecnicamente viáveis e já foram implantados em produção. No entanto, a ausência de mecanismos de explicabilidade limita a adoção e a auditabilidade desses sistemas. Os agentes de suporte recebem predições sem justificativa, o que dificulta a identificação de erros sistemáticos e a construção de confiança no sistema. Nenhum dos trabalhos de classificação de chamados de TI identificados no screening incorpora uma camada de visualização gráfica para explanações XAI.
+O trabalho de \citeonline{zemp2021} demonstra que sistemas de classificação de chamados de TI com alta acurácia são tecnicamente viáveis e já foram implantados em produção. No entanto, a ausência de mecanismos de explicabilidade limita a adoção e a auditabilidade desses sistemas. Os agentes de suporte recebem predições sem justificativa, o que dificulta a identificação de erros sistemáticos e a construção de confiança no sistema. Nenhum dos trabalhos de classificação de chamados de TI identificados no \textit{screening} incorpora uma camada de visualização gráfica para explanações XAI.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsubsection{Carência de soluções robustas para PT-BR em \textit{helpdesk}}
@@ -1102,7 +1163,7 @@ Inteligência Artificial Explicável (XAI) refere-se ao conjunto de métodos e t
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Grafo de Co-ocorrência}
  
-Um grafo de co-ocorrência é uma estrutura $G = (V, E)$ na qual os nós $V$ representam os termos únicos de um texto e as arestas $E$ conectam pares de termos que aparecem juntos dentro de uma janela deslizante de tamanho fixo \cite{yao2019}. Neste trabalho, essa estrutura será utilizada como camada de visualização das explicações XAI: os pesos dos nós serão determinados pelos valores SHAP de cada \textit{token}, e os pesos das arestas pela frequência de co-ocorrência, produzindo uma representação visual que combina estrutura relacional do texto com relevância explicativa do modelo.
+Um grafo de co-ocorrência é uma estrutura $G = (V, E, W, f_{\text{shap}}, f_{\text{lime}})$ na qual os nós $V$ representam os termos únicos de um texto e as arestas $E$ conectam pares de termos que aparecem juntos dentro de uma janela deslizante de tamanho fixo \cite{yao2019}. Neste trabalho, essa estrutura será utilizada como camada de visualização das explicações XAI: os pesos dos nós serão determinados pelos valores SHAP e LIME de cada \textit{token}, e os pesos das arestas pela frequência de co-ocorrência, produzindo uma representação visual que combina estrutura relacional do texto com relevância explicativa do modelo.
  
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Sistema de \textit{Help Desk} e Triagem de Chamados}
@@ -1326,10 +1387,12 @@ Para isso, serão utilizadas duas técnicas complementares de
 explicabilidade: o SHAP, que atribui a cada termo do chamado um 
 valor numérico indicando o quanto ele contribuiu para a 
 classificação, e o LIME, que gera explicações locais testando 
-versões modificadas do texto. Os valores SHAP serão utilizados 
-como pesos dos nós em um grafo de co-ocorrência, produzindo uma 
-visualização gráfica que combina a estrutura relacional do 
-texto com a relevância explicativa de cada termo.
+versões modificadas do texto. Os valores SHAP e LIME serão 
+utilizados como pesos dos nós em um grafo de co-ocorrência 
+$G = (V, E, W, f_{\text{shap}}, f_{\text{lime}})$, produzindo 
+uma visualização gráfica que combina a estrutura relacional do 
+texto com a relevância explicativa de cada termo segundo ambos 
+os métodos.
 
 O sistema será desenvolvido para atender principalmente gestores 
 e analistas de TI, que poderão utilizá-lo durante o processo de 
@@ -1413,7 +1476,7 @@ para tornar o processo decisório do modelo auditável:
 \begin{itemize}
     \item \textbf{Grafo de Co-Ocorrência}: representação visual das 
     relações entre os \textit{tokens} do chamado, onde o tamanho de 
-    cada nó será proporcional ao valor SHAP do termo, indicando sua 
+    cada nó será proporcional ao valor SHAP e LIME do termo, indicando sua 
     importância para a classificação, e a espessura das conexões 
     indicará a frequência de co-ocorrência entre os \textit{tokens};
     
@@ -1478,7 +1541,7 @@ O fluxo geral de funcionamento da aplicação seguirá as seguintes etapas:
 
     \item \textbf{Cálculo de explicabilidade} — sobre o mesmo texto de entrada, são calculados os valores SHAP e as importâncias LIME. Cada \textit{token} recebe um valor numérico que representa sua contribuição para a predição: valores positivos indicam contribuição para a classe predita, e valores negativos indicam contribuição contrária.
 
-    \item \textbf{Construção do grafo de co-ocorrência} — os \textit{tokens} do chamado são representados como nós de um grafo $G = (V, E)$. As arestas conectam pares de \textit{tokens} que co-ocorrem dentro de uma janela deslizante de tamanho fixo, com pesos proporcionais à frequência de co-ocorrência. Os pesos dos \textbf{nós} são determinados pelos valores SHAP calculados na etapa anterior — \textit{tokens} com maior importância SHAP geram nós visualmente maiores na interface. O grafo é serializado em JSON com a estrutura \texttt{\{nodes, edges\}} e enviado ao \textit{frontend}.
+    \item \textbf{Construção do grafo de co-ocorrência} — os \textit{tokens} do chamado são representados como nós de um grafo $G = (V, E, W, f_{\text{shap}}, f_{\text{lime}})$. As arestas conectam pares de \textit{tokens} que co-ocorrem dentro de uma janela deslizante de tamanho fixo, com pesos proporcionais à frequência de co-ocorrência. Os pesos dos \textbf{nós} são determinados pelos valores SHAP e LIME calculados na etapa anterior — \textit{tokens} com maior importância SHAP geram nós visualmente maiores na interface. O grafo é serializado em JSON com a estrutura \texttt{\{nodes, edges\}} e enviado ao \textit{frontend}.
 
     \item \textbf{Apresentação ao analista} — a interface recebe o JSON, renderiza o grafo e exibe a categoria predita, o índice de confiança, os \textit{tokens} mais relevantes destacados por cor e os valores SHAP e LIME comparativos.
 \end{enumerate}
@@ -1553,7 +1616,7 @@ Posteriormente serão realizados testes de integração entre os componentes e a
 
 \subsubsection{\textit{Dataset} e \textit{fine-tuning}}
 
-O modelo BERTimbau será ajustado utilizando um conjunto de chamados de dados reais obtidos junto à Bayer Brasil, mediante acordo de confidencialidade e anonimização.
+O modelo BERTimbau será ajustado utilizando um conjunto de chamados de dados reais obtidos junto à Aché e Bayer Brasil, mediante acordo de confidencialidade e anonimização.
 
 O processo de \textit{fine-tuning} seguirá uma abordagem supervisionada de classificação textual, utilizando divisão entre conjuntos de treino, validação e teste. Também serão aplicadas técnicas de balanceamento de classes e validação de desempenho para reduzir problemas relacionados a \textit{overfitting}, fenômeno que ocorre quando o modelo aprende os dados de treino com precisão excessiva e perde a capacidade de generalizar para novos exemplos, e ao desbalanceamento do \textit{dataset}.
 
@@ -1564,7 +1627,9 @@ O sucesso da solução será avaliado sob duas perspectivas complementares.
 A primeira perspectiva, \textbf{quantitativa}, avalia o desempenho do modelo de classificação por meio das seguintes métricas: acurácia, precisão, revocação, F1-score macro para lidar com possível desbalanceamento entre categorias, ROC-AUC macro para avaliar a capacidade do modelo de distinguir entre as categorias ao longo de 
 diferentes limiares de decisão e matriz de confusão para análise de erros sistemáticos. O BERTimbau será considerado satisfatório se superar o \textit{baseline} SVM em pelo menos 5 pontos percentuais de F1-macro.
 
-A segunda perspectiva, \textbf{qualitativa}, avalia a utilidade das explicações geradas. Serão analisadas: a concordância entre as explicações SHAP e LIME para os mesmos chamados, e a coerência semântica dos \textit{tokens} destacados no grafo em relação à categoria predita — verificando se os termos com maior importância SHAP correspondem intuitivamente ao tipo de problema descrito no chamado.
+A segunda perspectiva, \textbf{qualitativa}, avalia a utilidade das explicações geradas. Serão analisadas: a concordância entre as explicações SHAP e LIME para os mesmos chamados, e a coerência semântica dos \textit{tokens} destacados no grafo em relação à categoria predita, verificando se os termos com maior importância SHAP e LIME 
+correspondem intuitivamente ao tipo de problema descrito 
+no chamado.
 
 \section{Cronograma de trabalho}
 \label{sec:cronograma}
